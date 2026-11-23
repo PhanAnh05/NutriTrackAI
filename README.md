@@ -117,31 +117,25 @@ Nếu dùng SQL Server khác, đặt biến `ConnectionStrings__DefaultConnectio
 *(Nếu chưa cấu hình `ApiKey`, hệ thống vẫn hoạt động trơn tru với cơ chế Smart Fallback an toàn cho tất cả các kịch bản tra cứu dữ liệu, gợi ý thực đơn và kiểm duyệt y tế).*
 
 ### 4.3. Khởi tạo Cơ sở Dữ liệu & Nạp Dữ liệu Mẫu (Seeding)
-Hệ thống được thiết kế với cơ chế **Tự Động Nạp Dữ Liệu (Auto-Seeder)** ngay khi ứng dụng khởi chạy lần đầu trong `Program.cs`.
+Kho Git chứa các migration EF Core và dữ liệu mẫu. Database trên máy bạn và các bản sao lưu `.bak` được lưu riêng. Người nhận sẽ tạo database mới trên máy của họ.
 
-Bạn có thể chạy trực tiếp:
-```bash
-# 1. Di chuyển vào thư mục dự án
-cd D:\DACN\NutriTrackAI
+Trên Windows, sau khi cài .NET 8 SDK và SQL Server Express LocalDB, mở PowerShell trong thư mục chứa `NutriTrackAI.csproj`. Nếu chưa có lệnh `dotnet ef`, cài công cụ EF Core một lần:
 
-# 2. Khởi chạy ứng dụng
+```powershell
+dotnet tool install --global dotnet-ef --version 8.0.33
+```
+
+Chạy các lệnh sau theo thứ tự:
+
+```powershell
+# Tạo NutriTrackAIDb trên LocalDB và áp dụng các migration
+dotnet ef database update -- --environment Development
+
+# Sau khi migration hoàn tất, chạy ứng dụng để nạp dữ liệu mẫu
 dotnet run --launch-profile http
 ```
 
-Ứng dụng sẽ tự động:
-1. Tạo CSDL `NutriTrackAIDb` trên LocalDB nếu chưa có.
-2. Áp dụng toàn bộ Migration EF Core.
-3. Tự động Seed:
-   - 2 Role: `Admin`, `User`.
-   - 1 Tài khoản Admin: `admin@nutritrack.vn`.
-   - 1 Tài khoản User mẫu đã hoàn tất Onboarding: `user@nutritrack.vn`.
-   - 6 Nhóm thực phẩm chuẩn (`food_categories`).
-   - 60+ Món ăn Việt Nam chi tiết vi chất và calo (`foods`).
-   - 10 Danh mục bài tập thể chất phổ biến (`exercises`).
-   - 12 Bài viết khoa học, câu hỏi thường gặp và điều khoản y tế (`articles`).
-   - 2 Thực đơn mẫu tiêu chuẩn (`meal_plans`).
-
-Sau khi khởi chạy thành công, truy cập trình duyệt tại: **`http://localhost:5127`**.
+Khi khởi động, ứng dụng nạp tài khoản quản trị và tài khoản người dùng mẫu ở mục 5 cùng danh mục thực phẩm, bài tập, bài viết và thực đơn mẫu. Mở **`http://localhost:5127`** để đăng nhập.
 
 ---
 
