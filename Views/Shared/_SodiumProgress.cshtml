@@ -1,0 +1,19 @@
+@using System.Globalization
+@model (decimal Amount, int Limit, bool IsToday)
+@{
+    var vi = CultureInfo.GetCultureInfo("vi-VN");
+    var percent = GoalPolicy.RoundCalories(Math.Clamp(Model.Amount * 100m / Model.Limit, 0, 100));
+    var bar = Model.Amount > Model.Limit ? "bg-warning" : "bg-success";
+}
+<div class="my-3 small" data-sodium-limit="@Model.Limit">
+    <div class="d-flex flex-wrap align-items-baseline justify-content-between gap-1 mb-1">
+        <span class="fw-semibold">@(Model.IsToday ? "Natri hôm nay" : "Natri ngày đã chọn")</span>
+        <span>@Model.Amount.ToString("N0", vi) / @Model.Limit.ToString("N0", vi) mg</span>
+    </div>
+    <div class="progress" role="progressbar" aria-label="Natri so với giới hạn ngày" aria-valuemin="0"
+         aria-valuemax="100" aria-valuenow="@percent" aria-valuetext="@Model.Amount.ToString("N0", vi) trên @Model.Limit.ToString("N0", vi) mg">
+        <div class="progress-bar @bar" style="width: @percent%"></div>
+    </div>
+    @if (Model.Amount > Model.Limit) { <p class="text-warning-emphasis mt-1 mb-0">Đã vượt giới hạn natri.</p> }
+    <p class="text-muted mt-2 mb-0">@GoalPolicy.PotassiumNote</p>
+</div>

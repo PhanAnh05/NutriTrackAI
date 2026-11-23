@@ -1,0 +1,107 @@
+@model MealPlanIndexViewModel
+@{
+    var vi = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+    var collections = new[]
+    {
+        (PanelId: "tab-templates", TabId: "templates-tab", Label: "Mẫu chuyên gia", Icon: "bi-journals", Plans: Model.PublicTemplates, IsTemplate: true),
+        (PanelId: "tab-saved", TabId: "saved-tab", Label: "Đã lưu", Icon: "bi-bookmark", Plans: Model.SavedUserPlans, IsTemplate: false)
+    };
+}
+
+<section class="plan-library" id="templatesSection" aria-labelledby="plan-library-title">
+    <div class="plan-library-heading">
+        <h2 id="plan-library-title"><i class="bi bi-journal-richtext" aria-hidden="true"></i>Thư viện thực đơn</h2>
+        <div class="nav plan-library-tabs" id="planTabs" role="tablist" aria-labelledby="plan-library-title">
+            @foreach (var collection in collections)
+            {
+                <button type="button" id="@collection.TabId" class="plan-library-tab @(collection.IsTemplate ? "active" : null)"
+                        role="tab" aria-controls="@collection.PanelId" aria-selected="@(collection.IsTemplate ? "true" : "false")"
+                        tabindex="@(collection.IsTemplate ? 0 : -1)" data-bs-toggle="pill" data-bs-target="#@collection.PanelId">
+                    <i class="bi @collection.Icon" aria-hidden="true"></i>
+                    @collection.Label <span class="plan-tab-count">@collection.Plans.Count</span>
+                </button>
+            }
+        </div>
+    </div>
+
+    <div class="tab-content" id="planTabsContent">
+        @foreach (var collection in collections)
+        {
+            <div class="tab-pane @(collection.IsTemplate ? "show active" : null)" id="@collection.PanelId"
+                 role="tabpanel" aria-labelledby="@collection.TabId" tabindex="0">
+                @if (collection.Plans.Count > 0)
+                {
+                    <div class="plan-library-grid">
+                        @foreach (var plan in collection.Plans)
+                        {
+                            <article class="plan-library-card @(plan.GoalType == GoalType.Gain ? "is-gain" : null)">
+                                <div class="plan-card-cover">
+                                    <div class="plan-card-target">
+                                        <span class="plan-goal-tag">@plan.GoalTypeName</span>
+                                        <span class="plan-card-calories">
+                                            <strong>@plan.TargetCalories.ToString("N0", vi)</strong> kcal
+                                        </span>
+                                        <span class="plan-card-caption">Năng lượng mục tiêu</span>
+                                    </div>
+                                    <figure class="plan-food-cover">
+                                        <i class="bi bi-egg-fried plan-food-fallback" aria-hidden="true"></i>
+                                        @if (plan.PreviewFood is { } food)
+                                        {
+                                            <partial name="_FoodImage" model="food" />
+                                            <figcaption>@food.Name</figcaption>
+                                        }
+                                    </figure>
+                                </div>
+                                <div class="plan-card-copy">
+                                    <h3>@plan.Name</h3>
+                                    @if (collection.IsTemplate)
+                                    {
+                                        <p>@(string.IsNullOrEmpty(plan.Explanation) ? "Thực đơn dinh dưỡng mẫu cân bằng." : plan.Explanation)</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="plan-saved-date"><i class="bi bi-calendar3" aria-hidden="true"></i>Lưu ngày <time datetime="@plan.CreatedAt.ToString("yyyy-MM-dd")">@plan.CreatedAt.ToString("dd/MM/yyyy")</time></p>
+                                    }
+                                </div>
+                                <div class="plan-library-actions">
+                                    <span class="plan-food-count"><i class="bi bi-basket2" aria-hidden="true"></i>@plan.TotalFoodsCount món</span>
+                                    <div class="plan-card-links">
+                                        <a asp-action="Index" asp-route-planId="@plan.Id" class="plan-view-link">
+                                            @(collection.IsTemplate ? "Xem thực đơn" : "Xem lại")<span class="visually-hidden"> @plan.Name</span>
+                                            <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                                        </a>
+                                        @if (!collection.IsTemplate)
+                                        {
+                                            <form asp-action="DeleteSavedPlan" method="post" onsubmit="return confirm('Bạn có chắc muốn xóa thực đơn này?');">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="planId" value="@plan.Id" />
+                                                <button type="submit" class="plan-delete-btn" aria-label="Xóa @plan.Name" title="Xóa thực đơn">
+                                                    <i class="bi bi-trash" aria-hidden="true"></i>
+                                                </button>
+                                            </form>
+                                        }
+                                    </div>
+                                </div>
+                            </article>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="plan-library-empty">
+                        <i class="bi @(collection.IsTemplate ? "bi-journal-x" : "bi-bookmark")" aria-hidden="true"></i>
+                        @if (collection.IsTemplate)
+                        {
+                            <p>Hiện chưa có thực đơn mẫu công khai nào.</p>
+                        }
+                        else
+                        {
+                            <p>Bạn chưa lưu thực đơn nào.</p>
+                            <span>Sau khi tạo thực đơn gợi ý, hãy bấm “Lưu thực đơn”.</span>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>

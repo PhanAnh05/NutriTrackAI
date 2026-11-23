@@ -1,0 +1,9 @@
+Use case: photorealistic-natural.
+Asset: one standalone square food catalogue photograph for NutriTrackAI, a Vietnamese nutrition website.
+Exact food: {{Name}}.
+Preparation state: {{CookingState}}. Standard serving description: {{ServingName}}.
+Listed ingredients: {{Ingredients}}.
+Photograph only this exact food in the stated preparation and cooking method. Distinguish raw ingredients from cooked dishes, dry grains from cooked rice, skin-on from skinless meat, fried from steamed items, and sugar-free/plain from sweetened drinks. For raw items show clean fresh raw ingredients on a plain white plate, with no cooked garnishes. For a prepared dish use an authentic Vietnamese serving bowl or plate. For a beverage use a plain clear glass or suitable plain cup, never branded packaging. For condiment/oil/sugar show a small realistic serving in a plain dish or glass container. Follow exclusions explicitly stated in the name.
+Eggs explicitly named "luộc chín" must have fully set solid yolks and whites. A food named "lòng trắng trứng" shows egg white only, with no yolk. An egg marked raw is visibly uncooked, with a translucent raw white and intact liquid yolk in a plain small bowl.
+Photorealistic, accurate natural texture, appetizing everyday portions, soft natural daylight, pale neutral tabletop, white plain crockery, three-quarter overhead viewpoint, entire serving visible with a small clean margin, centered and legible as a thumbnail, consistent professional food photography.
+No captions, typography, letters, numbers, logos, watermarks, people, hands or decorative props. No extra dishes, ingredient piles or invented side ingredients. Output one image only.

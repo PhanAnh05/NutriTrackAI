@@ -1,0 +1,251 @@
+@{
+    var currentController = ViewContext.RouteData.Values["controller"] as string;
+    var currentAction = ViewContext.RouteData.Values["action"] as string;
+
+    string? CurrentNav(string controller, string action = "Index", bool includeOtherActions = true)
+    {
+        if (!string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase))
+            return null;
+
+        if (string.Equals(currentAction, action, StringComparison.OrdinalIgnoreCase))
+            return "page";
+
+        return includeOtherActions ? "location" : null;
+    }
+
+    var weightNav = CurrentNav("WeightLog") ?? (CurrentNav("Goal") is not null ? "location" : null);
+    var profileNav = CurrentNav("Profile");
+    var isHomeLanding = ViewData["UseFullWidthLayout"] is true;
+    var signedIn = User.Identity?.IsAuthenticated == true;
+    var isAdmin = signedIn && User.IsInRole("Admin");
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - NutriTrackAI</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body class="@ViewData["BodyClass"]">
+    <!-- Main Header & Navigation -->
+    <header class="@(isHomeLanding ? "home-header sticky-top" : null)">
+        <nav class="navbar @(isHomeLanding && signedIn ? "navbar-expand-xl" : "navbar-expand-lg") navbar-custom sticky-top py-2 @(signedIn ? "navbar-authenticated" : null) @(isAdmin ? "navbar-with-admin" : null)">
+            <div class="container-fluid px-lg-4">
+                <!-- Brand Logo -->
+                <a class="navbar-brand brand-logo" asp-controller="Home" asp-action="Index">
+                    <span class="brand-icon"><i class="bi bi-heart-pulse-fill"></i></span>
+                    <span>NutriTrack<span class="text-success">AI</span></span>
+                </a>
+
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Mở hoặc đóng điều hướng">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3 gap-1">
+                        @if (signedIn)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Dashboard" asp-action="Index" aria-current="@CurrentNav("Dashboard")">
+                                    <i class="bi bi-speedometer2 me-1"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="MealLog" asp-action="Index" aria-current="@CurrentNav("MealLog")">
+                                    <i class="bi bi-journal-text me-1"></i> <span>Nhật ký<span class="nav-label-extra"> bữa ăn</span></span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="WeightLog" asp-action="Index" aria-current="@weightNav">
+                                    <i class="bi bi-graph-up me-1"></i> Cân nặng & Mục tiêu
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="WaterExercise" asp-action="Index" aria-current="@CurrentNav("WaterExercise")">
+                                    <i class="bi bi-droplet-half me-1"></i> Nước & Vận động
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="MealPlan" asp-action="Index" aria-current="@CurrentNav("MealPlan")">
+                                    <i class="bi bi-calendar2-check me-1"></i> <span>Thực đơn<span class="nav-label-extra"> gợi ý</span></span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Food" asp-action="Index" aria-current="@CurrentNav("Food")">
+                                    <i class="bi bi-egg-fried me-1"></i> <span class="nav-label-wide">Danh mục món</span><span class="nav-label-compact">Món ăn</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Chat" asp-action="Index" aria-current="@CurrentNav("Chat")">
+                                    <i class="bi bi-robot me-1" aria-hidden="true"></i> Chatbot AI
+                                </a>
+                            </li>
+                        }
+                        else if (isHomeLanding)
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index" aria-current="page">Trang chủ</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#thuc-don-mau">Thực đơn mẫu</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#cach-su-dung">Cách hoạt động</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#faq-section">FAQ</a></li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Home" asp-action="Index" aria-current="@CurrentNav("Home", includeOtherActions: false)">
+                                    <i class="bi bi-house-door me-1"></i> Trang chủ
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Food" asp-action="Index" aria-current="@CurrentNav("Food")">
+                                    <i class="bi bi-search me-1"></i> Tra cứu dinh dưỡng
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Home" asp-action="Articles" aria-current="@CurrentNav("Home", "Articles", includeOtherActions: false)">
+                                    <i class="bi bi-book me-1"></i> Bài viết & FAQ
+                                </a>
+                            </li>
+                        }
+                    </ul>
+
+                    <!-- User Actions Right -->
+                    <div class="d-flex align-items-center gap-2">
+                        @if (signedIn)
+                        {
+                            @if (isAdmin)
+                            {
+                                <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="btn btn-sm btn-outline-danger me-2 navbar-admin-link">
+                                    <i class="bi bi-shield-lock-fill me-1"></i> Quản trị<span class="nav-label-extra"> Admin</span>
+                                </a>
+                            }
+
+                            <!-- User Profile Dropdown -->
+                            <div class="dropdown">
+                                <button class="btn btn-outline-custom dropdown-toggle d-flex align-items-center gap-2 @(profileNav is not null ? "account-current" : null)" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-person-circle fs-5 text-success"></i>
+                                    <span>@(User.Identity?.Name ?? "Tài khoản")</span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                                    <li>
+                                        <a class="dropdown-item py-2" asp-controller="Profile" asp-action="Index" aria-current="@profileNav">
+                                            <i class="bi bi-person-badge me-2 text-secondary"></i> Hồ sơ sức khỏe
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item py-2" asp-controller="Goal" asp-action="Index">
+                                            <i class="bi bi-bullseye me-2 text-secondary"></i> Quản lý mục tiêu
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="dropdown-item text-danger py-2">
+                                                <i class="bi bi-box-arrow-right me-2"></i> Đăng xuất
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        }
+                        else if (isHomeLanding)
+                        {
+                            <a asp-area="" asp-controller="Account" asp-action="Login" class="home-nav-login">Đăng nhập</a>
+                            <a asp-area="" asp-controller="Account" asp-action="Register" class="home-nav-register">Đăng ký</a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Account" asp-action="Login" class="btn btn-outline-custom">
+                                <i class="bi bi-box-arrow-in-right me-1"></i> Đăng nhập
+                            </a>
+                            <a asp-controller="Account" asp-action="Register" class="btn btn-primary-custom">
+                                <i class="bi bi-person-plus me-1"></i> Đăng ký ngay
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Body Content -->
+    <main role="main" class="flex-grow-1">
+        @if (isHomeLanding)
+        {
+            @await RenderSectionAsync("FullWidthHero", required: false)
+        }
+        @RenderBody()
+    </main>
+
+    <!-- Cảnh báo y tế và chân trang -->
+    <footer class="footer-custom @(isHomeLanding ? "home-footer" : "mt-5")">
+        <div class="container">
+            <div class="medical-disclaimer-box mb-4" id="medical-disclaimer">
+                <div class="d-flex align-items-start gap-2">
+                    <i class="bi bi-exclamation-triangle-fill text-warning fs-5 flex-shrink-0 mt-1"></i>
+                    <div>
+                        <strong class="@(isHomeLanding ? null : "text-dark") d-block mb-1">Cảnh báo y tế quan trọng</strong>
+                        <span>Thông tin trên website và nội dung do trợ lý AI tạo ra chỉ nhằm hỗ trợ theo dõi dinh dưỡng, cân nặng và lối sống, mang tính tham khảo. Hệ thống không phải thiết bị y tế, không chẩn đoán, không kê đơn và không thay thế ý kiến của bác sĩ, chuyên gia dinh dưỡng hoặc cơ sở y tế. Nếu bạn có bệnh lý, đang dùng thuốc, mang thai, hoặc có triệu chứng bất thường, hãy tham khảo chuyên môn trước khi thay đổi chế độ ăn.</span>
+                    </div>
+                </div>
+            </div>
+
+            @if (!isHomeLanding)
+            {
+                <div class="row align-items-center text-muted small gy-2">
+                    <div class="col-md-6 text-center text-md-start">
+                        &copy; 2026 <strong>NutriTrackAI</strong>. Nền tảng theo dõi dinh dưỡng và quản lý cân nặng thông minh.
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <a asp-controller="Home" asp-action="Index" class="text-decoration-none text-muted me-3">Trang chủ</a>
+                        <a asp-controller="Home" asp-action="Articles" class="text-decoration-none text-muted me-3">Kiến thức & FAQ</a>
+                        <a asp-controller="Home" asp-action="Privacy" class="text-decoration-none text-muted">Điều khoản sử dụng</a>
+                    </div>
+                </div>
+            }
+        </div>
+        @if (isHomeLanding)
+        {
+            <div class="home-footer-dark">
+                <div class="container home-footer-grid">
+                    <div>
+                        <a class="home-footer-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                            <span class="brand-icon"><i class="bi bi-heart-pulse-fill" aria-hidden="true"></i></span> NutriTrackAI
+                        </a>
+                        <p>Theo dõi dinh dưỡng và cân nặng theo mục tiêu của bạn.</p>
+                        <small>© 2026 NutriTrackAI</small>
+                    </div>
+                    <nav aria-label="Liên kết nhanh">
+                        <h2>Khám phá</h2>
+                        <a asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
+                        <a asp-area="" asp-controller="Food" asp-action="Index">Danh mục món ăn</a>
+                        <a asp-area="" asp-controller="MealPlan" asp-action="Index">Thực đơn gợi ý</a>
+                        <a asp-area="" asp-controller="Home" asp-action="Articles">Kiến thức &amp; FAQ</a>
+                    </nav>
+                    <nav aria-label="An toàn và chính sách">
+                        <h2>An toàn &amp; chính sách</h2>
+                        <a href="#medical-disclaimer">Miễn trừ trách nhiệm y tế</a>
+                        <a asp-area="" asp-controller="Home" asp-action="Privacy">Quyền riêng tư dữ liệu sức khỏe</a>
+                    </nav>
+                </div>
+            </div>
+        }
+    </footer>
+
+    @await RenderSectionAsync("Dialogs", required: false)
+
+    <!-- Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/business-date.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

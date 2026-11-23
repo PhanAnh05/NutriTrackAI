@@ -1,0 +1,46 @@
+@using System.Globalization
+@model CalorieTargetResult
+@{
+    var vi = CultureInfo.GetCultureInfo("vi-VN");
+    var available = Model.PaceOptions.Where(option => option.IsAvailable).ToArray();
+    var unavailable = Model.PaceOptions.Where(option => !option.IsAvailable).ToArray();
+
+    void Card(PaceOption? option)
+    {
+        var id = option == null ? null : $"pace-option-{option.Key}";
+        <div class="col">
+            <input id="@id" class="btn-check" type="radio" name="PaceChoice" value="@option?.Key" disabled="@(option?.IsAvailable != true)" data-pace-radio />
+            <label for="@id" class="btn btn-outline-custom goal-pace-card w-100 h-100 text-start">
+                <span class="d-flex flex-wrap align-items-center gap-1">
+                    <strong data-pace-label>@option?.Label</strong>
+                    <span class="badge badge-custom-emerald" data-pace-recommended hidden="@(option is not { IsRecommended: true, IsAvailable: true })">Đề xuất</span>
+                </span>
+                <span class="small" data-pace-time>@(option?.TargetDate is DateTime date ? $"{option.Weeks} tuần · đến {date.ToString("dd/MM/yyyy", vi)}" : option != null ? $"{option.Weeks} tuần" : "")</span>
+                <span class="small" data-pace-rate hidden="@(option?.IsAvailable != true)">@(option != null ? $"≈ {option.WeeklyRateKg.ToString("0.##", vi)} kg/tuần" : "")</span>
+                <span class="small fw-semibold" data-pace-budget hidden="@(option?.IsAvailable != true)">@(option?.DailyBudgetKcal is int budget ? $"Ăn khoảng {budget.ToString("N0", vi)} kcal/ngày" : "")</span>
+                <span class="small" data-pace-zone-label hidden="@(option?.IsAvailable != true)">@option?.PaceZoneLabel</span>
+                <span class="small text-warning-emphasis" data-pace-confirm hidden="@(option?.RequiresIntensePaceAck != true)">Cần xác nhận</span>
+                <span class="small" data-pace-reason hidden="@(option?.IsAvailable != false)">@option?.UnavailableReason</span>
+            </label>
+        </div>
+    }
+}
+<fieldset class="mb-3" data-pace-picker hidden="@(Model.PaceOptions.Count == 0)">
+    <legend id="goal-pace-heading" class="h6">Chọn thời gian đạt mục tiêu</legend>
+    <div class="row row-cols-1 row-cols-sm-2 g-2" data-pace-choices role="radiogroup" aria-labelledby="goal-pace-heading">
+        @foreach (var option in available) { Card(option); }
+    </div>
+    <div data-pace-unavailable hidden="@(unavailable.Length != 1)">
+        <div class="row row-cols-1 row-cols-sm-2 g-2 mt-1" data-pace-single>
+            @if (unavailable.Length == 1) { Card(unavailable[0]); }
+        </div>
+    </div>
+    <details class="mt-2" data-pace-details hidden="@(unavailable.Length < 2)">
+        <summary>Không khả dụng</summary>
+        <div class="row row-cols-1 row-cols-sm-2 g-2 mt-1" data-pace-multiple>
+            @if (unavailable.Length >= 2) { foreach (var option in unavailable) { Card(option); } }
+        </div>
+    </details>
+    <p class="small text-muted mb-0 mt-2">Thời gian chỉ mang tính ước tính, ứng dụng sẽ đánh giá lại sau mỗi 14 ngày.</p>
+    <template data-pace-template>@{ Card(null); }</template>
+</fieldset>

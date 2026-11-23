@@ -1,0 +1,366 @@
+@model WaterExerciseIndexViewModel
+@using System.Globalization
+@{
+    ViewData["Title"] = "Nhật ký Nước & Vận động";
+    var vi = CultureInfo.GetCultureInfo("vi-VN");
+}
+
+<div class="container py-5">
+    <!-- Success / Error Alerts -->
+    @if (TempData["WaterSuccess"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show mb-4 shadow-sm" role="alert">
+            <i class="bi bi-droplet-fill me-2"></i> @TempData["WaterSuccess"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["WaterError"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show mb-4 shadow-sm" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i> @TempData["WaterError"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["ExerciseSuccess"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show mb-4 shadow-sm" role="alert">
+            <i class="bi bi-activity me-2"></i> @TempData["ExerciseSuccess"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["ExerciseError"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show mb-4 shadow-sm" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i> @TempData["ExerciseError"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Header & Date Navigation -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <span class="badge badge-custom-emerald mb-2">Thói quen sinh hoạt</span>
+            <h2 class="fw-bold text-dark mb-1">Nước Uống & Hoạt Động Vận Động</h2>
+            <p class="text-muted small mb-0">Cân bằng năng lượng và duy trì sự trao đổi chất tối ưu cho cơ thể.</p>
+        </div>
+
+        <!-- Date Navigator -->
+        <div class="card card-custom p-2 border shadow-sm">
+            <form method="get" class="d-flex align-items-center gap-2">
+                <a asp-action="Index" asp-route-date="@Model.SelectedDate.AddDays(-1).ToString("yyyy-MM-dd")" class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+                <input type="date" name="date" id="waterExerciseDate" class="form-control form-control-sm border-0 fw-bold text-center"
+                       value="@Model.SelectedDate.ToString("yyyy-MM-dd")" onchange="this.form.submit()" style="max-width: 150px;"
+                       aria-label="Ngày ghi nhận nước uống và vận động" data-business-date="waterExerciseBusinessDate" aria-describedby="waterExerciseBusinessDate" />
+                <a asp-action="Index" asp-route-date="@Model.SelectedDate.AddDays(1).ToString("yyyy-MM-dd")" class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+                @if (Model.SelectedDate.Date != GoalPolicy.Today)
+                {
+                    <a asp-action="Index" class="btn btn-sm btn-outline-primary">Hôm nay</a>
+                }
+            </form>
+            <output id="waterExerciseBusinessDate" for="waterExerciseDate" class="d-block text-center text-muted small mt-1">@vi.TextInfo.ToTitleCase(Model.SelectedDate.ToString("dddd, dd/MM/yyyy", vi))</output>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- ======================================================= -->
+        <!-- PHẦN 1: NHẬT KÝ NƯỚC UỐNG -->
+        <!-- ======================================================= -->
+        <div class="col-lg-6">
+            <div class="card card-custom p-4 border-0 shadow h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-primary mb-0">
+                        <i class="bi bi-droplet-half me-2"></i>Nhật Ký Uống Nước
+                    </h5>
+                    <!-- Button trigger modal đổi mục tiêu -->
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalWaterGoal">
+                        <i class="bi bi-gear me-1"></i> Mục tiêu: @Model.DailyWaterGoalMl ml
+                    </button>
+                </div>
+
+                <!-- Water Tracker Banner (Tương tự UI Dashboard Mockup) -->
+                <div class="p-4 rounded-4 text-white mb-4 position-relative overflow-hidden shadow-sm" style="background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div>
+                            <span class="text-white-50 small d-block mb-1">Tổng lượng nước ngày @Model.SelectedDate.ToString("dd/MM")</span>
+                            <h2 class="fw-bold mb-0">@Model.TotalWaterMl.ToString("N0") <span class="fs-5 fw-normal text-white-50">/ @Model.DailyWaterGoalMl.ToString("N0") ml</span></h2>
+                        </div>
+                        <span class="badge bg-white text-primary fw-bold fs-6 py-2 px-3 rounded-pill shadow-sm">
+                            @Model.WaterProgressPercent%
+                        </span>
+                    </div>
+
+                    <div class="progress bg-white bg-opacity-25 mt-3" style="height: 10px;">
+                        <div class="progress-bar bg-white" role="progressbar" style="width: @Model.WaterProgressPercent%;" aria-valuenow="@Model.WaterProgressPercent" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+
+                <!-- Nút Thêm Nhanh (+200ml, +300ml, +500ml) -->
+                <div class="mb-4">
+                    <label class="form-label small fw-semibold text-secondary d-block">Thêm nhanh lượng nước vừa uống:</label>
+                    <div class="row g-2">
+                        <div class="col-4">
+                            <form asp-action="QuickWater" method="post">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="amountMl" value="200" />
+                                <input type="hidden" name="date" value="@Model.SelectedDate.ToString("yyyy-MM-dd")" />
+                                <button type="submit" class="btn btn-outline-primary w-100 py-2">
+                                    <i class="bi bi-cup-hot me-1"></i> +200 ml
+                                </button>
+                            </form>
+                        </div>
+                        <div class="col-4">
+                            <form asp-action="QuickWater" method="post">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="amountMl" value="300" />
+                                <input type="hidden" name="date" value="@Model.SelectedDate.ToString("yyyy-MM-dd")" />
+                                <button type="submit" class="btn btn-outline-primary w-100 py-2">
+                                    <i class="bi bi-cup-straw me-1"></i> +300 ml
+                                </button>
+                            </form>
+                        </div>
+                        <div class="col-4">
+                            <form asp-action="QuickWater" method="post">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="amountMl" value="500" />
+                                <input type="hidden" name="date" value="@Model.SelectedDate.ToString("yyyy-MM-dd")" />
+                                <button type="submit" class="btn btn-outline-primary w-100 py-2">
+                                    <i class="bi bi-droplet-fill me-1"></i> +500 ml
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Thêm Lượng Nước Tùy Chỉnh -->
+                <form asp-action="AddWater" method="post" class="mb-4 p-3 bg-light rounded-3 border">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="WaterForm.LoggedOn" value="@Model.SelectedDate.ToString("yyyy-MM-dd")" />
+                    <label class="form-label small fw-semibold text-secondary">Hoặc nhập lượng nước tùy chỉnh (50 - 2.000 ml):</label>
+                    <div class="input-group">
+                        <input asp-for="WaterForm.AmountMl" class="form-control" type="number" step="50" min="50" max="2000" placeholder="250" />
+                        <span class="input-group-text bg-white">ml</span>
+                        <button type="submit" class="btn btn-primary px-3">
+                            <i class="bi bi-plus-lg me-1"></i> Ghi nhận
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Lịch sử uống nước trong ngày -->
+                <h6 class="fw-bold text-dark mb-2">Các lần uống trong ngày (@Model.WaterLogs.Count lần)</h6>
+                @if (Model.WaterLogs.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover align-middle mb-0">
+                            <tbody>
+                                @foreach (var item in Model.WaterLogs)
+                                {
+                                    <tr>
+                                        <td><i class="bi bi-cup-straw text-primary me-2"></i><strong>+@item.AmountMl ml</strong></td>
+                                        <td class="text-muted small">@item.CreatedAt.ToString("HH:mm")</td>
+                                        <td class="text-end">
+                                            <form asp-action="DeleteWater" asp-route-id="@item.Id" asp-route-date="@Model.SelectedDate.ToString("yyyy-MM-dd")" method="post" class="d-inline">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn btn-link text-danger p-0 border-0" title="Xóa">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted small mb-0">Chưa ghi nhận lần uống nước nào trong ngày này.</p>
+                }
+            </div>
+        </div>
+
+        <!-- ======================================================= -->
+        <!-- PHẦN 2: NHẬT KÝ VẬN ĐỘNG -->
+        <!-- ======================================================= -->
+        <div class="col-lg-6">
+            <div class="card card-custom p-4 border-0 shadow h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-danger mb-0">
+                        <i class="bi bi-fire me-2"></i>Nhật Ký Vận Động & Thể Thao
+                    </h5>
+                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle">
+                        Cân nặng: @Model.UserWeightKg.ToString("0.0") kg
+                    </span>
+                </div>
+
+                <!-- Exercise Stat Banner -->
+                <div class="p-4 rounded-4 text-white mb-4 shadow-sm" style="background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="text-white-50 small d-block mb-1">Tổng năng lượng tiêu hao</span>
+                            <h2 class="fw-bold mb-0">@Model.TotalCaloriesBurned.ToString("0.0") <span class="fs-5 fw-normal text-white-50">kcal</span></h2>
+                        </div>
+                        <div class="text-end">
+                            <span class="text-white-50 small d-block mb-1">Thời gian tập</span>
+                            <h3 class="fw-bold mb-0">@Model.TotalExerciseDurationMin <span class="fs-6 fw-normal text-white-50">phút</span></h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Ghi Nhận Hoạt Động Vận Động -->
+                <form asp-action="AddExercise" method="post" class="p-3 bg-light rounded-3 border mb-4">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="ExerciseForm.LoggedOn" name="LoggedOn" value="@Model.SelectedDate.ToString("yyyy-MM-dd")" />
+
+                    <!-- Chọn bài tập -->
+                    <div class="mb-3">
+                        <label asp-for="ExerciseForm.ExerciseId" for="selectExercise" class="form-label small fw-semibold text-secondary"></label>
+                        <select asp-for="ExerciseForm.ExerciseId" name="ExerciseId" class="form-select" id="selectExercise" aria-describedby="exerciseMetHelp">
+                            <option value="" data-met-low="3" data-met-moderate="5" data-met-high="8">-- Hoạt động tự chọn --</option>
+                            @foreach (var ex in Model.AvailableExercises)
+                            {
+                                <option value="@ex.Id"
+                                        data-met-low="@ExerciseEnergy.EffectiveMet(ex.MetValue, ExerciseIntensity.Low).ToString(System.Globalization.CultureInfo.InvariantCulture)"
+                                        data-met-moderate="@ExerciseEnergy.EffectiveMet(ex.MetValue, ExerciseIntensity.Moderate).ToString(System.Globalization.CultureInfo.InvariantCulture)"
+                                        data-met-high="@ExerciseEnergy.EffectiveMet(ex.MetValue, ExerciseIntensity.High).ToString(System.Globalization.CultureInfo.InvariantCulture)">@ex.Name (MET ~@ex.MetValue.ToString("0.0"))</option>
+                            }
+                        </select>
+                        <small id="exerciseMetHelp" class="text-muted d-block mt-2">MET danh mục ứng với mức Vừa. Mức Nhẹ và Nặng được ước tính theo cường độ bạn chọn.</small>
+                    </div>
+
+                    <!-- Hoặc hoạt động tự chọn -->
+                    <div class="mb-3" id="customExerciseContainer">
+                        <label asp-for="ExerciseForm.CustomName" class="form-label small fw-semibold text-secondary"></label>
+                        <input asp-for="ExerciseForm.CustomName" name="CustomName" class="form-control" placeholder="Ví dụ: Leo cầu thang, Dọn dẹp nhà cửa..." />
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-12 col-sm-6">
+                            <label asp-for="ExerciseForm.DurationMin" for="inputDurationMin" class="form-label small fw-semibold text-secondary"></label>
+                            <div class="input-group">
+                                <input asp-for="ExerciseForm.DurationMin" name="DurationMin" class="form-control" type="number" min="1" max="300" id="inputDurationMin" />
+                                <span class="input-group-text bg-white">phút</span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <label asp-for="ExerciseForm.Intensity" for="selectIntensity" class="form-label small fw-semibold text-secondary"></label>
+                            <select asp-for="ExerciseForm.Intensity" name="Intensity" class="form-select" id="selectIntensity">
+                                <option value="@ExerciseIntensity.Low" data-label="Nhẹ">Nhẹ (MET ~3.0)</option>
+                                <option value="@ExerciseIntensity.Moderate" data-label="Vừa" selected>Vừa (MET ~5.0)</option>
+                                <option value="@ExerciseIntensity.High" data-label="Nặng">Nặng (MET ~8.0)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Hiển thị calo ước tính tức thì -->
+                    <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3 p-2 bg-white rounded border">
+                        <small class="text-muted">Ước tính calo tiêu hao:</small>
+                        <strong class="text-danger fs-5 text-nowrap" id="liveEstimatedCalories" role="status">~0.0 kcal</strong>
+                    </div>
+
+                    <button type="submit" class="btn btn-danger w-100 py-2">
+                        <i class="bi bi-plus-circle me-1"></i> Lưu Hoạt Động Vận Động
+                    </button>
+                </form>
+
+                <!-- Lịch sử bài tập trong ngày -->
+                <h6 class="fw-bold text-dark mb-2">Các bài tập trong ngày (@Model.ExerciseLogs.Count hoạt động)</h6>
+                @if (Model.ExerciseLogs.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover align-middle mb-0">
+                            <tbody>
+                                @foreach (var item in Model.ExerciseLogs)
+                                {
+                                    <tr>
+                                        <td>
+                                            <strong>@(item.Exercise?.Name ?? item.CustomName)</strong>
+                                            <small class="text-muted d-block">
+                                                Cường độ: @(item.Intensity == ExerciseIntensity.Low ? "Nhẹ" : item.Intensity == ExerciseIntensity.Moderate ? "Vừa" : "Nặng") &bull; @item.DurationMin phút
+                                            </small>
+                                        </td>
+                                        <td class="text-end">
+                                            <strong class="text-danger">-@item.CaloriesBurned.ToString("0.0") kcal</strong>
+                                        </td>
+                                        <td class="text-end" style="width: 40px;">
+                                            <form asp-action="DeleteExercise" asp-route-id="@item.Id" asp-route-date="@Model.SelectedDate.ToString("yyyy-MM-dd")" method="post" class="d-inline">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn btn-link text-danger p-0 border-0" title="Xóa">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted small mb-0">Chưa ghi nhận bài tập nào trong ngày này.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal cập nhật mục tiêu nước -->
+<div class="modal fade" id="modalWaterGoal" tabindex="-1" aria-labelledby="modalWaterGoalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold text-dark" id="modalWaterGoalLabel">Mục tiêu nước hằng ngày</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-action="UpdateWaterGoal" asp-route-date="@Model.SelectedDate.ToString("yyyy-MM-dd")" method="post">
+                @Html.AntiForgeryToken()
+                <div class="modal-body py-3">
+                    <label class="form-label small fw-semibold text-secondary">Lượng nước khuyến nghị (ml/ngày):</label>
+                    <div class="input-group">
+                        <input name="DailyWaterGoalMl" type="number" step="100" min="500" max="10000" class="form-control" value="@Model.DailyWaterGoalMl" />
+                        <span class="input-group-text bg-light">ml</span>
+                    </div>
+                    <small class="text-muted d-block mt-2">Mức chuẩn cho người trưởng thành: 2.000 - 3.000 ml/ngày.</small>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary-custom btn-sm px-3">Cập nhật</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const userWeight = parseFloat('@Model.UserWeightKg.ToString(System.Globalization.CultureInfo.InvariantCulture)');
+
+        function updateEstimatedCalories() {
+            const duration = parseFloat(document.getElementById("inputDurationMin").value) || 0;
+            const selectEx = document.getElementById("selectExercise");
+            const selectedExercise = selectEx.options[selectEx.selectedIndex];
+            const selectIntensity = document.getElementById("selectIntensity");
+            for (const option of selectIntensity.options) {
+                const optionMet = Number(selectedExercise.getAttribute("data-met-" + option.value.toLowerCase()));
+                option.textContent = option.dataset.label + " (MET ~" + optionMet.toFixed(1) + ")";
+            }
+            const met = Number(selectedExercise.getAttribute("data-met-" + selectIntensity.value.toLowerCase()));
+
+            // Chỉ tính phần tiêu hao cao hơn mức nghỉ, giống phép tính khi lưu.
+            const calories = (Math.max(met - 1, 0) * 3.5 * userWeight / 200) * Math.max(duration, 0);
+            document.getElementById("liveEstimatedCalories").innerText = "~" + calories.toFixed(1) + " kcal";
+        }
+
+        document.getElementById("inputDurationMin").addEventListener("input", updateEstimatedCalories);
+        document.getElementById("selectExercise").addEventListener("change", updateEstimatedCalories);
+        document.getElementById("selectIntensity").addEventListener("change", updateEstimatedCalories);
+
+        // Khởi tạo ước tính lần đầu
+        updateEstimatedCalories();
+    </script>
+}

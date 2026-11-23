@@ -1,0 +1,211 @@
+.daily-plan {
+    display: grid;
+    gap: 1rem;
+    min-width: 0;
+    color: var(--nt-ink);
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+}
+
+.daily-plan :is(h2, h3, p, dl, dt, dd, ul) { margin: 0; }
+.daily-plan ul { list-style: none; padding: 0; }
+.daily-plan__overview, .daily-meal, .daily-plan__shopping {
+    min-width: 0;
+    background: var(--nt-surface);
+    border: 1px solid var(--nt-stroke);
+    border-radius: var(--nt-radius-card);
+    box-shadow: var(--nt-shadow-card);
+}
+.daily-plan__overview, .daily-plan__shopping { padding: clamp(1rem, 2vw, 1.65rem); }
+.daily-plan__header, .daily-plan__shopping header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: .85rem 1.25rem;
+}
+.daily-plan__heading { min-width: 0; flex: 1 1 18rem; }
+.daily-plan__heading h2 {
+    margin-top: .5rem;
+    font-size: clamp(1.2rem, 2vw, 1.65rem);
+    font-weight: 750;
+    line-height: 1.35;
+    letter-spacing: -.035em;
+}
+.daily-plan__goal, .daily-plan__within {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    width: fit-content;
+    padding: .28rem .6rem;
+    border-radius: 2rem;
+    background: var(--nt-mint-50);
+    color: var(--nt-brand-700);
+    font-size: .75rem;
+    font-weight: 650;
+}
+.daily-plan__actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+.daily-plan__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .45rem;
+    min-height: 44px;
+    padding: .5rem .85rem;
+    border: 1px solid #b8dcca;
+    border-radius: var(--nt-radius-button);
+    background: var(--nt-surface);
+    color: var(--nt-brand-700);
+    font: inherit;
+    font-size: .85rem;
+    font-weight: 650;
+    line-height: 1.4;
+    text-align: center;
+}
+.daily-plan__button:hover { background: var(--nt-mint-50); border-color: var(--nt-brand-600); }
+.daily-plan__button--primary { color: #fff; border-color: transparent; background: var(--nt-brand-600); }
+.daily-plan__button--primary:hover { color: #fff; background: var(--nt-brand-700); }
+.daily-plan :is(button, a):focus-visible { outline: 3px solid var(--nt-brand-600); outline-offset: 3px; }
+.daily-plan__metrics {
+    display: grid;
+    grid-template-columns: minmax(210px, 1fr) minmax(0, 2.7fr);
+    gap: .8rem;
+    margin-block: 1.25rem 1rem;
+}
+.daily-plan__energy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: .16rem;
+    padding: 1rem 1.15rem;
+    border-radius: 14px;
+    background: linear-gradient(125deg, var(--nt-brand-700), #0b724d);
+    color: #fff;
+    font-size: .8rem;
+}
+.daily-plan__energy > span:first-child { display: inline-flex; align-items: center; gap: .35rem; font-weight: 650; }
+.daily-plan__energy > strong {
+    font-size: clamp(1.85rem, 3vw, 2.45rem);
+    font-weight: 750;
+    line-height: 1.15;
+    letter-spacing: -.045em;
+}
+.daily-plan__energy strong small { font-size: .85rem; letter-spacing: 0; }
+.daily-plan__within { margin-top: .35rem; background: #d7f5dd; }
+.daily-plan__nutrients {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-content: center;
+    padding: 1rem 0;
+    background: linear-gradient(120deg, #fafdfb, #f4faf6);
+    border: 1px solid var(--nt-stroke);
+    border-radius: 14px;
+}
+.daily-plan__nutrient { padding-inline: clamp(.65rem, 1.6vw, 1.45rem); }
+.daily-plan__nutrient + .daily-plan__nutrient { border-inline-start: 1px solid var(--nt-stroke); }
+.daily-plan__nutrient--protein { --macro: var(--nt-brand-500); }
+.daily-plan__nutrient--carb { --macro: var(--nt-carbs); }
+.daily-plan__nutrient--fat { --macro: var(--nt-fats); }
+.daily-plan__nutrients dt { font-size: .85rem; font-weight: 650; }
+.daily-plan__nutrients dd { font-size: .8rem; color: var(--caption); }
+.daily-plan__nutrients dd strong { color: var(--nt-ink); font-weight: 750; font-size: clamp(1.2rem, 2vw, 1.75rem); letter-spacing: -.035em; }
+.daily-plan__track { display: block; height: 5px; border-radius: 10px; background: #dde8e2; overflow: hidden; margin: .4rem 0; }
+.daily-plan__track > span { display: block; height: 100%; border-radius: inherit; background: var(--macro); }
+.daily-plan__explanation {
+    display: flex; align-items: baseline; gap: .65rem;
+    color: var(--caption);
+    font-size: .86rem;
+    line-height: 1.65;
+}
+.daily-plan__explanation > i { color: var(--nt-brand-600); }
+.daily-plan__explanation strong { color: var(--nt-ink); }
+.daily-plan__feedback:not(:empty) { margin-top: .65rem; color: var(--nt-brand-700); font-size: .85rem; font-weight: 650; }
+.daily-plan__meals { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.daily-meal { display: flex; flex-direction: column; }
+.daily-meal__header, .daily-meal__totals { padding: .85rem clamp(.85rem, 1.5vw, 1.35rem); }
+.daily-meal__header {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: .7rem;
+    border-bottom: 1px solid var(--nt-stroke);
+}
+.daily-meal__icon {
+    display: grid; place-items: center;
+    width: 42px; height: 42px;
+    border-radius: 13px;
+    color: #17734d; background: #eaf7ed;
+    font-size: 1.2rem;
+}
+.daily-meal__icon i { color: inherit !important; }
+.daily-meal[data-meal-type="1"] .daily-meal__icon { color: #a16614; background: #fff3d6; }
+.daily-meal[data-meal-type="2"] .daily-meal__icon { color: #96602c; background: #fbefde; }
+.daily-meal[data-meal-type="3"] .daily-meal__icon { color: #545ab1; background: #f0effc; }
+.daily-meal__header h3, .daily-plan__shopping h3 { font-size: 1.1rem; font-weight: 700; letter-spacing: -.025em; }
+.daily-meal__header p, .daily-meal__energy { font-size: .79rem; color: var(--caption); }
+.daily-meal__header p { margin-top: .12rem; }
+.daily-meal__energy strong { font-size: 1.18rem; color: var(--nt-brand-700); }
+.daily-meal__foods { flex-grow: 1; }
+.daily-food {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: .4rem .8rem;
+    padding: .85rem clamp(.85rem, 1.5vw, 1.35rem);
+}
+.daily-food + .daily-food { border-top: 1px solid var(--nt-stroke); }
+.daily-food__photo {
+    position: relative;
+    display: grid; place-items: center;
+    width: clamp(48px, 5vw, 68px); aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 12px;
+    background: var(--nt-mint-50);
+    color: var(--nt-brand-600);
+    font-size: 1.35rem;
+}
+.daily-food__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.daily-food a { color: var(--nt-ink); font-size: .94rem; font-weight: 700; line-height: 1.4; text-decoration: none; }
+.daily-food a:hover { color: var(--nt-brand-700); text-decoration: underline; }
+.daily-food .item-servings-text { margin-top: .2rem; color: var(--caption); font-size: .81rem; }
+.daily-food__macros, .daily-meal__totals { display: flex; flex-wrap: wrap; gap: .15rem .65rem; }
+.daily-food .daily-food__macros { margin-top: .35rem; color: var(--caption); font-size: .75rem; }
+.daily-food__swap { padding-inline: .65rem; white-space: nowrap; font-size: .8rem; }
+.daily-meal__totals { border-radius: 0 0 var(--nt-radius-card) var(--nt-radius-card); background: var(--nt-mint-50); color: var(--caption); font-size: .79rem; }
+.daily-meal__totals b { color: var(--nt-ink); }
+.daily-plan__shopping h3 { display: inline-flex; align-items: center; gap: .5rem; }
+.daily-plan__shopping h3 i { color: var(--nt-brand-600); }
+.daily-plan__shopping header span { color: var(--caption); font-size: .8rem; }
+.daily-plan__shopping ul { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: 1rem; }
+.daily-plan__shopping li { padding: .33rem .65rem; border: 1px solid var(--nt-stroke); border-radius: 9px; background: var(--nt-mint-50); font-size: .82rem; }
+
+#swapFoodModal .swap-choice {
+    display: grid; grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center; gap: .5rem .75rem;
+    padding: .85rem;
+    background: var(--nt-surface);
+    color: var(--nt-ink);
+    overflow-wrap: anywhere;
+}
+#swapFoodModal .swap-choice + .swap-choice { border-top: 1px solid var(--nt-stroke); }
+.swap-choice__details strong { font-size: .94rem; }
+.swap-choice__details p, .swap-choice__details ul { margin: .22rem 0 0; padding: 0; list-style: none; color: var(--caption); font-size: .8rem; }
+.swap-choice__actions { display: grid; gap: .3rem; justify-items: end; }
+.swap-choice__actions small { color: var(--caption); font-size: .79rem; }
+.swap-choice__actions button:focus-visible { outline: 3px solid var(--nt-brand-600); outline-offset: 2px; }
+
+@media (max-width: 991.98px) {
+    .daily-plan__meals { grid-template-columns: 1fr; }
+}
+@media (max-width: 650px) {
+    .daily-plan__metrics { grid-template-columns: 1fr; }
+    .daily-plan__nutrients { padding-block: .8rem; }
+    .daily-plan__energy { padding: .9rem 1rem; }
+}
+@media (max-width: 480px) {
+    .daily-food { grid-template-columns: 48px minmax(0, 1fr); align-items: start; }
+    .daily-food__swap { grid-column: 2; justify-self: start; }
+    #swapFoodModal .swap-choice { grid-template-columns: 48px minmax(0, 1fr); align-items: start; }
+    .swap-choice__actions { grid-column: 2; display: flex; align-items: center; gap: .65rem; }
+}

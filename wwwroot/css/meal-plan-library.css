@@ -1,0 +1,310 @@
+.plan-library {
+    padding: clamp(1rem, 2vw, 1.65rem);
+    border: 1px solid var(--line);
+    border-radius: var(--nt-radius-card);
+    background: var(--paper);
+    box-shadow: var(--nt-shadow-card);
+    scroll-margin-top: 5.5rem;
+}
+
+.plan-library-heading,
+.plan-library-actions,
+.plan-card-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .6rem 1rem;
+}
+
+.plan-library-heading {
+    justify-content: space-between;
+    margin-bottom: clamp(1rem, 2vw, 1.45rem);
+}
+
+.plan-library-heading h2 {
+    display: flex;
+    gap: .6rem;
+    align-items: center;
+    margin: 0;
+    color: var(--ink);
+    font-size: clamp(1.15rem, 1.8vw, 1.4rem);
+    font-weight: 750;
+    letter-spacing: -.035em;
+}
+
+.plan-library-heading h2 i {
+    color: var(--leaf);
+}
+
+.plan-library-tabs {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    max-width: 100%;
+    gap: .2rem;
+    padding: .2rem;
+    border: 1px solid var(--line);
+    border-radius: .9rem;
+    background: var(--nt-bg);
+}
+
+.plan-library-tab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem;
+    min-height: 44px;
+    padding: .35rem .8rem;
+    border: 1px solid transparent;
+    border-radius: .65rem;
+    background: transparent;
+    color: var(--caption);
+    font: inherit;
+    font-size: .875rem;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.plan-library-tab:hover { color: var(--forest); }
+.plan-library-tab.active {
+    border-color: #bedccc;
+    background: white;
+    color: var(--forest);
+    box-shadow: 0 2px 5px rgb(7 92 67 / 8%);
+}
+
+.plan-tab-count {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.45rem;
+    min-height: 1.45rem;
+    padding-inline: .2rem;
+    border-radius: .5rem;
+    background: #e7eeea;
+    color: #41594f;
+    font-size: .75rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.plan-library-tab.active .plan-tab-count {
+    background: var(--nt-mint-100);
+    color: var(--forest);
+}
+
+.plan-library-grid {
+    display: grid;
+    gap: clamp(.85rem, 1.7vw, 1.4rem);
+}
+
+.plan-library-card {
+    --cover-start: #edf9f2;
+    --cover-end: #d7efdc;
+    --tag-stroke: #b5d6c1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: .95rem;
+    background: var(--paper);
+}
+
+.plan-library-card.is-gain {
+    --cover-start: #fbf6e9;
+    --cover-end: #f3e9ce;
+    --tag-stroke: #d8d1b5;
+}
+
+.plan-card-cover {
+    display: grid;
+    grid-template-columns: minmax(0, .94fr) minmax(0, 1.06fr);
+    min-height: clamp(8.4rem, 12vw, 10.5rem);
+    background: linear-gradient(130deg, var(--cover-start), var(--cover-end));
+}
+
+.plan-card-target {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 1rem clamp(.85rem, 1.8vw, 1.4rem);
+}
+
+.plan-goal-tag {
+    display: inline-block;
+    width: fit-content;
+    max-width: 100%;
+    margin-bottom: .55rem;
+    padding: .16rem .55rem;
+    border: 1px solid var(--tag-stroke);
+    border-radius: 100px;
+    background: rgb(255 255 255 / 75%);
+    color: var(--forest);
+    font-size: .75rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.plan-card-calories {
+    color: var(--forest);
+    font-size: .8rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.plan-card-calories strong {
+    font-size: clamp(1.7rem, 2.5vw, 2.3rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -.055em;
+}
+
+.plan-card-caption {
+    margin-top: .14rem;
+    color: var(--caption);
+    font-size: .78rem;
+}
+
+.plan-food-cover {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    place-items: center;
+    min-width: 0;
+    overflow: hidden;
+    margin: 0;
+    background:
+        url('../images/dashboard/handoff/leaf-branch.png') right -1rem bottom -.7rem / 43% auto no-repeat,
+        linear-gradient(145deg, var(--cover-end), var(--cover-start));
+}
+
+.plan-food-cover img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    object-fit: cover;
+    object-position: center;
+}
+
+.plan-food-cover figcaption {
+    position: absolute;
+    inset: auto .65rem .6rem auto;
+    max-width: calc(100% - 1.3rem);
+    padding: .22rem .55rem;
+    border-radius: .45rem;
+    background: rgb(255 255 255 / 94%);
+    color: var(--ink);
+    font-size: .75rem;
+    font-weight: 500;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.plan-food-fallback {
+    color: var(--leaf);
+    font-size: 2rem;
+}
+
+.plan-card-copy {
+    flex: 1;
+    padding: 1.1rem clamp(1rem, 1.7vw, 1.4rem);
+    overflow-wrap: anywhere;
+}
+
+.plan-card-copy h3 {
+    margin: 0;
+    color: var(--ink);
+    font-size: clamp(1.05rem, 1.4vw, 1.24rem);
+    font-weight: 700;
+    line-height: 1.45;
+    letter-spacing: -.025em;
+}
+
+.plan-card-copy p {
+    margin: .5rem 0 0;
+    color: var(--caption);
+    font-size: .875rem;
+    line-height: 1.65;
+}
+
+.plan-saved-date i { margin-right: .4rem; }
+
+.plan-library-actions {
+    justify-content: space-between;
+    margin: 0 clamp(1rem, 1.7vw, 1.4rem);
+    padding: .55rem 0;
+    border-top: 1px solid var(--line);
+}
+
+.plan-food-count, .plan-view-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    font-size: .85rem;
+}
+
+.plan-food-count { color: var(--caption); }
+.plan-food-count i { color: var(--leaf); }
+.plan-card-links { gap: .5rem; }
+
+.plan-view-link, .plan-delete-btn {
+    justify-content: center;
+    min-height: 44px;
+    border-radius: var(--nt-radius-button);
+}
+
+.plan-view-link {
+    padding: .3rem .7rem;
+    color: var(--forest);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.plan-view-link:hover {
+    background: var(--mist);
+    color: var(--forest);
+    text-decoration: underline;
+    text-underline-offset: .2rem;
+}
+
+.plan-delete-btn {
+    width: 44px;
+    border: 1px solid #e8cece;
+    background: var(--paper);
+    color: #9c3538;
+}
+
+.plan-delete-btn:hover { background: #fff2f2; }
+
+.plan-library-empty {
+    padding: clamp(2rem, 4vw, 3rem) 1rem;
+    border: 1px dashed #c2dacc;
+    border-radius: .95rem;
+    background: var(--nt-mint-50);
+    color: var(--caption);
+    text-align: center;
+}
+
+.plan-library-empty > i {
+    display: block;
+    margin-bottom: .55rem;
+    color: var(--leaf);
+    font-size: 1.55rem;
+}
+
+.plan-library-empty p { margin: 0; color: var(--ink); font-weight: 600; }
+.plan-library-empty span { display: block; margin-top: .35rem; font-size: .875rem; }
+.plan-library :focus-visible { outline: 3px solid var(--leaf); outline-offset: 2px; }
+
+@media (min-width: 48rem) {
+    .plan-library-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 35.99rem) {
+    .plan-library-heading { align-items: stretch; flex-direction: column; gap: .85rem; }
+    .plan-library-tab { flex: 1; padding-inline: .35rem; }
+}

@@ -1,0 +1,177 @@
+@model MealPlanIndexViewModel
+@{
+    ViewData["Title"] = "Thực đơn gợi ý";
+    ViewData["BodyClass"] = "dashboard-shell meal-plan-shell";
+    var planJson = System.Text.Json.JsonSerializer.Serialize(Model.CurrentPlan);
+    var vi = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+    var constraints = Model.DietaryConstraints;
+    var macros = Model.RecommendedMacros;
+}
+@section Styles {
+    <link rel="stylesheet" href="~/fonts/be-vietnam-pro/font.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/nutri-shell.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/meal-plan.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/meal-plan-library.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/meal-plan-current.css" asp-append-version="true" />
+}
+
+<div class="container meal-plan-page">
+    @if (TempData["SuccessMessage"] is string success)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="status">
+            <i class="bi bi-check-circle me-2" aria-hidden="true"></i>@success
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng thông báo"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] is string error)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle me-2" aria-hidden="true"></i>@error
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng thông báo"></button>
+        </div>
+    }
+
+    <header class="plan-hero">
+        <div class="plan-hero-copy">
+            <a class="plan-back" asp-controller="Dashboard" asp-action="Index"><i class="bi bi-arrow-left" aria-hidden="true"></i> Dashboard</a>
+            <h1>Thực đơn gợi ý</h1>
+            <p>Chọn món cho từng bữa theo ngân sách calo và thông tin thành phần trong danh mục.</p>
+            <div class="plan-hero-actions">
+                <button class="plan-button plan-primary" data-bs-toggle="modal" data-bs-target="#generateModal" type="button">
+                    <i class="bi bi-plus-lg" aria-hidden="true"></i> Tạo thực đơn mới
+                </button>
+                <a class="plan-button plan-secondary" href="#templatesSection">
+                    <i class="bi bi-journals" aria-hidden="true"></i> Thực đơn mẫu <span class="plan-hero-count">@Model.PublicTemplates.Count</span>
+                </a>
+            </div>
+        </div>
+        <div class="plan-hero-art" aria-hidden="true">
+            <img src="~/images/dashboard/handoff/healthy-salad.png" alt="" width="477" height="401" />
+        </div>
+    </header>
+
+    <aside class="plan-guidance" aria-label="Lưu ý dinh dưỡng">
+        <i class="bi bi-shield-check" aria-hidden="true"></i>
+        <div>
+            <p>Gợi ý mang tính tham khảo, hãy kiểm tra nhãn thực phẩm.@if (constraints.RequireMedicalDisclaimer) { <text> @GoalPolicy.MedicalDisclaimer</text> }</p>
+            @if (macros is { UnavailableReason: null })
+            {
+                <p>Tham khảo mỗi ngày · Đạm <strong>@macros.ProteinGrams.ToString("0.0", vi) g</strong> · Tinh bột <strong>@macros.CarbGrams.ToString("0.0", vi) g</strong> · Béo <strong>@macros.FatGrams.ToString("0.0", vi) g</strong></p>
+            }
+            else if (macros?.UnavailableReason is { } reason)
+            {
+                <p>@reason</p>
+            }
+            @if (constraints.MaxSodiumMg is int sodiumLimit)
+            {
+                <p>Ưu tiên món ít natri. Giới hạn tham khảo mỗi ngày @sodiumLimit.ToString("N0", vi) mg. @GoalPolicy.PotassiumNote</p>
+            }
+            @if (constraints.SoyMedicationTiming) { <p>@GoalPolicy.SoyTimingNote</p> }
+            @if (constraints.WaterPerDoctor) { <p>@GoalPolicy.WaterPerDoctorNote</p> }
+        </div>
+    </aside>
+
+    <partial name="_CurrentPlan" model="Model" />
+    <partial name="_PlanLibrary" model="Model" />
+</div>
+
+@section Dialogs {
+<div class="modal fade plan-modal" id="generateModal" tabindex="-1" aria-labelledby="generateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="generateModalLabel"><i class="bi bi-journal-plus" aria-hidden="true"></i>Tạo thực đơn mới</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+            <form asp-action="Generate" method="post">
+                <div class="modal-body">
+                    <label class="form-label" for="planTarget">Mức calo mục tiêu mỗi ngày</label>
+                    <div class="input-group">
+                        <input id="planTarget" type="number" step="50" min="800" max="6000" name="TargetCalories" readonly value="@Model.GenerateInput.TargetCalories" class="form-control" aria-describedby="planTargetHint" required />
+                        <span class="input-group-text">kcal</span>
+                    </div>
+                    <p class="form-text" id="planTargetHint">Theo kế hoạch đang có hiệu lực. Thay đổi mức calo tại trang Mục tiêu.</p>
+                    <fieldset class="plan-meal-choices">
+                        <legend>Số bữa ăn trong ngày</legend>
+                        <label for="meals4">
+                            <input class="form-check-input" type="radio" name="NumberOfMeals" id="meals4" value="4" checked="@(Model.GenerateInput.NumberOfMeals == 4)" />
+                            <span><strong>4 bữa</strong><small>Sáng 25% · Trưa 35% · Tối 30% · Phụ 10%</small></span>
+                        </label>
+                        <label for="meals3">
+                            <input class="form-check-input" type="radio" name="NumberOfMeals" id="meals3" value="3" checked="@(Model.GenerateInput.NumberOfMeals == 3)" disabled="@(constraints.MinimumMeals > 3)" />
+                            <span><strong>3 bữa</strong><small>Sáng 30% · Trưa 40% · Tối 30%</small></span>
+                        </label>
+                        @if (constraints.MinimumMeals is int minimum)
+                        {
+                            <p class="form-text">Hồ sơ của bạn cần ít nhất @minimum bữa mỗi ngày.</p>
+                        }
+                    </fieldset>
+                    <p class="plan-modal-note"><i class="bi bi-shield-check" aria-hidden="true"></i>Hệ thống sẽ tự động đối chiếu dị ứng và sở thích từ hồ sơ của bạn để lọc món.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="plan-button plan-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="plan-button plan-primary"><i class="bi bi-journal-plus" aria-hidden="true"></i>Tạo thực đơn</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@if (Model.CurrentPlan is { } plan)
+{
+    <div class="modal fade plan-modal" id="savePlanModal" tabindex="-1" aria-labelledby="savePlanModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="savePlanModalLabel"><i class="bi bi-bookmark-plus" aria-hidden="true"></i>Lưu thực đơn cá nhân</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                </div>
+                <form asp-action="SavePlan" method="post">
+                    <input type="hidden" name="planJson" id="savePlanJsonInput" value="@planJson" />
+                    <div class="modal-body">
+                        <label class="form-label" for="planName">Tên thực đơn</label>
+                        <input type="text" id="planName" name="planName" value="@plan.Name" class="form-control" required maxlength="150" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="plan-button plan-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="submit" class="plan-button plan-primary">Lưu lại</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade plan-modal" id="swapFoodModal" tabindex="-1" aria-labelledby="swapFoodModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="swapFoodModalLabel"><i class="bi bi-arrow-left-right" aria-hidden="true"></i><span>Đổi món <span id="swapCurrentFoodNameText"></span></span></h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="plan-swap-info">Các món cùng nhóm đã được lọc theo dị ứng và sở thích. Chênh lệch giữa hai khẩu phần chuẩn tối đa 15% hoặc 60 kcal.</p>
+                    <div id="swapLoadingSpinner" class="text-center py-3" role="status">
+                        <div class="spinner-border text-success" aria-hidden="true"></div>
+                        <p>Đang tìm món thay thế…</p>
+                    </div>
+                    <div id="swapCandidatesList" class="list-group list-group-flush d-none"></div>
+                    <p id="swapNoCandidates" class="plan-modal-note d-none">Hiện chưa có món thay thế phù hợp trong cùng nhóm.</p>
+                    <p id="swapLoadError" class="alert alert-warning d-none" role="alert">Chưa tải được món thay thế. Hãy đóng cửa sổ và thử lại.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="plan-button plan-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+}
+
+@section Scripts {
+    <script src="~/js/meal-plan-library.js" asp-append-version="true"></script>
+    @if (Model.CurrentPlan != null)
+    {
+        <script type="application/json" id="currentPlanData">@Html.Raw(planJson)</script>
+        <script src="~/js/meal-plan-swap.js" asp-append-version="true"></script>
+    }
+}

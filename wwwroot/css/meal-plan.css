@@ -1,0 +1,107 @@
+.meal-plan-page {
+    display: grid;
+    gap: clamp(.85rem, 1.5vw, 1.3rem);
+    padding-block: .4rem 1.4rem;
+    font-variant-numeric: tabular-nums;
+}
+.meal-plan-page > * { min-width: 0; }
+.meal-plan-shell main::before { mask-image: linear-gradient(black 60%, transparent); }
+.meal-plan-page > .alert { margin: .5rem 0 0; }
+.plan-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(180px, 2fr);
+    align-items: center;
+    gap: clamp(1rem, 4vw, 3rem);
+    padding: clamp(.8rem, 1.5vw, 1.3rem) clamp(0px, 1vw, 14px) .2rem;
+}
+.plan-hero-copy { min-width: 0; }
+.plan-back {
+    display: inline-flex; align-items: center; gap: .4rem; min-height: 44px;
+    color: var(--forest); text-decoration: none; font-size: .85rem; font-weight: 600;
+}
+.plan-back:hover { color: var(--forest); text-decoration: underline; }
+.plan-hero h1 {
+    margin: .1rem 0 .65rem; color: #104c36; font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 800; letter-spacing: -.055em; line-height: 1.15;
+}
+.plan-hero-copy > p {
+    max-width: 52ch; margin: 0; color: var(--caption);
+    font-size: clamp(.95rem, 1.2vw, 1.06rem); line-height: 1.65;
+}
+.plan-hero-actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-block: 1.1rem .65rem; }
+.plan-button {
+    display: inline-flex; align-items: center; justify-content: center; gap: .45rem;
+    min-height: 44px; padding: .55rem 1rem;
+    border: 1px solid transparent; border-radius: var(--nt-radius-button);
+    font: inherit; font-weight: 650; font-size: .9rem; text-decoration: none;
+    line-height: 1.4; text-align: center;
+}
+.plan-primary { background: var(--leaf); border-color: var(--leaf); color: white; box-shadow: 0 3px 9px rgb(7 92 67 / 14%); }
+.plan-primary:hover, .plan-primary:focus-visible { background: var(--forest); color: white; }
+.plan-secondary { background: var(--paper); border-color: #b7d9c8; color: var(--forest); }
+.plan-secondary:hover, .plan-secondary:focus-visible { background: var(--nt-mint-50); border-color: var(--leaf); color: var(--forest); }
+.plan-hero-count {
+    padding: .05rem .42rem; border-radius: .4rem;
+    background: var(--nt-mint-100); color: var(--forest); font-size: .78rem;
+}
+.plan-hero-art { position: relative; height: clamp(160px, 16vw, 232px); align-self: end; pointer-events: none; }
+.plan-hero-art img {
+    position: absolute; inset: 0; margin: auto; width: 100%; height: 100%;
+    object-fit: contain; object-position: center;
+}
+.plan-guidance {
+    display: flex; align-items: start; gap: .75rem; padding: .8rem 1rem;
+    background: #f7fcf9; border: 1px solid #cde5d8; border-radius: var(--nt-radius-button);
+    font-size: .83rem; line-height: 1.6; color: var(--caption);
+}
+.plan-guidance > i { color: var(--leaf); font-size: 1.16rem; line-height: 1.35; }
+.plan-guidance p { margin: 0; }
+.plan-guidance p + p { margin-top: .25rem; }
+.meal-plan-shell :is(.meal-plan-page,.plan-modal) :focus-visible { outline: 3px solid var(--leaf); outline-offset: 2px; }
+.plan-modal { color: var(--ink); }
+.plan-modal .modal-content {
+    border: 1px solid var(--line); border-radius: var(--nt-radius-card); overflow: hidden;
+    background: var(--paper); box-shadow: 0 20px 58px rgb(12 48 33 / 16%);
+}
+.plan-modal :is(.modal-header,.modal-body,.modal-footer) { padding: 1.1rem clamp(1rem, 3vw, 1.5rem); border-color: var(--line); }
+.plan-modal .modal-header { gap: .6rem; background: linear-gradient(125deg, var(--mist), white); }
+.plan-modal .modal-title {
+    display: flex; align-items: center; gap: .6rem; overflow-wrap: anywhere;
+    color: var(--ink); font-size: clamp(1.07rem, 2vw, 1.28rem); font-weight: 700;
+}
+.plan-modal .modal-title i { color: var(--leaf); }
+.plan-modal .btn-close { min-width: 44px; min-height: 44px; box-sizing: border-box; margin-block: -.4rem; }
+.plan-modal .modal-content > form { display: flex; flex-direction: column; min-height: 0; }
+.plan-modal .modal-footer { gap: .5rem; padding-block: .85rem; }
+.plan-modal .modal-footer > * { margin: 0; }
+.plan-modal :is(.form-label,legend) { color: var(--ink); font-size: .93rem; font-weight: 650; margin-bottom: .45rem; }
+.plan-modal .form-control { min-height: 44px; border-color: #bdd5c9; border-radius: .55rem; color: var(--ink); }
+.plan-modal .input-group-text { background: #f1f7f4; border-color: #bdd5c9; color: var(--caption); }
+.plan-modal .form-control[readonly] { background: #f7faf8; }
+.plan-modal .form-text, .plan-swap-info { color: var(--caption); line-height: 1.6; }
+.plan-modal .form-text { font-size: .82rem; }
+.plan-meal-choices { margin: 1.1rem 0; }
+.plan-meal-choices legend { float: none; width: auto; }
+.plan-meal-choices label {
+    display: flex; align-items: center; gap: .7rem;
+    padding: .65rem .85rem; border: 1px solid var(--line); border-radius: .7rem; cursor: pointer;
+}
+.plan-meal-choices label + label { margin-top: .5rem; }
+.plan-meal-choices label:has(:checked) { background: var(--nt-mint-50); border-color: #83b89c; }
+.plan-meal-choices label:has(:disabled) { color: var(--caption); cursor: default; background: #f5f6f5; }
+.plan-meal-choices :is(strong, small) { display: block; }
+.plan-meal-choices small { margin-top: .16rem; font-size: .8rem; color: var(--caption); }
+.plan-meal-choices input { flex-shrink: 0; margin: 0; }
+.plan-meal-choices input:checked { background-color: var(--leaf); border-color: var(--leaf); }
+.plan-modal-note { display: flex; align-items: start; gap: .6rem; margin: 0; padding: .7rem .85rem; border-radius: .7rem; background: var(--mist); color: var(--forest); font-size: .83rem; line-height: 1.6; }
+.plan-swap-info { font-size: .88rem; }
+@media (max-width: 640px) {
+    .plan-hero { --art-size: clamp(75px, 23vw, 130px); display: block; position: relative; padding-top: .25rem; }
+    .plan-hero-copy > :is(.plan-back,h1,p) { max-width: calc(100% - var(--art-size) - .5rem); }
+    .plan-hero-art { position: absolute; top: 1.15rem; right: 0; width: var(--art-size); height: calc(var(--art-size) * 1.1); }
+    .plan-hero-actions { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); margin-bottom: 0; }
+    .plan-hero-actions .plan-button { gap: .32rem; padding-inline: .42rem; font-size: .84rem; }
+}
+@media (max-width: 359px) {
+    .plan-hero-actions { grid-template-columns: 1fr; }
+}

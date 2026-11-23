@@ -1,0 +1,25 @@
+@using System.Globalization
+@model WeightMismatchViewModel
+@{
+    var vi = CultureInfo.GetCultureInfo("vi-VN");
+    var profileWeight = Model.ProfileWeight.ToString("0.0", vi);
+    var logWeight = Model.LogWeight.ToString("0.0", vi);
+    var logDate = Model.LogDate.ToString("dd/MM/yyyy", vi);
+    var returnTo = ViewContext.RouteData.Values["controller"]?.ToString();
+}
+
+<section class="alert alert-warning mb-4" aria-label="Đối chiếu cân nặng" data-weight-mismatch>
+    <p class="mb-3">Cân nặng hồ sơ (<strong>@profileWeight kg</strong>) khác bản ghi cân gần nhất (<strong>@logWeight kg</strong>, @logDate).</p>
+    <form asp-controller="WeightLog" asp-action="ReconcileUseProfile" asp-antiforgery="true" method="post" class="d-flex flex-wrap gap-2">
+        <input type="hidden" name="expectedProfileWeight" value="@Model.ProfileWeight.ToString(CultureInfo.InvariantCulture)" />
+        <input type="hidden" name="expectedLogWeight" value="@Model.LogWeight.ToString(CultureInfo.InvariantCulture)" />
+        <input type="hidden" name="expectedLogDate" value="@Model.LogDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)" />
+        <input type="hidden" name="returnTo" value="@returnTo" />
+        @if (ViewData["WeightHistoryPage"] is int historyPage && historyPage > 1)
+        {
+            <input type="hidden" name="page" value="@historyPage" />
+        }
+        <button type="submit" class="btn btn-sm btn-outline-dark">Ghi nhận @profileWeight kg cho hôm nay</button>
+        <button type="submit" asp-controller="WeightLog" asp-action="ReconcileUseLog" class="btn btn-sm btn-outline-dark">Dùng @logWeight kg</button>
+    </form>
+</section>

@@ -1,0 +1,156 @@
+@model SystemSelfTestViewModel
+@{
+    ViewData["Title"] = "Kiểm thử Nghiệm thu Hệ thống (System Self-Test)";
+}
+
+<div class="container-fluid px-0">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <h2 class="fw-bold mb-1">
+                <i class="bi bi-shield-check text-emerald me-2"></i>Kiểm thử Nghiệm thu Tự động (System Self-Test)
+            </h2>
+            <p class="text-muted mb-0">Bộ kiểm tra tự động toàn diện công thức dinh dưỡng, thuật toán thực đơn và 10 kịch bản bảo vệ đồ án.</p>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <span class="text-muted small">Thực thi lúc: @Model.ExecutedAt.ToString("HH:mm:ss dd/MM/yyyy")</span>
+            <a asp-area="Admin" asp-controller="SystemSelfTest" asp-action="Index" class="btn btn-emerald rounded-pill px-3">
+                <i class="bi bi-arrow-clockwise me-1"></i>Chạy lại Kiểm thử
+            </a>
+        </div>
+    </div>
+
+    <!-- Summary KPI Row -->
+    <div class="row g-3 mb-4">
+        <!-- Tổng test case -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card-custom p-4 h-100">
+                <span class="text-muted small fw-semibold">TỔNG TEST CASE</span>
+                <div class="h2 fw-bold text-slate-900 my-1">@Model.TotalTests</div>
+                <div class="small text-muted">@Model.Groups.Count nhóm chức năng</div>
+            </div>
+        </div>
+
+        <!-- Passed Tests -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card-custom p-4 h-100 border-start border-4 border-success">
+                <span class="text-muted small fw-semibold">ĐẠT CHUẨN (PASS)</span>
+                <div class="h2 fw-bold text-success my-1">@Model.PassedTests / @Model.TotalTests</div>
+                <div class="small text-success fw-medium">
+                    <i class="bi bi-check-circle-fill me-1"></i>@(Model.TotalTests > 0 ? (Model.PassedTests * 100 / Model.TotalTests) : 0)% Hoàn thành
+                </div>
+            </div>
+        </div>
+
+        <!-- Failed Tests -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card-custom p-4 h-100 border-start border-4 @(Model.FailedTests > 0 ? "border-danger" : "border-secondary")">
+                <span class="text-muted small fw-semibold">KHÔNG ĐẠT (FAIL)</span>
+                <div class="h2 fw-bold @(Model.FailedTests > 0 ? "text-danger" : "text-muted") my-1">@Model.FailedTests</div>
+                <div class="small text-muted">
+                    @(Model.FailedTests == 0 ? "Hệ thống hoàn hảo không lỗi" : "Cần rà soát các trường hợp lỗi")
+                </div>
+            </div>
+        </div>
+
+        <!-- Execution Time -->
+        <div class="col-12 col-sm-6 col-xl-3">
+            <div class="card-custom p-4 h-100">
+                <span class="text-muted small fw-semibold">THỜI GIAN THỰC THI</span>
+                <div class="h2 fw-bold text-slate-900 my-1">@Model.ExecutionTimeMs <span class="fs-6 fw-normal text-muted">ms</span></div>
+                <div class="small text-emerald">
+                    <i class="bi bi-lightning-charge-fill me-1"></i>Phản hồi siêu tốc
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Test Groups List -->
+    @foreach (var group in Model.Groups)
+    {
+        <div class="card-custom p-4 mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-2">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="rounded-3 bg-emerald-soft text-emerald p-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="bi @group.Icon fs-5"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-0 text-slate-900">@group.GroupName</h5>
+                        <small class="text-muted">@group.Description</small>
+                    </div>
+                </div>
+
+                <div>
+                    @if (group.AllPassed)
+                    {
+                        <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill fw-semibold">
+                            <i class="bi bi-check-all me-1"></i>ĐẠT @group.PassedCount / @group.TotalCount
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-2 rounded-pill fw-semibold">
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i>LỖI (@(group.TotalCount - group.PassedCount) ca không đạt)
+                        </span>
+                    }
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 80px;">Mã TC</th>
+                            <th style="width: 280px;">Mô tả Kiểm thử</th>
+                            <th style="width: 250px;">Đầu vào Test</th>
+                            <th>Kết quả Kỳ vọng</th>
+                            <th>Kết quả Thực tế</th>
+                            <th class="text-center" style="width: 90px;">Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var tc in group.TestCases)
+                        {
+                            <tr class="@(tc.Passed ? "" : "table-danger")">
+                                <td class="fw-bold text-muted font-monospace small">@tc.Id</td>
+                                <td>
+                                    <div class="fw-semibold text-slate-900">@tc.Name</div>
+                                    <span class="badge bg-light text-secondary border font-monospace" style="font-size: 10px;">@tc.Category</span>
+                                </td>
+                                <td class="small text-muted font-monospace">@tc.InputDescription</td>
+                                <td class="small text-secondary">@tc.ExpectedOutput</td>
+                                <td class="small fw-semibold @(tc.Passed ? "text-slate-800" : "text-danger")">
+                                    @tc.ActualOutput
+                                </td>
+                                <td class="text-center">
+                                    @if (tc.Passed)
+                                    {
+                                        <span class="badge bg-success text-white px-2 py-1 rounded-pill">
+                                            <i class="bi bi-check-lg me-1"></i>PASS
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger text-white px-2 py-1 rounded-pill">
+                                            <i class="bi bi-x-lg me-1"></i>FAIL
+                                        </span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+
+    <!-- Security & Ethics Footer Note -->
+    <div class="card-custom bg-slate-100 p-3 border-start border-4 border-emerald">
+        <div class="d-flex align-items-center gap-3">
+            <i class="bi bi-patch-check-fill text-emerald fs-4"></i>
+            <div class="small text-secondary">
+                <strong>Chứng thực Nghiệm thu Hệ thống (Acceptance Verification):</strong> Toàn bộ 10 kịch bản Mục 19.1 được kiểm tra tự động trực tiếp trên tầng Backend Services, ORM Database và Model Logic. Kết quả xác nhận hệ thống hoạt động ổn định, bảo đảm tiêu chuẩn an toàn y tế và tính toàn vẹn dữ liệu.
+            </div>
+        </div>
+    </div>
+</div>

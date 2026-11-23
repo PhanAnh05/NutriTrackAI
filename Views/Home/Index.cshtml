@@ -1,0 +1,348 @@
+@model HomeIndexViewModel
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment HostEnvironment
+@{
+    ViewData["Title"] = "Trang chủ";
+    ViewData["BodyClass"] = "home-landing";
+    ViewData["UseFullWidthLayout"] = true;
+
+    var vietnamese = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+    var slides = new[]
+    {
+        (Subtitle: "KẾ HOẠCH DINH DƯỠNG CÁ NHÂN HÓA", Title: "KIỂM SOÁT", TitleEnding: "CÂN NẶNG BỀN VỮNG",
+            Image: "~/images/hero-1.jpg", Width: 1920, Height: 1072, ShowActions: true),
+        (Subtitle: "THEO DÕI CALO & CẢNH BÁO DỊ ỨNG", Title: "THỰC ĐƠN", TitleEnding: "ĐA DẠNG CHUẨN VIỆT",
+            Image: "~/images/hero-2.jpg", Width: 1672, Height: 941, ShowActions: true),
+        (Subtitle: "TRỢ LÝ DINH DƯỠNG THÔNG MINH", Title: "ĐỒNG HÀNH CÙNG", TitleEnding: "SỨC KHỎE CỦA BẠN",
+            Image: "~/images/home/Cinematic Rice Bowl Feast on Charcoal Slate.png", Width: 1672, Height: 941, ShowActions: false)
+    };
+    var hasAccountSession = User.Identity?.IsAuthenticated == true;
+    var steps = new[]
+    {
+        (Icon: "bi-person-plus", Title: "Tạo hồ sơ cá nhân", Controller: "Profile",
+            Detail: "Nhập chiều cao, cân nặng, mức vận động và dị ứng thực phẩm."),
+        (Icon: "bi-bullseye", Title: "Đặt mục tiêu cân nặng", Controller: "Goal",
+            Detail: "Chọn mục tiêu duy trì, giảm hoặc tăng cân để ước tính ngân sách calo mỗi ngày."),
+        (Icon: "bi-journal-check", Title: "Ghi món và khẩu phần", Controller: "MealLog",
+            Detail: "Tham khảo thực đơn gợi ý rồi ghi món và lượng bạn đã ăn vào nhật ký."),
+        (Icon: "bi-chat-dots", Title: "Hỏi trợ lý AI", Controller: "Chat",
+            Detail: "Chẳng hạn, hỏi “Hôm nay tôi còn bao nhiêu calo cho bữa tối?”")
+    };
+
+    bool HasHomeImage(string filename) => HostEnvironment.WebRootFileProvider.GetFileInfo($"images/home/{filename}").Exists;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/fonts/be-vietnam-pro/font.css" asp-append-version="true" />
+}
+
+@section FullWidthHero {
+    <div id="homeCarousel" class="carousel slide carousel-fade home-carousel" data-bs-interval="6000"
+         role="region" aria-roledescription="băng chuyền" aria-label="Tính năng NutriTrackAI">
+        <div class="carousel-inner">
+            @for (var i = 0; i < slides.Length; i++)
+            {
+                var slide = slides[i];
+                <div class="carousel-item @(i == 0 ? "active" : null)" role="group" aria-roledescription="trang chiếu" aria-label="@(i + 1) / @slides.Length">
+                    <img class="home-hero-photo" src="@Url.Content(slide.Image)" alt="" width="@slide.Width" height="@slide.Height"
+                         fetchpriority="@(i == 0 ? "high" : "low")" decoding="async" onerror="this.hidden = true" />
+                    <div class="home-hero-frame">
+                        <div class="home-hero-copy">
+                            <p class="home-hero-subtitle">@slide.Subtitle</p>
+                            @if (i == 0)
+                            {
+                                <h1 class="home-hero-title">@slide.Title <span class="d-inline-block">@slide.TitleEnding</span></h1>
+                            }
+                            else
+                            {
+                                <h2 class="home-hero-title">@slide.Title <span class="d-inline-block">@slide.TitleEnding</span></h2>
+                            }
+                            @if (slide.ShowActions)
+                            {
+                                <div class="home-hero-actions">
+                                    <a class="home-button home-button-primary" href="@Url.Content("~/Account/Register")">Bắt Đầu Ngay</a>
+                                    <a class="home-button home-button-light" href="@Url.Content("~/Chat/Index")">Tư Vấn AI</a>
+                                </div>
+                            }
+                            else
+                            {
+                                <span class="home-hero-accent" aria-hidden="true"></span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="home-carousel-toolbar">
+            <div class="carousel-indicators home-carousel-steps">
+                @for (var i = 0; i < slides.Length; i++)
+                {
+                    <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="@i" class="@(i == 0 ? "active" : null)"
+                            aria-current="@(i == 0 ? "true" : null)" aria-label="@($"Trang chiếu {i + 1}: {slides[i].Title} {slides[i].TitleEnding}")"></button>
+                }
+            </div>
+            <button type="button" class="home-carousel-toggle" aria-label="Tạm dừng trình chiếu"></button>
+        </div>
+    </div>
+}
+
+<section class="home-section home-intro" aria-labelledby="home-intro-title">
+    <div class="container home-wrap home-editorial">
+        <figure class="home-intro-figure">
+            <div class="home-intro-media">
+                @if (HasHomeImage("about-healthy.jpg"))
+                {
+                    <img src="~/images/home/about-healthy.jpg" width="1024" height="765" loading="lazy" decoding="async"
+                         alt="Bữa ăn gồm cơm gạo lứt, ức gà, rau luộc và canh" onerror="this.hidden = true" />
+                }
+            </div>
+        </figure>
+        <div class="home-intro-copy">
+            <p class="home-wordmark">NutriTrackAI</p>
+            <h2 id="home-intro-title">Hiểu bữa ăn,<br /> theo dõi mục tiêu</h2>
+            <p class="home-intro-lead">Hiểu rõ dinh dưỡng trong từng bữa ăn. Theo dõi calories, cân nặng và vận động dễ dàng cùng NutriTrackAI.</p>
+            <p class="home-intro-note"><i class="bi bi-person-check" aria-hidden="true"></i><span>Cá nhân hóa thực đơn phù hợp với mục tiêu sức khỏe của bạn.</span></p>
+            <div class="home-intro-data">
+                <ul class="home-metric-list" aria-label="Chỉ số được tính tự động">
+                    <li><i class="bi bi-speedometer2" aria-hidden="true"></i>Chỉ số BMI</li>
+                    <li><i class="bi bi-activity" aria-hidden="true"></i>BMR / TDEE</li>
+                    <li><i class="bi bi-fire" aria-hidden="true"></i>Cân bằng calo ngày</li>
+                </ul>
+                <dl class="home-counts">
+                    <div class="home-stat">
+                        <dt>Món ăn trong danh mục</dt>
+                        <dd>
+                            <i class="bi bi-egg-fried home-stat-icon" aria-hidden="true"></i>
+                            <a asp-area="" asp-controller="Food" asp-action="Index" aria-label="Xem @Model.TotalFoods.ToString("N0", vietnamese) món ăn trong danh mục">@Model.TotalFoods.ToString("N0", vietnamese)@(Model.TotalFoods > 0 ? "+" : "")</a>
+                        </dd>
+                    </div>
+                    <div class="home-stat">
+                        <dt>Bài tập có chỉ số MET</dt>
+                        <dd>
+                            <i class="bi bi-bicycle home-stat-icon" aria-hidden="true"></i>
+                            <span>@Model.TotalExercises.ToString("N0", vietnamese)@(Model.TotalExercises > 0 ? "+" : "")</span>
+                        </dd>
+                    </div>
+                    <div class="home-stat">
+                        <dt>Lọc dị ứng an toàn</dt>
+                        <dd class="home-counts-text">
+                            <i class="bi bi-shield-check home-stat-icon" aria-hidden="true"></i>
+                            <span>Theo hồ sơ</span>
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="home-section home-workflow" id="cach-su-dung" aria-labelledby="home-workflow-title">
+    <div class="container home-wrap home-workflow-layout">
+        <div class="home-workflow-intro">
+            <h2 id="home-workflow-title">Cách sử dụng NutriTrackAI</h2>
+            <p>Theo dõi bữa ăn mỗi ngày và điều chỉnh thực đơn theo mục tiêu.</p>
+            @if (hasAccountSession)
+            {
+                <a class="home-workflow-action" asp-area="" asp-controller="Dashboard" asp-action="Index">
+                    Xem tổng quan <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
+            }
+            else
+            {
+                <a class="home-workflow-action" asp-area="" asp-controller="Account" asp-action="Register">
+                    Tạo tài khoản <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
+            }
+        </div>
+        <ol class="home-workflow-steps" role="list">
+            @foreach (var step in steps)
+            {
+                <li class="home-workflow-step">
+                    <span class="home-workflow-icon" aria-hidden="true"><i class="bi @step.Icon"></i></span>
+                    <div class="home-workflow-step-copy">
+                        <h3>
+                            @if (hasAccountSession)
+                            {
+                                <a class="stretched-link" asp-area="" asp-controller="@step.Controller" asp-action="Index">@step.Title</a>
+                            }
+                            else
+                            {
+                                @step.Title
+                            }
+                        </h3>
+                        <p>@step.Detail</p>
+                    </div>
+                    @if (hasAccountSession)
+                    {
+                        <i class="bi bi-chevron-right home-workflow-step-arrow" aria-hidden="true"></i>
+                    }
+                </li>
+            }
+        </ol>
+    </div>
+</section>
+
+<section class="home-section home-showcase" id="thuc-don-mau" aria-labelledby="home-meals-title">
+    <div class="container home-wrap">
+        <div class="home-section-heading">
+            <h2 id="home-meals-title">Thực đơn mẫu tiêu biểu</h2>
+            <p>Khám phá cách chia bữa theo các mục tiêu calo.</p>
+        </div>
+        @if (Model.PublicMealPlans.Count == 0)
+        {
+            <div class="home-empty">
+                <p>Hiện chưa có thực đơn mẫu công khai.</p>
+                <a asp-area="" asp-controller="Food" asp-action="Index" class="home-text-link">Khám phá danh mục món ăn <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+            </div>
+        }
+        else
+        {
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-center g-4">
+                @foreach (var plan in Model.PublicMealPlans)
+                {
+                    var (goal, filename) = plan.GoalType switch
+                    {
+                        GoalType.Lose => ("Giảm cân", "plan-1.jpg"),
+                        GoalType.Gain => ("Tăng cân", "plan-2.jpg"),
+                        _ => ("Duy trì", "plan-3.jpg")
+                    };
+                    var illustrative = HasHomeImage(filename);
+                    var image = illustrative ? Url.Content($"~/images/home/{filename}")
+                        : plan.FirstFood is { } food ? FoodImageUrl.Resolve(food.Name, food.ImageUrl, HostEnvironment.WebRootFileProvider) : null;
+                    <div class="col">
+                        <article class="meal-showcase-card">
+                            <div class="home-meal-media">
+                                <i class="bi bi-egg-fried home-meal-fallback" aria-hidden="true"></i>
+                                @if (!string.IsNullOrWhiteSpace(image))
+                                {
+                                    <img src="@image" alt="@(illustrative ? "" : plan.FirstFood?.Name)" loading="lazy" decoding="async" onerror="this.hidden = true" />
+                                }
+                                <span class="home-meal-goal">@goal</span>
+                                @if (illustrative)
+                                {
+                                    <span class="home-meal-photo-label">Ảnh minh họa</span>
+                                }
+                            </div>
+                            <div class="home-meal-body">
+                                <h3>@plan.Name</h3>
+                                @if (!string.IsNullOrWhiteSpace(plan.Description))
+                                {
+                                    <p class="home-meal-description">@plan.Description</p>
+                                }
+                                else
+                                {
+                                    <p>@plan.FoodCount món trong thực đơn.</p>
+                                }
+                                <div class="home-meal-footer">
+                                    <strong>@plan.TargetCalories.ToString("N0", vietnamese) kcal/ngày</strong>
+                                    <a asp-area="" asp-controller="MealPlan" asp-action="Index" asp-route-planId="@plan.Id" class="home-text-link"
+                                       aria-label="Xem chi tiết @plan.Name">Xem chi tiết <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>
+
+<section class="home-section home-safety" aria-labelledby="home-safety-title">
+    <div class="container home-wrap">
+        <div class="home-section-heading">
+            <h2 id="home-safety-title">Khoa học và an toàn</h2>
+        </div>
+        <div class="home-safety-grid">
+            <article>
+                <i class="bi bi-journal-richtext" aria-hidden="true"></i>
+                <h3>Dữ liệu Viện Dinh dưỡng &amp; USDA</h3>
+                <p>Trợ lý AI có thể tra cứu calo và thành phần từ danh mục món ăn của hệ thống.</p>
+            </article>
+            <article>
+                <i class="bi bi-shield-check" aria-hidden="true"></i>
+                <h3>Sàng lọc dị ứng theo hồ sơ</h3>
+                <p>Lọc món theo hồ sơ và cảnh báo trong nhật ký khi phát hiện thành phần trùng với dị ứng bạn đã khai báo.</p>
+            </article>
+            <article>
+                <i class="bi bi-heart-pulse" aria-hidden="true"></i>
+                <h3>Bảo vệ sức khỏe</h3>
+                <p>Giới hạn mức điều chỉnh calo và bật cảnh báo khi câu hỏi liên quan đến bệnh lý hoặc thuốc.</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="home-section home-faq" id="faq-section" aria-labelledby="home-faq-title">
+    <div class="container home-wrap home-faq-grid">
+        <div class="home-faq-intro">
+            <h2 id="home-faq-title">Câu hỏi thường gặp</h2>
+            <a asp-area="" asp-controller="Home" asp-action="Articles" class="home-text-link">Xem tất cả Kiến thức &amp; FAQ <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+        </div>
+        <div class="accordion home-accordion" id="faqAccordion">
+            @if (Model.Faqs.Count == 0)
+            {
+                <p class="home-empty">Chưa có câu hỏi thường gặp được xuất bản.</p>
+            }
+            @foreach (var faq in Model.Faqs)
+            {
+                var questionId = $"home-faq-question-{faq.Id}";
+                var answerId = $"home-faq-answer-{faq.Id}";
+                <div class="accordion-item">
+                    <h3 class="accordion-header" id="@questionId">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@answerId"
+                                aria-expanded="false" aria-controls="@answerId">@faq.Title</button>
+                    </h3>
+                    <div id="@answerId" class="accordion-collapse collapse" aria-labelledby="@questionId" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">@faq.Body</div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        (() => {
+            const carousel = document.getElementById('homeCarousel');
+            const toggle = carousel.querySelector('.home-carousel-toggle');
+            const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+            const slideshow = new bootstrap.Carousel(carousel, { pause: false });
+            let paused = motion.matches;
+
+            function syncPlayback() {
+                const blocked = paused || document.hidden
+                    || carousel.matches(':hover') || carousel.contains(document.activeElement);
+                if (blocked) slideshow.pause();
+                else slideshow.cycle();
+            }
+
+            function setPaused(value) {
+                paused = value;
+                toggle.setAttribute('aria-label', paused ? 'Tiếp tục trình chiếu' : 'Tạm dừng trình chiếu');
+                toggle.classList.toggle('is-paused', paused);
+                syncPlayback();
+            }
+
+            toggle.addEventListener('click', () => setPaused(!paused));
+            for (const event of ['mouseenter', 'mouseleave', 'focusin', 'slid.bs.carousel']) {
+                carousel.addEventListener(event, syncPlayback);
+            }
+            carousel.addEventListener('focusout', () => requestAnimationFrame(syncPlayback));
+            document.addEventListener('visibilitychange', syncPlayback);
+            motion.addEventListener('change', event => {
+                if (event.matches) setPaused(true);
+            });
+            setPaused(paused);
+
+            const navigation = document.getElementById('mainNavbar');
+            navigation.addEventListener('click', event => {
+                const link = event.target.closest('a[href^="#"]');
+                if (!link || !navigation.classList.contains('show')) return;
+                navigation.addEventListener('hidden.bs.collapse', () => {
+                    document.getElementById(link.hash.slice(1))?.scrollIntoView();
+                }, { once: true });
+                bootstrap.Collapse.getInstance(navigation)?.hide();
+            });
+        })();
+    </script>
+}

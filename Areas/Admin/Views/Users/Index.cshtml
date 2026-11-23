@@ -1,0 +1,224 @@
+@model AdminUserListViewModel
+@{
+    ViewData["Title"] = "Quản lý Người dùng";
+    var currentEmail = User.Identity?.Name;
+}
+
+<div class="container-fluid px-0">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <h2 class="fw-bold mb-1">
+                <i class="bi bi-people-fill text-emerald me-2"></i>Quản lý Người dùng
+            </h2>
+            <p class="text-muted mb-0">Tra cứu, phân quyền và kiểm soát trạng thái tài khoản trên hệ thống.</p>
+        </div>
+        <div>
+            <span class="badge bg-secondary-subtle text-secondary px-3 py-2 rounded-pill">
+                Tổng cộng: @Model.Users.Count người dùng
+            </span>
+        </div>
+    </div>
+
+    <!-- Filter & Search Toolbar -->
+    <div class="card-custom p-3 mb-4">
+        <form method="get" asp-area="Admin" asp-controller="Users" asp-action="Index" class="row g-2 align-items-center">
+            <div class="col-12 col-md-5">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0 text-muted">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="text" name="searchTerm" value="@Model.SearchTerm" class="form-control border-start-0 ps-0" placeholder="Tìm theo họ tên hoặc email..." />
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <select name="roleFilter" class="form-select">
+                    <option value="">-- Tất cả vai trò --</option>
+                    <option value="Admin" selected="@(Model.RoleFilter == "Admin")">Quản trị viên (Admin)</option>
+                    <option value="User" selected="@(Model.RoleFilter == "User")">Người dùng thường (User)</option>
+                </select>
+            </div>
+
+            <div class="col-6 col-md-2">
+                <select name="statusFilter" class="form-select">
+                    <option value="all" selected="@(Model.StatusFilter == "all" || string.IsNullOrEmpty(Model.StatusFilter))">-- Trạng thái --</option>
+                    <option value="active" selected="@(Model.StatusFilter == "active")">Đang hoạt động</option>
+                    <option value="locked" selected="@(Model.StatusFilter == "locked")">Đã bị khóa</option>
+                </select>
+            </div>
+
+            <div class="col-12 col-md-2 d-flex gap-2">
+                <button type="submit" class="btn btn-emerald w-100 rounded-3">
+                    <i class="bi bi-funnel me-1"></i>Lọc
+                </button>
+                <a asp-area="Admin" asp-controller="Users" asp-action="Index" class="btn btn-light border rounded-3" title="Đặt lại bộ lọc">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Users Table -->
+    <div class="card-custom p-4 mb-4">
+        @if (!Model.Users.Any())
+        {
+            <div class="text-center py-5 text-muted">
+                <i class="bi bi-person-x fs-1 d-block mb-2 opacity-50"></i>
+                <h5>Không tìm thấy người dùng phù hợp</h5>
+                <p class="small">Thử thay đổi từ khóa tìm kiếm hoặc bỏ bớt tiêu chí lọc.</p>
+                <a asp-area="Admin" asp-controller="Users" asp-action="Index" class="btn btn-outline-secondary btn-sm rounded-pill mt-2">
+                    Xóa bộ lọc
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 50px;">ID</th>
+                            <th>Thông tin Người dùng</th>
+                            <th>Vai trò</th>
+                            <th>Trạng thái</th>
+                            <th>Ngày tham gia</th>
+                            <th>Đăng nhập cuối</th>
+                            <th class="text-end" style="width: 220px;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model.Users)
+                        {
+                            var isSelf = string.Equals(user.Email, currentEmail, StringComparison.OrdinalIgnoreCase);
+                            <tr class="@(user.IsLocked ? "table-danger bg-opacity-25" : "")">
+                                <td class="text-muted fw-semibold">#@user.Id</td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="rounded-circle bg-emerald-soft text-emerald d-flex align-items-center justify-content-center fw-bold" style="width: 40px; height: 40px; font-size: 16px;">
+                                            @(string.IsNullOrEmpty(user.FullName) ? "U" : user.FullName.Substring(0, 1).ToUpper())
+                                        </div>
+                                        <div>
+                                            <div class="fw-semibold text-slate-900">
+                                                @user.FullName
+                                                @if (isSelf)
+                                                {
+                                                    <span class="badge bg-secondary-subtle text-secondary ms-1 small">Bạn</span>
+                                                }
+                                            </div>
+                                            <div class="text-muted small">@user.Email</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    @if (user.RoleName == "Admin")
+                                    {
+                                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1">
+                                            <i class="bi bi-shield-fill me-1"></i>Admin
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1">
+                                            <i class="bi bi-person me-1"></i>User
+                                        </span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (user.IsLocked)
+                                    {
+                                        <span class="badge bg-danger text-white px-2 py-1">
+                                            <i class="bi bi-lock-fill me-1"></i>Bị khóa
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">
+                                            <i class="bi bi-check-circle me-1"></i>Hoạt động
+                                        </span>
+                                    }
+                                </td>
+                                <td class="text-muted small">@user.CreatedAt.ToString("dd/MM/yyyy")</td>
+                                <td class="text-muted small">@(user.LastLoginAt.HasValue ? user.LastLoginAt.Value.ToString("dd/MM/yyyy HH:mm") : "—")</td>
+                                <td class="text-end">
+                                    <div class="d-flex justify-content-end gap-1">
+                                        <!-- Đổi vai trò -->
+                                        @if (!isSelf)
+                                        {
+                                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-3" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#roleModal-@user.Id"
+                                                    title="Đổi vai trò">
+                                                <i class="bi bi-shield-shaded"></i>
+                                            </button>
+
+                                            <!-- Form Toggle Lock -->
+                                            <form asp-area="Admin" asp-controller="Users" asp-action="ToggleLock" method="post" class="d-inline"
+                                                  onsubmit="return confirm('Bạn có chắc chắn muốn @(user.IsLocked ? "mở khóa" : "khóa") tài khoản @user.FullName?');">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@user.Id" />
+                                                <button type="submit" class="btn btn-sm @(user.IsLocked ? "btn-outline-success" : "btn-outline-danger") rounded-3"
+                                                        title="@(user.IsLocked ? "Mở khóa tài khoản" : "Khóa tài khoản")">
+                                                    <i class="bi @(user.IsLocked ? "bi-unlock-fill" : "bi-lock-fill")"></i>
+                                                </button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-light text-muted border p-2">Tài khoản hiện tại</span>
+                                        }
+                                    </div>
+
+                                    <!-- Modal Đổi vai trò cho user -->
+                                    @if (!isSelf)
+                                    {
+                                        <div class="modal fade" id="roleModal-@user.Id" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content rounded-4 border-0 shadow">
+                                                    <form asp-area="Admin" asp-controller="Users" asp-action="ChangeRole" method="post">
+                                                        @Html.AntiForgeryToken()
+                                                        <input type="hidden" name="id" value="@user.Id" />
+                                                        <div class="modal-header border-0 pb-0">
+                                                            <h5 class="modal-title fw-bold">Thay đổi Vai trò Người dùng</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body text-start py-3">
+                                                            <p class="text-muted mb-3">
+                                                                Thiết lập quyền hạn cho tài khoản: <strong>@user.FullName</strong> (@user.Email)
+                                                            </p>
+                                                            <div class="form-group">
+                                                                <label class="form-label fw-semibold">Chọn vai trò mới:</label>
+                                                                <select name="newRole" class="form-select">
+                                                                    <option value="User" selected="@(user.RoleName == "User")">Người dùng thường (User)</option>
+                                                                    <option value="Admin" selected="@(user.RoleName == "Admin")">Quản trị viên (Admin)</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="alert alert-warning py-2 small mt-3 mb-0">
+                                                                <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                                                                Cấp quyền Admin sẽ cho phép tài khoản này truy cập toàn bộ khu vực quản trị.
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer border-0 pt-0">
+                                                            <button type="button" class="btn btn-light rounded-pill" data-bs-dismiss="modal">Hủy</button>
+                                                            <button type="submit" class="btn btn-emerald rounded-pill px-4">Lưu thay đổi</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+
+    <!-- Privacy Notice -->
+    <div class="alert alert-light border rounded-4 d-flex align-items-center gap-2 text-muted small">
+        <i class="bi bi-info-circle-fill text-primary"></i>
+        <span>Theo nguyên tắc bảo mật thông tin y tế và dinh dưỡng cá nhân, tài khoản quản trị chỉ có quyền quản lý trạng thái và quyền hạn tài khoản, không được phép can thiệp hoặc truy cập dữ liệu nhật ký của người dùng.</span>
+    </div>
+</div>

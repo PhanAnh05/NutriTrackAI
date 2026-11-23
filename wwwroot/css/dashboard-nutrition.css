@@ -1,0 +1,142 @@
+.dashboard-page .nutrition-panel {
+    background-image: radial-gradient(ellipse at 100% 100%, #effaf2, transparent 31%);
+}
+
+.nutrition-heading,
+.suggestions-heading {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: .65rem 1rem;
+    margin-bottom: 1rem;
+}
+
+.nutrition-title { display: flex; align-items: start; gap: .7rem; }
+.nutrition-title > i {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.35rem;
+    height: 2.35rem;
+    border-radius: .6rem;
+    background: var(--nt-mint-100, #dff8ea);
+    color: var(--nt-brand-600, #087b51);
+    font-size: 1.25rem;
+}
+
+.nutrition-content {
+    display: grid;
+    grid-template-columns: minmax(0, 2.35fr) minmax(165px, 1fr);
+    align-items: center;
+    gap: clamp(1rem, 2vw, 2rem);
+}
+.nutrition-with-chart {
+    grid-template-columns: minmax(120px, .75fr) minmax(0, 2.5fr) minmax(125px, .8fr);
+}
+.nutrition-chart { min-width: 0; }
+.nutrition-chart .dash-tabular { font-size: .8rem; }
+.nutrition-panel .dash-nutrition-art {
+    display: block;
+    align-self: center;
+    justify-self: center;
+    min-height: 0;
+    width: min(100%, 275px);
+    height: auto;
+    object-fit: contain;
+    background: none;
+    pointer-events: none;
+    user-select: none;
+}
+
+.nutrition-empty-note {
+    display: flex;
+    align-items: baseline;
+    gap: .7rem;
+    margin: 0 0 .35rem;
+    padding: .55rem .75rem;
+    border-radius: .6rem;
+    color: var(--ink);
+    background: linear-gradient(105deg, #fff8de, #f0faed 80%);
+    font-size: .9rem;
+}
+.nutrition-empty-note i,
+.nutrition-minerals i { color: var(--nt-brand-600, #087b51); }
+.nutrition-notice { margin: .4rem 0; color: #714e16; font-size: .875rem; }
+
+.nutrition-panel .dash-macro-row {
+    display: grid;
+    grid-template-columns: minmax(8.1rem, auto) minmax(24px, 1fr) minmax(7rem, auto);
+    align-items: center;
+    gap: .8rem;
+    min-height: 3rem;
+    padding: .4rem .3rem;
+    border-bottom: 1px solid var(--line);
+}
+.nutrient-name { display: flex; align-items: center; gap: .7rem; color: var(--nutrient-ink); }
+.nutrient-name i {
+    display: grid; place-items: center; flex: none;
+    width: 2rem; height: 2rem;
+    border-radius: .6rem; background: var(--nutrient-tint);
+}
+.nutrition-panel .nutrient-protein { --nutrient-ink: #067347; --nutrient-tint: #e7f8eb; }
+.nutrition-panel .nutrient-carb { --nutrient-ink: #5247a6; --nutrient-tint: #efedff; }
+.nutrition-panel .nutrient-fat { --nutrient-ink: #995305; --nutrient-tint: #fff3e0; }
+.nutrient-amount {
+    grid-column: 3;
+    justify-self: end;
+    text-align: end;
+    font-size: .875rem;
+    font-variant-numeric: tabular-nums;
+}
+.nutrient-amount small { display: block; color: var(--caption); }
+.nutrition-panel .dash-macro-row .dash-progress, .nutrient-empty-track {
+    grid-column: 2;
+    grid-row: 1;
+    height: .55rem;
+    border-radius: 999px;
+    background: #e5ebef;
+}
+.nutrition-minerals {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .35rem .75rem;
+    margin: .8rem .3rem 0;
+}
+.nutrition-minerals i { margin-inline-end: .3rem; }
+
+.suggestions-paused .suggestions-heading { margin-bottom: .3rem; align-items: center; }
+.suggestions-paused .dash-suggestion-message {
+    background: url("../images/dashboard/handoff/leaf-sprout.png") 70% calc(100% + 7px) / auto 42px no-repeat,
+                linear-gradient(95deg, #f8fcf8, #edf9f0 73%, transparent 85%);
+}
+.suggestions-paused .dash-suggestion-message a { padding-block: .55rem; }
+.dashboard-page .nutrition-reference {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-block: .8rem;
+}
+.nutrition-reference i { line-height: 1; }
+
+@media (max-width: 899.98px) {
+    .nutrition-with-chart { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .nutrition-with-chart .dash-macro-list { grid-column: 1 / -1; grid-row: 1; }
+    .nutrition-with-chart .dash-nutrition-art { max-width: 185px; }
+}
+@media (max-width: 639.98px) {
+    .nutrition-content { grid-template-columns: 1fr; gap: .9rem; }
+    .nutrition-with-chart { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .nutrition-panel .dash-nutrition-art { max-width: 134px; }
+    .nutrition-panel .dash-macro-row { grid-template-columns: 1fr auto; gap: .3rem .6rem; padding-block: .6rem; }
+    .nutrient-amount { grid-column: 2; }
+    .nutrition-panel .dash-macro-row .dash-progress, .nutrient-empty-track { grid-column: 1 / -1; grid-row: 2; }
+    .nutrition-title { gap: .5rem; }
+    .nutrition-minerals { justify-content: start; }
+    .suggestions-paused .dash-suggestion-message {
+        padding-inline: .6rem;
+        background: linear-gradient(95deg, #f5fbf5, #edf9f0);
+    }
+}

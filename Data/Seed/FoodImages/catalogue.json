@@ -1,0 +1,1618 @@
+[
+  {
+    "Id": 1,
+    "Name": "Phở bò tái chín",
+    "Ingredients": "bánh phở, thịt bò tái chín, nước hầm xương bò, hành lá, ngò gai, gừng",
+    "ServingName": "1 tô (550g)",
+    "CookingState": "",
+    "FileName": "food-d0b9bca7f1852912.png"
+  },
+  {
+    "Id": 2,
+    "Name": "Bún bò Huế",
+    "Ingredients": "bún sợi to, thịt bò bắp, chả cua, tiết heo, nước dùng sả ruốc ớt",
+    "ServingName": "1 tô (600g)",
+    "CookingState": "",
+    "FileName": "food-e4a7d50c15ab2db8.png"
+  },
+  {
+    "Id": 3,
+    "Name": "Cơm tấm sườn nướng",
+    "Ingredients": "Cơm tấm, sườn cốt lết nướng, đồ chua, mỡ hành, nước mắm pha",
+    "ServingName": "1 đĩa (~350g)",
+    "CookingState": "Chế biến sẵn (Nướng)",
+    "FileName": "food-c93093be15bf67f2.png"
+  },
+  {
+    "Id": 4,
+    "Name": "Cơm tấm sườn bì chả",
+    "Ingredients": "Cơm tấm, sườn nướng, bì heo thính, chả trứng hấp, mỡ hành, nước mắm",
+    "ServingName": "1 đĩa (~480g)",
+    "CookingState": "Chế biến sẵn (Tổng hợp)",
+    "FileName": "food-3d5fa8ff2bb0031a.png"
+  },
+  {
+    "Id": 5,
+    "Name": "Bánh mì thịt",
+    "Ingredients": "bánh mì baguette giòn, pate gan, thịt nguội, giò lụa, bơ, dưa leo, ngò rí, đồ chua",
+    "ServingName": "1 ổ (180g)",
+    "CookingState": "",
+    "FileName": "food-961a5ccef8ac5105.png"
+  },
+  {
+    "Id": 6,
+    "Name": "Bánh mì ốp la (2 trứng)",
+    "Ingredients": "Bánh mì ổ, 2 quả trứng gà chiên dầu, dưa leo, đồ chua, nước tương",
+    "ServingName": "1 ổ (~210g)",
+    "CookingState": "Chế biến sẵn (Chiên)",
+    "FileName": "food-1cc1c5f1f22e4e7c.png"
+  },
+  {
+    "Id": 7,
+    "Name": "Hủ tiếu Nam Vang",
+    "Ingredients": "sợi hủ tiếu dai, tôm, thịt băm, gan heo, trứng cút, cần tây, giá đỗ",
+    "ServingName": "1 tô (550g)",
+    "CookingState": "",
+    "FileName": "food-0ca2f491b0659402.png"
+  },
+  {
+    "Id": 8,
+    "Name": "Bún chả Hà Nội",
+    "Ingredients": "Bún tươi, thịt ba chỉ nướng, chả băm nướng, đu đủ xanh, rau sống, nước mắm đường",
+    "ServingName": "1 phần (~450g)",
+    "CookingState": "Chế biến sẵn (Nước chấm)",
+    "FileName": "food-fdf5c64c8801ab88.png"
+  },
+  {
+    "Id": 9,
+    "Name": "Bún riêu cua",
+    "Ingredients": "bún tươi, riêu cua đồng, đậu hũ chiên, cà chua, huyết heo, rau muống chẻ",
+    "ServingName": "1 tô (550g)",
+    "CookingState": "",
+    "FileName": "food-19214b8be23eca5f.png"
+  },
+  {
+    "Id": 10,
+    "Name": "Miến gà",
+    "Ingredients": "Miến dong, thịt ức gà xé, nấm hương, mộc nhĩ, hành lá, nước dùng gà",
+    "ServingName": "1 tô (~450g)",
+    "CookingState": "Chế biến sẵn (Nước)",
+    "FileName": "food-5abd693129ec7bcd.png"
+  },
+  {
+    "Id": 11,
+    "Name": "Bánh cuốn nhân thịt",
+    "Ingredients": "bột gạo tráng mỏng, thịt nạc băm, mộc nhĩ, hành phi giòn, chả quế, nước mắm pha",
+    "ServingName": "1 đĩa (250g)",
+    "CookingState": "",
+    "FileName": "food-63e6f52569f6ddd8.png"
+  },
+  {
+    "Id": 12,
+    "Name": "Cháo gà nấm hương",
+    "Ingredients": "gạo tẻ, thịt gà nạc xé, nấm hương, hành hoa, tiêu đen xay",
+    "ServingName": "1 tô (450g)",
+    "CookingState": "",
+    "FileName": "food-35d59d2c16c5e0c4.png"
+  },
+  {
+    "Id": 13,
+    "Name": "Cơm chiên dưa bò",
+    "Ingredients": "cơm nguội, thịt bò bắp mềm, dưa cải chua, tỏi phi, trứng gà đảo",
+    "ServingName": "1 đĩa (400g)",
+    "CookingState": "",
+    "FileName": "food-0668dd5251307113.png"
+  },
+  {
+    "Id": 14,
+    "Name": "Bún đậu mắm tôm",
+    "Ingredients": "bún lá, đậu hũ rán giòn, thịt chân giò luộc, chả cốm rán, dưa leo, mắm tôm pha tắc ớt",
+    "ServingName": "1 phần (400g)",
+    "CookingState": "",
+    "FileName": "food-88da28dbc8e55406.png"
+  },
+  {
+    "Id": 15,
+    "Name": "Cơm trắng",
+    "Ingredients": "gạo tẻ trắng nấu chín",
+    "ServingName": "1 chén (150g)",
+    "CookingState": "",
+    "FileName": "food-fb3e616b0811118b.png"
+  },
+  {
+    "Id": 16,
+    "Name": "Cơm gạo lứt",
+    "Ingredients": "gạo lứt huyết rồng nấu chín dẻo",
+    "ServingName": "1 chén (150g)",
+    "CookingState": "",
+    "FileName": "food-47310a05c78bea62.png"
+  },
+  {
+    "Id": 17,
+    "Name": "Khoai lang luộc",
+    "Ingredients": "khoai lang ruột vàng hoặc tím hấp chín",
+    "ServingName": "1 củ vừa (150g)",
+    "CookingState": "",
+    "FileName": "food-2f2a7e17e23b77fc.png"
+  },
+  {
+    "Id": 18,
+    "Name": "Yến mạch",
+    "Ingredients": "yến mạch nguyên hạt cán dẹt ngâm nấu nước sôi",
+    "ServingName": "1 chén nấu chín (150g)",
+    "CookingState": "",
+    "FileName": "food-fb32f4ab83227ccb.png"
+  },
+  {
+    "Id": 19,
+    "Name": "Bánh mì nguyên cám",
+    "Ingredients": "bột mì nguyên cám, men nở, muối tinh",
+    "ServingName": "2 lát (60g)",
+    "CookingState": "",
+    "FileName": "food-b267244f5965f3e4.png"
+  },
+  {
+    "Id": 20,
+    "Name": "Bắp ngọt luộc",
+    "Ingredients": "bắp ngô ngọt tươi luộc chín",
+    "ServingName": "1 trái vừa (150g)",
+    "CookingState": "",
+    "FileName": "food-84682ea09efb684c.png"
+  },
+  {
+    "Id": 21,
+    "Name": "Bún tươi",
+    "Ingredients": "Bột gạo tẻ lên men ép sợi",
+    "ServingName": "100g",
+    "CookingState": "Chín (Sẵn)",
+    "FileName": "food-f70886efa050a131.png"
+  },
+  {
+    "Id": 22,
+    "Name": "Ức gà áp chảo",
+    "Ingredients": "ức gà nạc phi lê, muối hồng, tiêu, 1 muỗng cà phê dầu ô liu",
+    "ServingName": "1 phần (150g)",
+    "CookingState": "",
+    "FileName": "food-546e5b4871a43bf3.png"
+  },
+  {
+    "Id": 23,
+    "Name": "Ức gà luộc",
+    "Ingredients": "ức gà tươi luộc với gừng sả không muối",
+    "ServingName": "1 phần (150g)",
+    "CookingState": "",
+    "FileName": "food-dd7af85a045da6ed.png"
+  },
+  {
+    "Id": 24,
+    "Name": "Thịt bò xào",
+    "Ingredients": "thịt thăn bò mềm, tỏi phi, dầu hào, tiêu",
+    "ServingName": "1 phần (120g)",
+    "CookingState": "",
+    "FileName": "food-e3809a7de63c2c2f.png"
+  },
+  {
+    "Id": 25,
+    "Name": "Cá hồi áp chảo",
+    "Ingredients": "phi lê cá hồi Nauy tươi, muối tiêu, lá hương thảo",
+    "ServingName": "1 miếng (150g)",
+    "CookingState": "",
+    "FileName": "food-6c289e796bad7f61.png"
+  },
+  {
+    "Id": 26,
+    "Name": "Cá thu kho",
+    "Ingredients": "cá thu tươi, nước màu đường, nước mắm, tiêu, ớt",
+    "ServingName": "1 khúc (120g)",
+    "CookingState": "",
+    "FileName": "food-9eb61a3ac8871d5e.png"
+  },
+  {
+    "Id": 27,
+    "Name": "Tôm hấp",
+    "Ingredients": "tôm sú hoặc tôm thẻ tươi sống, sả cây đập dập hấp chín",
+    "ServingName": "1 đĩa (150g)",
+    "CookingState": "",
+    "FileName": "food-6cb24488d698178e.png"
+  },
+  {
+    "Id": 28,
+    "Name": "Mực xào",
+    "Ingredients": "mực ống tươi, cần tây, tỏi tây, hành tây xào dầu thực vật",
+    "ServingName": "1 đĩa (180g)",
+    "CookingState": "",
+    "FileName": "food-6425dd374726106c.png"
+  },
+  {
+    "Id": 29,
+    "Name": "Trứng gà luộc",
+    "Ingredients": "trứng gà ta luộc chín lòng đào",
+    "ServingName": "1 quả (55g)",
+    "CookingState": "",
+    "FileName": "food-053936fc66095d1d.png"
+  },
+  {
+    "Id": 30,
+    "Name": "Trứng gà chiên",
+    "Ingredients": "trứng gà đánh với chút nước mắm, chiên dầu ăn",
+    "ServingName": "1 quả (60g)",
+    "CookingState": "",
+    "FileName": "food-d19043eccb852219.png"
+  },
+  {
+    "Id": 31,
+    "Name": "Đậu hũ trắng",
+    "Ingredients": "đậu nành nguyên chất kết tủa tự nhiên, luộc mềm",
+    "ServingName": "1 miếng (150g)",
+    "CookingState": "",
+    "FileName": "food-3e46076aa96ece68.png"
+  },
+  {
+    "Id": 32,
+    "Name": "Đậu hũ sốt cà",
+    "Ingredients": "đậu hũ mơ mềm, cà chua chín, hành lá, gia vị xào thơm",
+    "ServingName": "1 đĩa (200g)",
+    "CookingState": "",
+    "FileName": "food-59d8b478a974cd12.png"
+  },
+  {
+    "Id": 33,
+    "Name": "Thịt lợn nạc luộc",
+    "Ingredients": "thịt nạc thăn heo tươi luộc chín mềm",
+    "ServingName": "1 đĩa (120g)",
+    "CookingState": "",
+    "FileName": "food-34ada9811b7bf7aa.png"
+  },
+  {
+    "Id": 34,
+    "Name": "Cá basa nướng",
+    "Ingredients": "phi lê cá basa ướp sả ớt nướng giấy bạc",
+    "ServingName": "1 phần (150g)",
+    "CookingState": "",
+    "FileName": "food-4892d32e478ca290.png"
+  },
+  {
+    "Id": 35,
+    "Name": "Bông cải xanh luộc",
+    "Ingredients": "súp lơ xanh tươi cắt nhỏ luộc vừa chín tới",
+    "ServingName": "1 đĩa (150g)",
+    "CookingState": "",
+    "FileName": "food-a676dcf5338a891f.png"
+  },
+  {
+    "Id": 36,
+    "Name": "Rau muống luộc",
+    "Ingredients": "rau muống tươi non luộc xanh mướt, nước canh vắt chanh",
+    "ServingName": "1 đĩa (150g)",
+    "CookingState": "",
+    "FileName": "food-3a20f93b7587b93e.png"
+  },
+  {
+    "Id": 37,
+    "Name": "Cải thìa xào nấm",
+    "Ingredients": "cải thìa xanh, nấm đông cô tươi, tỏi phi thơm, dầu hào chay",
+    "ServingName": "1 đĩa (180g)",
+    "CookingState": "",
+    "FileName": "food-a50a07258647490d.png"
+  },
+  {
+    "Id": 38,
+    "Name": "Salad ức gà",
+    "Ingredients": "xà lách xanh, ức gà luộc xé, cà chua bi, dưa leo, ngô ngọt, sốt mè rang",
+    "ServingName": "1 tô (250g)",
+    "CookingState": "",
+    "FileName": "food-47b1c1fd18d25c23.png"
+  },
+  {
+    "Id": 39,
+    "Name": "Canh bí đao thịt bằm",
+    "Ingredients": "bí đao thanh nhiệt, thịt nạc dăm heo băm nhỏ, hành ngò thơm",
+    "ServingName": "1 tô (350g)",
+    "CookingState": "",
+    "FileName": "food-4eaea5cc0265b631.png"
+  },
+  {
+    "Id": 40,
+    "Name": "Canh cà chua trứng",
+    "Ingredients": "cà chua chín nhừ, 1 trứng gà đánh vân mây, hành ngò",
+    "ServingName": "1 tô (300g)",
+    "CookingState": "",
+    "FileName": "food-7bbbcf5ce34414bd.png"
+  },
+  {
+    "Id": 41,
+    "Name": "Dưa leo tươi",
+    "Ingredients": "dưa leo nếp gọt vỏ cắt lát ăn kèm",
+    "ServingName": "1 đĩa (150g)",
+    "CookingState": "",
+    "FileName": "food-f831f0f5a51f3d3b.png"
+  },
+  {
+    "Id": 42,
+    "Name": "Nấm đùi gà xào tỏi",
+    "Ingredients": "nấm đùi gà tươi xắt lát, tỏi phi giòn, hành lá",
+    "ServingName": "1 đĩa (150g)",
+    "CookingState": "",
+    "FileName": "food-1db6bbccc54d660d.png"
+  },
+  {
+    "Id": 43,
+    "Name": "Chuối tiêu",
+    "Ingredients": "chuối tiêu tươi chín tự nhiên, giàu kali",
+    "ServingName": "1 quả vừa (120g)",
+    "CookingState": "",
+    "FileName": "food-f6aa527db81fa8c9.png"
+  },
+  {
+    "Id": 44,
+    "Name": "Táo",
+    "Ingredients": "táo giòn tươi nguyên vỏ",
+    "ServingName": "1 quả vừa (180g)",
+    "CookingState": "",
+    "FileName": "food-fbb00865dc8cb04f.png"
+  },
+  {
+    "Id": 45,
+    "Name": "Cam",
+    "Ingredients": "cam sành tươi mọng nước, giàu vitamin C",
+    "ServingName": "1 quả (200g)",
+    "CookingState": "",
+    "FileName": "food-707a3c64c7c00e52.png"
+  },
+  {
+    "Id": 46,
+    "Name": "Bơ sáp",
+    "Ingredients": "thịt bơ dẻo ngậy giàu chất béo tốt không bão hòa đơn",
+    "ServingName": "1/2 quả (100g)",
+    "CookingState": "",
+    "FileName": "food-af36b00f87796571.png"
+  },
+  {
+    "Id": 47,
+    "Name": "Dưa hấu",
+    "Ingredients": "Dưa hấu bỏ vỏ",
+    "ServingName": "100g",
+    "CookingState": "Tươi (Ăn liền)",
+    "FileName": "food-b320491d0b74b1e4.png"
+  },
+  {
+    "Id": 48,
+    "Name": "Ổi",
+    "Ingredients": "ổi giòn tươi giàu chất xơ và vitamin C cao",
+    "ServingName": "1 quả (150g)",
+    "CookingState": "",
+    "FileName": "food-c0ff68e545ae8c2e.png"
+  },
+  {
+    "Id": 49,
+    "Name": "Bưởi da xanh",
+    "Ingredients": "tép bưởi hồng da xanh mọng nước ngọt thanh",
+    "ServingName": "3 múi (150g)",
+    "CookingState": "",
+    "FileName": "food-51695259caf7d063.png"
+  },
+  {
+    "Id": 50,
+    "Name": "Trà sữa trân châu đường đen",
+    "Ingredients": "trà đen, sữa tươi, siro đường đen cô đặc, trân châu bột năng",
+    "ServingName": "1 ly lớn (500ml)",
+    "CookingState": "",
+    "FileName": "food-d39bfcbea5328f60.png"
+  },
+  {
+    "Id": 51,
+    "Name": "Nước ngọt có gas",
+    "Ingredients": "nước bão hòa CO2, đường mía/HFCS, hương cola tự nhiên, caffeine",
+    "ServingName": "1 lon (330ml)",
+    "CookingState": "",
+    "FileName": "food-c6c28471cc4e7b6a.png"
+  },
+  {
+    "Id": 52,
+    "Name": "Nước ngọt có gas Zero calo",
+    "Ingredients": "nước bão hòa CO2, chất tạo ngọt sucralose/acesulfame K, hương cola",
+    "ServingName": "1 lon (330ml)",
+    "CookingState": "",
+    "FileName": "food-bceb1cf3b41ea966.png"
+  },
+  {
+    "Id": 53,
+    "Name": "Sữa đậu nành",
+    "Ingredients": "hạt đậu nành xay nấu lọc bã, chút đường mía ngọt nhẹ",
+    "ServingName": "1 ly (250ml)",
+    "CookingState": "",
+    "FileName": "food-b239701563beefde.png"
+  },
+  {
+    "Id": 54,
+    "Name": "Sữa tươi không đường",
+    "Ingredients": "100% sữa bò tươi nguyên chất tiệt trùng không thêm đường",
+    "ServingName": "1 hộp (220ml)",
+    "CookingState": "",
+    "FileName": "food-a411e7a2b0ed4574.png"
+  },
+  {
+    "Id": 55,
+    "Name": "Sữa chua Hy Lạp",
+    "Ingredients": "sữa tươi lên men tách nước váng whey, giàu protein tự nhiên",
+    "ServingName": "1 hũ (120g)",
+    "CookingState": "",
+    "FileName": "food-708b3298a043a2ae.png"
+  },
+  {
+    "Id": 56,
+    "Name": "Hạt hạnh nhân",
+    "Ingredients": "hạt hạnh nhân sấy mộc tự nhiên không muối",
+    "ServingName": "1 nắm nhỏ (30g)",
+    "CookingState": "",
+    "FileName": "food-a2b3f851b969a2c7.png"
+  },
+  {
+    "Id": 57,
+    "Name": "Đậu phộng rang",
+    "Ingredients": "hạt đậu phộng rang giòn thơm, chút muối hầm",
+    "ServingName": "1 phần (30g)",
+    "CookingState": "",
+    "FileName": "food-7a5d4bb3517bd8e3.png"
+  },
+  {
+    "Id": 58,
+    "Name": "Cà phê đen đá không đường",
+    "Ingredients": "Cà phê rang xay pha phin/máy, đá",
+    "ServingName": "1 ly (~200ml)",
+    "CookingState": "Đồ uống (Pha)",
+    "FileName": "food-1c357740d6494688.png"
+  },
+  {
+    "Id": 59,
+    "Name": "Cà phê sữa đá",
+    "Ingredients": "cà phê nguyên chất, sữa đặc có đường, đá viên",
+    "ServingName": "1 ly (200ml)",
+    "CookingState": "",
+    "FileName": "food-1868dc488e46ae51.png"
+  },
+  {
+    "Id": 60,
+    "Name": "Trà xanh tươi",
+    "Ingredients": "lá trà xanh tươi hãm nước sôi, giàu chất chống oxy hóa EGCG",
+    "ServingName": "1 ly (300ml)",
+    "CookingState": "",
+    "FileName": "food-5ec2aee1fa8116a4.png"
+  },
+  {
+    "Id": 1002,
+    "Name": "Phở bò tái",
+    "Ingredients": "Bánh phở, thịt bò tái, nước hầm xương, hành tây, hành lá, gừng, quế",
+    "ServingName": "1 tô (~500g)",
+    "CookingState": "Chế biến sẵn (Nước)",
+    "FileName": "food-b47ad6db18b83ae5.png"
+  },
+  {
+    "Id": 1003,
+    "Name": "Phở bò chín nạm",
+    "Ingredients": "Bánh phở, thịt bò nạm chín, nước hầm xương, hành tây, hành lá",
+    "ServingName": "1 tô (~500g)",
+    "CookingState": "Chế biến sẵn (Nước)",
+    "FileName": "food-cc1b71cc0b36ba4f.png"
+  },
+  {
+    "Id": 1004,
+    "Name": "Phở gà ta (bỏ da)",
+    "Ingredients": "Bánh phở, thịt gà ta bỏ da, nước dùng gà, hành lá, lá chanh",
+    "ServingName": "1 tô (~500g)",
+    "CookingState": "Chế biến sẵn (Nước)",
+    "FileName": "food-b8ede2f0af6e1e40.png"
+  },
+  {
+    "Id": 1005,
+    "Name": "Bún bò Huế (không giò heo)",
+    "Ingredients": "Bún tươi, thịt bò bắp, chả Huế, nước dùng mắm ruốc, sả, ớt, hành tây",
+    "ServingName": "1 tô (~550g)",
+    "CookingState": "Chế biến sẵn (Nước)",
+    "FileName": "food-e6ba9dff67ead187.png"
+  },
+  {
+    "Id": 1006,
+    "Name": "Bún bò Huế (có giò heo)",
+    "Ingredients": "Bún tươi, thịt bò bắp, giò heo, chả Huế, mắm ruốc, sả, ớt",
+    "ServingName": "1 tô (~650g)",
+    "CookingState": "Chế biến sẵn (Nước)",
+    "FileName": "food-af2de675420d7a84.png"
+  },
+  {
+    "Id": 1007,
+    "Name": "Bún riêu cua đồng",
+    "Ingredients": "Bún tươi, riêu cua đồng, đậu phụ chiên, cà chua, rau sống, hành lá",
+    "ServingName": "1 tô (~500g)",
+    "CookingState": "Chế biến sẵn (Nước)",
+    "FileName": "food-afd4db5027d4c757.png"
+  },
+  {
+    "Id": 1008,
+    "Name": "Bún thịt nướng (không chả giò)",
+    "Ingredients": "Bún tươi, thịt heo nướng, rau sống, dưa leo, đậu phộng rang, nước mắm pha",
+    "ServingName": "1 tô (~400g)",
+    "CookingState": "Chế biến sẵn (Trộn)",
+    "FileName": "food-211707f91c61634f.png"
+  },
+  {
+    "Id": 1009,
+    "Name": "Bún đậu mắm tôm (phần tiêu chuẩn)",
+    "Ingredients": "Bún lá, đậu phụ chiên giòn, thịt chân giò luộc, chả cốm chiên, rau kinh giới, mắm tôm",
+    "ServingName": "1 mẹt (~500g)",
+    "CookingState": "Chế biến sẵn (Chiên/Luộc)",
+    "FileName": "food-1673d4468f030b38.png"
+  },
+  {
+    "Id": 1010,
+    "Name": "Hủ tiếu Nam Vang (nước)",
+    "Ingredients": "Hủ tiếu, thịt heo băm, tôm luộc, trứng cút, hành phi, giá, hẹ",
+    "ServingName": "1 tô (~500g)",
+    "CookingState": "Chế biến sẵn (Nước)",
+    "FileName": "food-ff030362c8bb00f2.png"
+  },
+  {
+    "Id": 1011,
+    "Name": "Mì Quảng gà",
+    "Ingredients": "Mì Quảng, thịt gà ta kho nghệ, đậu phộng rang, bánh tráng nướng, rau sống",
+    "ServingName": "1 tô (~450g)",
+    "CookingState": "Chế biến sẵn (Nước ít)",
+    "FileName": "food-43e5f433a68eb08e.png"
+  },
+  {
+    "Id": 1012,
+    "Name": "Bánh canh cua",
+    "Ingredients": "Bánh canh bột lọc/gạo, thịt cua, chả cua, trứng cút, nước dùng sệt, hành ngò",
+    "ServingName": "1 tô (~500g)",
+    "CookingState": "Chế biến sẵn (Nước sệt)",
+    "FileName": "food-1907c13e461a1e25.png"
+  },
+  {
+    "Id": 1013,
+    "Name": "Cơm gà luộc (xé phay)",
+    "Ingredients": "Cơm trắng, thịt gà ta luộc xé, rau răm, hành tây, nước mắm gừng",
+    "ServingName": "1 đĩa (~380g)",
+    "CookingState": "Chế biến sẵn (Luộc)",
+    "FileName": "food-61e40f4e24b9e37d.png"
+  },
+  {
+    "Id": 1014,
+    "Name": "Cơm gà xối mỡ",
+    "Ingredients": "Cơm chiên màu điều, đùi gà chiên giòn ngập dầu, dưa leo, cà chua, nước tương",
+    "ServingName": "1 đĩa (~450g)",
+    "CookingState": "Chế biến sẵn (Chiên ngập dầu)",
+    "FileName": "food-acbfbc7e6a40ae52.png"
+  },
+  {
+    "Id": 1015,
+    "Name": "Cơm chiên dương châu",
+    "Ingredients": "Cơm nguội chiên dầu, trứng gà, lạp xưởng, tôm khô, đậu Hà Lan, cà rốt",
+    "ServingName": "1 đĩa (~350g)",
+    "CookingState": "Chế biến sẵn (Chiên)",
+    "FileName": "food-321e200498d4d7df.png"
+  },
+  {
+    "Id": 1016,
+    "Name": "Cơm trắng thịt kho trứng (1 miếng thịt, 1 trứng)",
+    "Ingredients": "Cơm trắng, thịt ba chỉ kho nước dừa, trứng vịt/gà, nước mắm, đường",
+    "ServingName": "1 phần (~380g)",
+    "CookingState": "Chế biến sẵn (Kho)",
+    "FileName": "food-ac1619b8f30e8d71.png"
+  },
+  {
+    "Id": 1017,
+    "Name": "Cơm trắng cá hú/cá basa kho tộ",
+    "Ingredients": "Cơm trắng, cá hú/basa kho tiêu, nước mắm, đường, hành lá",
+    "ServingName": "1 phần (~350g)",
+    "CookingState": "Chế biến sẵn (Kho)",
+    "FileName": "food-0b2665675d0533ca.png"
+  },
+  {
+    "Id": 1018,
+    "Name": "Cơm trắng ức gà áp chảo & rau luộc (Eat Clean)",
+    "Ingredients": "Cơm gạo lứt/trắng, ức gà áp chảo ít dầu, bông cải xanh luộc, cà rốt luộc",
+    "ServingName": "1 hộp (~400g)",
+    "CookingState": "Chế biến sẵn (Áp chảo/Luộc)",
+    "FileName": "food-1a5ac9f45da2586d.png"
+  },
+  {
+    "Id": 1019,
+    "Name": "Bánh mì thịt nguội chả lụa",
+    "Ingredients": "Bánh mì ổ, thịt nguội, chả lụa, pate gan, bơ trứng, đồ chua, dưa leo, ngò",
+    "ServingName": "1 ổ (~200g)",
+    "CookingState": "Chế biến sẵn (Nguội)",
+    "FileName": "food-118aaff2e7d4c654.png"
+  },
+  {
+    "Id": 1020,
+    "Name": "Bánh mì gà xé (không bơ pate)",
+    "Ingredients": "Bánh mì ổ, thịt ức gà xé, dưa leo, đồ chua, rau răm, nước tương",
+    "ServingName": "1 ổ (~190g)",
+    "CookingState": "Chế biến sẵn (Luộc)",
+    "FileName": "food-8f753ca9d2fcf70d.png"
+  },
+  {
+    "Id": 1021,
+    "Name": "Xôi mặn thập cẩm",
+    "Ingredients": "Gạo nếp hấp, chả lụa, lạp xưởng, chà bông, pate, mỡ hành, nước tương",
+    "ServingName": "1 gói (~250g)",
+    "CookingState": "Chế biến sẵn (Hấp)",
+    "FileName": "food-ddb9e8e6c9f2efa4.png"
+  },
+  {
+    "Id": 1022,
+    "Name": "Xôi đậu xanh (không đường dừa)",
+    "Ingredients": "Gạo nếp, đậu xanh tách vỏ, muối mè nhẹ",
+    "ServingName": "1 gói (~200g)",
+    "CookingState": "Chế biến sẵn (Hấp)",
+    "FileName": "food-b3f1aa7f61d15e63.png"
+  },
+  {
+    "Id": 1023,
+    "Name": "Cháo thịt bằm",
+    "Ingredients": "Gạo tẻ nấu cháo, thịt heo nạc bằm, hành lá, tiêu, gừng",
+    "ServingName": "1 tô (~400g)",
+    "CookingState": "Chế biến sẵn (Nấu mềm)",
+    "FileName": "food-77d2a2398be3ca03.png"
+  },
+  {
+    "Id": 1024,
+    "Name": "Cháo gà xé",
+    "Ingredients": "Gạo tẻ nấu cháo, thịt gà ta xé bỏ da, hành lá, tiêu, gừng",
+    "ServingName": "1 tô (~400g)",
+    "CookingState": "Chế biến sẵn (Nấu mềm)",
+    "FileName": "food-2932864101b86165.png"
+  },
+  {
+    "Id": 1025,
+    "Name": "Bánh cuốn nhân thịt (không chả)",
+    "Ingredients": "Bột gạo tráng hấp, thịt heo bằm, mộc nhĩ, hành phi, giá trụng, nước mắm pha",
+    "ServingName": "1 đĩa (~250g)",
+    "CookingState": "Chế biến sẵn (Hấp)",
+    "FileName": "food-2e00ef2dad42a547.png"
+  },
+  {
+    "Id": 1026,
+    "Name": "Bánh xèo miền Tây (1 cái vừa)",
+    "Ingredients": "Bột gạo, nước cốt dừa, thịt ba chỉ, tôm, giá đỗ, đậu xanh, dầu ăn, rau sống",
+    "ServingName": "1 cái (~250g)",
+    "CookingState": "Chế biến sẵn (Chiên)",
+    "FileName": "food-dc4bc09efa23443f.png"
+  },
+  {
+    "Id": 1027,
+    "Name": "Gỏi cuốn tôm thịt (không sốt tương)",
+    "Ingredients": "Bánh tráng, bún tươi, tôm luộc, thịt heo nạc luộc, rau sống, hẹ",
+    "ServingName": "2 cuốn (~180g)",
+    "CookingState": "Chế biến sẵn (Cuốn tươi)",
+    "FileName": "food-c6df634a810ad06f.png"
+  },
+  {
+    "Id": 1028,
+    "Name": "Chả giò (Nem rán) thịt heo",
+    "Ingredients": "Bánh tráng cuốn, thịt heo băm, miến, cà rốt, mộc nhĩ, trứng, dầu chiên",
+    "ServingName": "3 cuốn (~120g)",
+    "CookingState": "Chế biến sẵn (Chiên ngập dầu)",
+    "FileName": "food-89dd57460ee6aa14.png"
+  },
+  {
+    "Id": 1029,
+    "Name": "Bánh bao nhân thịt trứng cút",
+    "Ingredients": "Bột mì, thịt heo băm, trứng cút, mộc nhĩ, hành tây, đường",
+    "ServingName": "1 cái (~150g)",
+    "CookingState": "Chế biến sẵn (Hấp)",
+    "FileName": "food-028283a2b0a11f0b.png"
+  },
+  {
+    "Id": 1030,
+    "Name": "Gỏi gà xé phay (bắp cải)",
+    "Ingredients": "Thịt ức/đùi gà luộc xé, bắp cải, cà rốt, hành tây, rau răm, đậu phộng, nước mắm chanh",
+    "ServingName": "1 đĩa (~250g)",
+    "CookingState": "Chế biến sẵn (Trộn)",
+    "FileName": "food-0c217200e2f43f7d.png"
+  },
+  {
+    "Id": 1031,
+    "Name": "Bò lúc lắc (không khoai tây chiên)",
+    "Ingredients": "Thịt bò thăn cắt khối, ớt chuông, hành tây, tỏi, dầu ăn, dầu hào, bơ lạt",
+    "ServingName": "1 phần (~220g)",
+    "CookingState": "Chế biến sẵn (Xào lửa lớn)",
+    "FileName": "food-e31932589d89168f.png"
+  },
+  {
+    "Id": 1032,
+    "Name": "Ức gà bỏ da [Sống]",
+    "Ingredients": "Ức gà tươi bỏ da",
+    "ServingName": "100g",
+    "CookingState": "Sống (Nguyên liệu)",
+    "FileName": "food-33a997ead037f6e5.png"
+  },
+  {
+    "Id": 1033,
+    "Name": "Ức gà bỏ da [Luộc / Hấp]",
+    "Ingredients": "Ức gà bỏ da luộc chín không dầu",
+    "ServingName": "100g",
+    "CookingState": "Chín (Luộc/Hấp)",
+    "FileName": "food-3e43e813bceeab6d.png"
+  },
+  {
+    "Id": 1034,
+    "Name": "Ức gà bỏ da [Áp chảo ít dầu]",
+    "Ingredients": "Ức gà bỏ da, 1/3 muỗng cà phê dầu ăn, gia vị",
+    "ServingName": "100g",
+    "CookingState": "Chín (Áp chảo)",
+    "FileName": "food-37488bf7a975f794.png"
+  },
+  {
+    "Id": 1035,
+    "Name": "Ức gà tẩm bột [Chiên giòn]",
+    "Ingredients": "Ức gà, bột chiên giòn, trứng, dầu ăn chiên ngập",
+    "ServingName": "100g",
+    "CookingState": "Chín (Chiên ngập dầu)",
+    "FileName": "food-1514d685f852bbfd.png"
+  },
+  {
+    "Id": 1036,
+    "Name": "Đùi gà lọc da [Sống]",
+    "Ingredients": "Thịt đùi gà tươi bỏ da",
+    "ServingName": "100g",
+    "CookingState": "Sống (Nguyên liệu)",
+    "FileName": "food-2eefc653521154cb.png"
+  },
+  {
+    "Id": 1037,
+    "Name": "Đùi gà cả da [Sống]",
+    "Ingredients": "Thịt đùi gà tươi còn da",
+    "ServingName": "100g",
+    "CookingState": "Sống (Nguyên liệu)",
+    "FileName": "food-1ad9ce916f12fa1a.png"
+  },
+  {
+    "Id": 1038,
+    "Name": "Đùi gà bỏ da [Nướng nồi chiên không dầu]",
+    "Ingredients": "Thịt đùi gà bỏ da nướng chín",
+    "ServingName": "100g",
+    "CookingState": "Chín (Nướng không dầu)",
+    "FileName": "food-7c95040f4f09c7b7.png"
+  },
+  {
+    "Id": 1039,
+    "Name": "Cánh gà cả da [Nướng]",
+    "Ingredients": "Cánh gà còn da nướng chín",
+    "ServingName": "100g",
+    "CookingState": "Chín (Nướng)",
+    "FileName": "food-a2a28348d796cdc6.png"
+  },
+  {
+    "Id": 1040,
+    "Name": "Thịt thăn heo nạc [Sống]",
+    "Ingredients": "Thịt thăn nội heo tươi",
+    "ServingName": "100g",
+    "CookingState": "Sống (Nguyên liệu)",
+    "FileName": "food-a6d49788d8ecaec9.png"
+  },
+  {
+    "Id": 1041,
+    "Name": "Thịt thăn heo nạc [Luộc / Hấp]",
+    "Ingredients": "Thịt thăn heo luộc chín",
+    "ServingName": "100g",
+    "CookingState": "Chín (Luộc/Hấp)",
+    "FileName": "food-22389fea3dd3d650.png"
+  },
+  {
+    "Id": 1042,
+    "Name": "Thịt nạc vai heo [Sống]",
+    "Ingredients": "Thịt nạc vai heo có lẫn ít mỡ",
+    "ServingName": "100g",
+    "CookingState": "Sống (Nguyên liệu)",
+    "FileName": "food-6288a3b9d81f019a.png"
+  },
+  {
+    "Id": 1043,
+    "Name": "Thịt ba chỉ heo [Sống]",
+    "Ingredients": "Thịt ba chỉ heo tươi",
+    "ServingName": "100g",
+    "CookingState": "Sống (Nguyên liệu)",
+    "FileName": "food-cf1a794f991f17d6.png"
+  },
+  {
+    "Id": 1044,
+    "Name": "Thịt ba chỉ heo [Luộc]",
+    "Ingredients": "Thịt ba chỉ heo luộc chín (đã ra bớt một phần mỡ)",
+    "ServingName": "100g",
+    "CookingState": "Chín (Luộc)",
+    "FileName": "food-7dba7d0a0fb8375c.png"
+  },
+  {
+    "Id": 1045,
+    "Name": "Thịt bò thăn nạc [Sống]",
+    "Ingredients": "Thịt bò thăn tươi lọc mỡ",
+    "ServingName": "100g",
+    "CookingState": "Sống (Nguyên liệu)",
+    "FileName": "food-cae8f36af29bf009.png"
+  },
+  {
+    "Id": 1046,
+    "Name": "Thịt bò thăn nạc [Áp chảo / Xào ít dầu]",
+    "Ingredients": "Thịt bò thăn, chút dầu ăn và tiêu",
+    "ServingName": "100g",
+    "CookingState": "Chín (Áp chảo)",
+    "FileName": "food-22f7673b533396cc.png"
+  },
+  {
+    "Id": 1047,
+    "Name": "Thịt bò bắp [Luộc / Hầm]",
+    "Ingredients": "Thịt bắp bò hầm chín mềm",
+    "ServingName": "100g",
+    "CookingState": "Chín (Luộc/Hầm)",
+    "FileName": "food-41d678fa10e7d077.png"
+  },
+  {
+    "Id": 1048,
+    "Name": "Cá hồi Atlantic [Sống]",
+    "Ingredients": "Phi lê cá hồi tươi",
+    "ServingName": "100g",
+    "CookingState": "Sống (Nguyên liệu)",
+    "FileName": "food-55f894d5ae2177db.png"
+  },
+  {
+    "Id": 1049,
+    "Name": "Cá hồi Atlantic [Áp chảo / Nướng không dầu]",
+    "Ingredients": "Phi lê cá hồi áp chảo không thêm dầu",
+    "ServingName": "100g",
+    "CookingState": "Chín (Áp chảo/Nướng)",
+    "FileName": "food-0983fed2be09acd9.png"
+  },
+  {
+    "Id": 1050,
+    "Name": "Cá basa / Cá tra phi lê [Sống]",
+    "Ingredients": "Phi lê cá basa tươi",
+    "ServingName": "100g",
+    "CookingState": "Sống (Nguyên liệu)",
+    "FileName": "food-93cb2845050dc81a.png"
+  },
+  {
+    "Id": 1051,
+    "Name": "Cá rô phi phi lê [Sống]",
+    "Ingredients": "Phi lê cá rô phi tươi",
+    "ServingName": "100g",
+    "CookingState": "Sống (Nguyên liệu)",
+    "FileName": "food-490a41cf15bb69c1.png"
+  },
+  {
+    "Id": 1052,
+    "Name": "Cá rô phi [Hấp gừng hành]",
+    "Ingredients": "Cá rô phi, gừng, hành lá, chút muối",
+    "ServingName": "100g",
+    "CookingState": "Chín (Hấp)",
+    "FileName": "food-8942163fe12a423c.png"
+  },
+  {
+    "Id": 1053,
+    "Name": "Cá thu [Sống]",
+    "Ingredients": "Cá thu tươi cắt lát",
+    "ServingName": "100g",
+    "CookingState": "Sống (Nguyên liệu)",
+    "FileName": "food-d5b44f3a42425e53.png"
+  },
+  {
+    "Id": 1054,
+    "Name": "Cá ngừ đại dương [Sống]",
+    "Ingredients": "Phi lê cá ngừ tươi",
+    "ServingName": "100g",
+    "CookingState": "Sống (Nguyên liệu)",
+    "FileName": "food-ca6377b0e4ab68c0.png"
+  },
+  {
+    "Id": 1055,
+    "Name": "Cá ngừ đóng hộp ngâm nước [Ăn liền]",
+    "Ingredients": "Cá ngừ, nước muối nhẹ",
+    "ServingName": "100g",
+    "CookingState": "Chế biến sẵn (Đóng hộp)",
+    "FileName": "food-d533e816f40bff95.png"
+  },
+  {
+    "Id": 1056,
+    "Name": "Tôm sú / Tôm thẻ bỏ vỏ [Sống]",
+    "Ingredients": "Tôm tươi bóc vỏ",
+    "ServingName": "100g",
+    "CookingState": "Sống (Nguyên liệu)",
+    "FileName": "food-159a104461670728.png"
+  },
+  {
+    "Id": 1057,
+    "Name": "Tôm sú / Tôm thẻ [Hấp / Luộc]",
+    "Ingredients": "Tôm tươi hấp chín",
+    "ServingName": "100g",
+    "CookingState": "Chín (Hấp/Luộc)",
+    "FileName": "food-d5bbb16debe31c71.png"
+  },
+  {
+    "Id": 1058,
+    "Name": "Mực ống tươi [Sống]",
+    "Ingredients": "Mực ống làm sạch",
+    "ServingName": "100g",
+    "CookingState": "Sống (Nguyên liệu)",
+    "FileName": "food-06fbf89f37cc58e4.png"
+  },
+  {
+    "Id": 1059,
+    "Name": "Mực ống [Hấp gừng]",
+    "Ingredients": "Mực ống hấp gừng sả",
+    "ServingName": "100g",
+    "CookingState": "Chín (Hấp)",
+    "FileName": "food-bf1c2fdbfd2100cc.png"
+  },
+  {
+    "Id": 1060,
+    "Name": "Trứng gà công nghiệp [Sống]",
+    "Ingredients": "1 quả trứng gà nguyên quả bỏ vỏ",
+    "ServingName": "1 quả (~50g)",
+    "CookingState": "Sống (Nguyên liệu)",
+    "FileName": "food-77c39cb77c36dfa7.png"
+  },
+  {
+    "Id": 1061,
+    "Name": "Trứng gà [Luộc chín]",
+    "Ingredients": "1 quả trứng gà luộc",
+    "ServingName": "1 quả (~50g)",
+    "CookingState": "Chín (Luộc)",
+    "FileName": "food-f8885fb24b11a381.png"
+  },
+  {
+    "Id": 1062,
+    "Name": "Trứng gà [Chiên ốp la có dầu]",
+    "Ingredients": "1 quả trứng gà, 1 muỗng cà phê dầu ăn, chút muối",
+    "ServingName": "1 quả (~55g)",
+    "CookingState": "Chín (Chiên)",
+    "FileName": "food-3ca6fe7ee1f76c7b.png"
+  },
+  {
+    "Id": 1063,
+    "Name": "Lòng trắng trứng gà [Chín]",
+    "Ingredients": "Lòng trắng trứng gà tách lòng đỏ",
+    "ServingName": "100g (~3 lòng trắng)",
+    "CookingState": "Chín (Luộc/Áp chảo)",
+    "FileName": "food-d15fd73cc16cc3f3.png"
+  },
+  {
+    "Id": 1064,
+    "Name": "Đậu phụ (đậu hũ) trắng [Sống / Luộc]",
+    "Ingredients": "Đậu nành ép tươi",
+    "ServingName": "100g",
+    "CookingState": "Sống / Luộc",
+    "FileName": "food-f6b05638139e297a.png"
+  },
+  {
+    "Id": 1065,
+    "Name": "Đậu phụ cứng [Áp chảo ít dầu]",
+    "Ingredients": "Đậu phụ cứng, chút dầu ăn",
+    "ServingName": "100g",
+    "CookingState": "Chín (Áp chảo)",
+    "FileName": "food-048640c5dd0541c4.png"
+  },
+  {
+    "Id": 1066,
+    "Name": "Đậu phụ [Chiên vàng ngập dầu]",
+    "Ingredients": "Đậu phụ trắng chiên ngập dầu thực vật",
+    "ServingName": "100g",
+    "CookingState": "Chín (Chiên ngập dầu)",
+    "FileName": "food-fddd45d88094e586.png"
+  },
+  {
+    "Id": 1067,
+    "Name": "Gạo tẻ trắng [Sống / Khô]",
+    "Ingredients": "Hạt gạo tẻ trắng khô",
+    "ServingName": "100g",
+    "CookingState": "Sống (Khô)",
+    "FileName": "food-3420c2026a06a506.png"
+  },
+  {
+    "Id": 1068,
+    "Name": "Cơm trắng [Nấu chín]",
+    "Ingredients": "Gạo tẻ trắng nấu chín với nước",
+    "ServingName": "1 chén vừa (~150g)",
+    "CookingState": "Chín (Nấu)",
+    "FileName": "food-b9082c962e6b9279.png"
+  },
+  {
+    "Id": 1069,
+    "Name": "Gạo lứt [Sống / Khô]",
+    "Ingredients": "Hạt gạo lứt nguyên cám khô",
+    "ServingName": "100g",
+    "CookingState": "Sống (Khô)",
+    "FileName": "food-8d726e89a829ade6.png"
+  },
+  {
+    "Id": 1070,
+    "Name": "Cơm gạo lứt [Nấu chín]",
+    "Ingredients": "Gạo lứt nấu chín",
+    "ServingName": "1 chén vừa (~150g)",
+    "CookingState": "Chín (Nấu)",
+    "FileName": "food-e4243150b934980d.png"
+  },
+  {
+    "Id": 1071,
+    "Name": "Khoai lang ruột vàng [Sống]",
+    "Ingredients": "Khoai lang tươi gọt vỏ",
+    "ServingName": "100g",
+    "CookingState": "Sống (Nguyên liệu)",
+    "FileName": "food-330f4560e057b12d.png"
+  },
+  {
+    "Id": 1072,
+    "Name": "Khoai lang [Luộc / Hấp]",
+    "Ingredients": "Khoai lang luộc chín bỏ vỏ",
+    "ServingName": "100g",
+    "CookingState": "Chín (Luộc/Hấp)",
+    "FileName": "food-aa15350b9f09e5ae.png"
+  },
+  {
+    "Id": 1073,
+    "Name": "Khoai lang [Nướng cả vỏ]",
+    "Ingredients": "Khoai lang nướng chín",
+    "ServingName": "100g",
+    "CookingState": "Chín (Nướng)",
+    "FileName": "food-3cb38066c7355bdf.png"
+  },
+  {
+    "Id": 1074,
+    "Name": "Khoai tây [Luộc bỏ vỏ]",
+    "Ingredients": "Khoai tây luộc chín không muối",
+    "ServingName": "100g",
+    "CookingState": "Chín (Luộc)",
+    "FileName": "food-817122b231c73e24.png"
+  },
+  {
+    "Id": 1075,
+    "Name": "Khoai tây [Chiên giòn]",
+    "Ingredients": "Khoai tây cắt thanh chiên ngập dầu, muối",
+    "ServingName": "100g",
+    "CookingState": "Chín (Chiên ngập dầu)",
+    "FileName": "food-664a799744b6c5c0.png"
+  },
+  {
+    "Id": 1076,
+    "Name": "Bắp (ngô) Mỹ ngọt [Luộc]",
+    "Ingredients": "Bắp Mỹ luộc chín",
+    "ServingName": "1 trái vừa (~150g hạt)",
+    "CookingState": "Chín (Luộc)",
+    "FileName": "food-35391b75fbe8332a.png"
+  },
+  {
+    "Id": 1077,
+    "Name": "Yến mạch cán dẹt [Sống / Khô]",
+    "Ingredients": "Yến mạch nguyên hạt cán dẹt",
+    "ServingName": "50g",
+    "CookingState": "Sống (Khô)",
+    "FileName": "food-8d909d4cab17479b.png"
+  },
+  {
+    "Id": 1078,
+    "Name": "Bánh mì đen nguyên cám [Ăn liền]",
+    "Ingredients": "Bột mì nguyên cám, men nở, muối",
+    "ServingName": "2 lát (~70g)",
+    "CookingState": "Chế biến sẵn (Nướng)",
+    "FileName": "food-5d1e331e54a63fec.png"
+  },
+  {
+    "Id": 1079,
+    "Name": "Bánh mì ổ trắng không nhân",
+    "Ingredients": "Bột mì trắng, men, muối, nước",
+    "ServingName": "1 ổ (~90g)",
+    "CookingState": "Chế biến sẵn (Nướng)",
+    "FileName": "food-0525128718d23de9.png"
+  },
+  {
+    "Id": 1080,
+    "Name": "Mì Ý / Nui [Luộc chín]",
+    "Ingredients": "Bột mì cứng Semolina luộc chín",
+    "ServingName": "100g",
+    "CookingState": "Chín (Luộc)",
+    "FileName": "food-013465c2f758296f.png"
+  },
+  {
+    "Id": 1081,
+    "Name": "Rau muống [Luộc / Tươi]",
+    "Ingredients": "Rau muống tươi luộc nước sôi",
+    "ServingName": "100g",
+    "CookingState": "Chín (Luộc)",
+    "FileName": "food-73ec0d95d5dfe933.png"
+  },
+  {
+    "Id": 1082,
+    "Name": "Rau muống [Xào tỏi]",
+    "Ingredients": "Rau muống, tỏi, 1 muỗng canh dầu ăn, dầu hào/nước mắm",
+    "ServingName": "1 đĩa (~200g)",
+    "CookingState": "Chín (Xào dầu)",
+    "FileName": "food-23927629530776c4.png"
+  },
+  {
+    "Id": 1083,
+    "Name": "Bông cải xanh (Súp lơ xanh) [Luộc / Hấp]",
+    "Ingredients": "Bông cải xanh hấp chín",
+    "ServingName": "100g",
+    "CookingState": "Chín (Luộc/Hấp)",
+    "FileName": "food-08d3a38d5c703309.png"
+  },
+  {
+    "Id": 1084,
+    "Name": "Cải thìa (Cải chíp) [Luộc]",
+    "Ingredients": "Cải thìa luộc chín",
+    "ServingName": "100g",
+    "CookingState": "Chín (Luộc)",
+    "FileName": "food-cfc6714ba577ad34.png"
+  },
+  {
+    "Id": 1085,
+    "Name": "Cải thìa [Xào dầu hào]",
+    "Ingredients": "Cải thìa, tỏi, dầu ăn, dầu hào",
+    "ServingName": "1 đĩa (~200g)",
+    "CookingState": "Chín (Xào dầu)",
+    "FileName": "food-41d458a83c421b19.png"
+  },
+  {
+    "Id": 1086,
+    "Name": "Bắp cải trắng [Luộc]",
+    "Ingredients": "Bắp cải cắt miếng luộc",
+    "ServingName": "100g",
+    "CookingState": "Chín (Luộc)",
+    "FileName": "food-9977a8da32f40258.png"
+  },
+  {
+    "Id": 1087,
+    "Name": "Rau xà lách [Tươi sống]",
+    "Ingredients": "Rau xà lách rửa sạch",
+    "ServingName": "100g",
+    "CookingState": "Sống (Ăn tươi)",
+    "FileName": "food-34b4f86cd7bb1608.png"
+  },
+  {
+    "Id": 1088,
+    "Name": "Dưa leo (Dưa chuột) [Tươi sống]",
+    "Ingredients": "Dưa leo tươi nguyên vỏ",
+    "ServingName": "100g",
+    "CookingState": "Sống (Ăn tươi)",
+    "FileName": "food-6ff6941f00dca314.png"
+  },
+  {
+    "Id": 1089,
+    "Name": "Cà chua [Tươi sống]",
+    "Ingredients": "Cà chua chín tươi",
+    "ServingName": "100g",
+    "CookingState": "Sống (Ăn tươi)",
+    "FileName": "food-5d80454e1ceb61f0.png"
+  },
+  {
+    "Id": 1090,
+    "Name": "Cà rốt [Luộc]",
+    "Ingredients": "Cà rốt luộc chín",
+    "ServingName": "100g",
+    "CookingState": "Chín (Luộc)",
+    "FileName": "food-e38d56db083b1094.png"
+  },
+  {
+    "Id": 1091,
+    "Name": "Đậu bắp [Luộc]",
+    "Ingredients": "Đậu bắp tươi luộc",
+    "ServingName": "100g",
+    "CookingState": "Chín (Luộc)",
+    "FileName": "food-b00cabff8dfc6e4c.png"
+  },
+  {
+    "Id": 1092,
+    "Name": "Bí đỏ (Bí ngô) [Luộc / Hấp]",
+    "Ingredients": "Bí đỏ gọt vỏ hấp chín",
+    "ServingName": "100g",
+    "CookingState": "Chín (Luộc/Hấp)",
+    "FileName": "food-7b9b57c404ea10c6.png"
+  },
+  {
+    "Id": 1093,
+    "Name": "Bí đao (Bí xanh) [Luộc]",
+    "Ingredients": "Bí đao gọt vỏ luộc",
+    "ServingName": "100g",
+    "CookingState": "Chín (Luộc)",
+    "FileName": "food-b35732f06db8192e.png"
+  },
+  {
+    "Id": 1094,
+    "Name": "Đậu que (Đậu cô ve) [Luộc]",
+    "Ingredients": "Đậu cô ve luộc chín",
+    "ServingName": "100g",
+    "CookingState": "Chín (Luộc)",
+    "FileName": "food-15f9e16c4ef20950.png"
+  },
+  {
+    "Id": 1095,
+    "Name": "Nấm rơm / Nấm đùi gà [Xào ít dầu]",
+    "Ingredients": "Nấm tươi, hành tỏi, 1/2 muỗng cà phê dầu ăn",
+    "ServingName": "100g",
+    "CookingState": "Chín (Xào ít dầu)",
+    "FileName": "food-80e97b352acc0c0a.png"
+  },
+  {
+    "Id": 1096,
+    "Name": "Hành tây [Tươi / Xào]",
+    "Ingredients": "Củ hành tây bỏ vỏ",
+    "ServingName": "100g",
+    "CookingState": "Nguyên liệu",
+    "FileName": "food-a1c8de64a744464b.png"
+  },
+  {
+    "Id": 1097,
+    "Name": "Ớt chuông [Tươi sống]",
+    "Ingredients": "Ớt chuông đỏ/vàng/xanh",
+    "ServingName": "100g",
+    "CookingState": "Sống (Ăn tươi)",
+    "FileName": "food-6a91208f0ad81720.png"
+  },
+  {
+    "Id": 1098,
+    "Name": "Giá đỗ xanh [Tươi / Trụng]",
+    "Ingredients": "Giá đỗ xanh rửa sạch",
+    "ServingName": "100g",
+    "CookingState": "Sống / Trụng",
+    "FileName": "food-4d428f52055c4f9f.png"
+  },
+  {
+    "Id": 1099,
+    "Name": "Canh chua cá lóc",
+    "Ingredients": "Cá lóc, thơm, cà chua, đậu bắp, bạc hà, giá đỗ, me, đường, nước mắm",
+    "ServingName": "1 tô (~350g)",
+    "CookingState": "Chín (Nấu canh)",
+    "FileName": "food-9d20fdaaffc324fb.png"
+  },
+  {
+    "Id": 1100,
+    "Name": "Canh bí đao nấu thịt bằm",
+    "Ingredients": "Bí đao, thịt heo nạc bằm, hành ngò, gia vị",
+    "ServingName": "1 tô (~300g)",
+    "CookingState": "Chín (Nấu canh)",
+    "FileName": "food-0f299b6153d0f5cc.png"
+  },
+  {
+    "Id": 1101,
+    "Name": "Canh cải ngọt / cải xanh nấu thịt bằm",
+    "Ingredients": "Cải ngọt/cải xanh, thịt heo bằm, gừng, gia vị",
+    "ServingName": "1 tô (~300g)",
+    "CookingState": "Chín (Nấu canh)",
+    "FileName": "food-a7951a28769b717c.png"
+  },
+  {
+    "Id": 1102,
+    "Name": "Canh rau ngót nấu thịt bằm",
+    "Ingredients": "Rau ngót vò, thịt heo nạc bằm, gia vị",
+    "ServingName": "1 tô (~300g)",
+    "CookingState": "Chín (Nấu canh)",
+    "FileName": "food-b5b18fe4586e0dba.png"
+  },
+  {
+    "Id": 1103,
+    "Name": "Canh khổ qua nhồi thịt",
+    "Ingredients": "Khổ qua, thịt heo băm, mộc nhĩ, miến, hành lá",
+    "ServingName": "1 tô (~300g, 2 khoanh)",
+    "CookingState": "Chín (Nấu canh)",
+    "FileName": "food-e2f24c821d399d3c.png"
+  },
+  {
+    "Id": 1104,
+    "Name": "Canh rong biển nấu đậu phụ thịt bằm",
+    "Ingredients": "Rong biển khô ngâm nở, đậu phụ non, thịt bằm, dầu mè",
+    "ServingName": "1 tô (~300g)",
+    "CookingState": "Chín (Nấu canh)",
+    "FileName": "food-98fcdd4ac63ea833.png"
+  },
+  {
+    "Id": 1105,
+    "Name": "Salad trộn dầu giấm (không mayonnaise)",
+    "Ingredients": "Xà lách, cà chua bi, dưa leo, 1/2 muỗng dầu oliu, giấm táo",
+    "ServingName": "1 đĩa (~200g)",
+    "CookingState": "Sống (Trộn)",
+    "FileName": "food-505f7143bfd92bde.png"
+  },
+  {
+    "Id": 1106,
+    "Name": "Chuối tiêu / Chuối già chín",
+    "Ingredients": "Chuối chín bóc vỏ",
+    "ServingName": "1 quả vừa (~100g ăn được)",
+    "CookingState": "Tươi (Ăn liền)",
+    "FileName": "food-f0f86fd2da085169.png"
+  },
+  {
+    "Id": 1107,
+    "Name": "Táo tươi (cả vỏ)",
+    "Ingredients": "Táo tươi rửa sạch",
+    "ServingName": "1 quả vừa (~150g)",
+    "CookingState": "Tươi (Ăn liền)",
+    "FileName": "food-3cdfcf9e4ff17cde.png"
+  },
+  {
+    "Id": 1108,
+    "Name": "Ổi tươi (bỏ hạt)",
+    "Ingredients": "Ổi tươi rửa sạch",
+    "ServingName": "100g",
+    "CookingState": "Tươi (Ăn liền)",
+    "FileName": "food-c7f3de2393e15089.png"
+  },
+  {
+    "Id": 1109,
+    "Name": "Thanh long ruột trắng",
+    "Ingredients": "Thanh long bóc vỏ",
+    "ServingName": "100g",
+    "CookingState": "Tươi (Ăn liền)",
+    "FileName": "food-8b17c0496688d400.png"
+  },
+  {
+    "Id": 1110,
+    "Name": "Cam sành / Cam vàng",
+    "Ingredients": "Múi cam tươi",
+    "ServingName": "1 quả vừa (~130g ăn được)",
+    "CookingState": "Tươi (Ăn liền)",
+    "FileName": "food-8280986bd403c5bd.png"
+  },
+  {
+    "Id": 1111,
+    "Name": "Xoài chín",
+    "Ingredients": "Thịt xoài chín",
+    "ServingName": "100g",
+    "CookingState": "Tươi (Ăn liền)",
+    "FileName": "food-ef3140c1684638d1.png"
+  },
+  {
+    "Id": 1112,
+    "Name": "Đu đủ chín",
+    "Ingredients": "Đu đủ chín bỏ hạt",
+    "ServingName": "100g",
+    "CookingState": "Tươi (Ăn liền)",
+    "FileName": "food-10a60e004a3a4b5d.png"
+  },
+  {
+    "Id": 1113,
+    "Name": "Quả bơ (Bơ sáp)",
+    "Ingredients": "Thịt quả bơ tươi",
+    "ServingName": "100g (~1/2 quả vừa)",
+    "CookingState": "Tươi (Ăn liền)",
+    "FileName": "food-f16777c1f159eb8c.png"
+  },
+  {
+    "Id": 1114,
+    "Name": "Sầu riêng",
+    "Ingredients": "Cơm sầu riêng",
+    "ServingName": "100g (~1 múi nhỏ)",
+    "CookingState": "Tươi (Ăn liền)",
+    "FileName": "food-334d2a262295c630.png"
+  },
+  {
+    "Id": 1115,
+    "Name": "Nho tươi",
+    "Ingredients": "Nho tươi rửa sạch",
+    "ServingName": "100g",
+    "CookingState": "Tươi (Ăn liền)",
+    "FileName": "food-05a55686b5cd7de7.png"
+  },
+  {
+    "Id": 1116,
+    "Name": "Dâu tây tươi",
+    "Ingredients": "Dâu tây tươi",
+    "ServingName": "100g",
+    "CookingState": "Tươi (Ăn liền)",
+    "FileName": "food-18af85fc99ffed5f.png"
+  },
+  {
+    "Id": 1117,
+    "Name": "Đậu phộng (Lạc) rang không dầu",
+    "Ingredients": "Đậu phộng rang chín",
+    "ServingName": "30g (~1 nắm nhỏ)",
+    "CookingState": "Chín (Rang)",
+    "FileName": "food-c25278448fc74646.png"
+  },
+  {
+    "Id": 1118,
+    "Name": "Hạnh nhân rang không muối",
+    "Ingredients": "Hạt hạnh nhân rang mộc",
+    "ServingName": "30g (~23 hạt)",
+    "CookingState": "Chín (Rang)",
+    "FileName": "food-8f43c70af17789da.png"
+  },
+  {
+    "Id": 1119,
+    "Name": "Hạt điều rang",
+    "Ingredients": "Hạt điều rang không muối",
+    "ServingName": "30g (~18 hạt)",
+    "CookingState": "Chín (Rang)",
+    "FileName": "food-9bf155a2b992a85c.png"
+  },
+  {
+    "Id": 1120,
+    "Name": "Hạt chia khô",
+    "Ingredients": "Hạt chia nguyên hạt",
+    "ServingName": "15g (~1 muỗng canh)",
+    "CookingState": "Khô (Ngâm nước)",
+    "FileName": "food-a59fda31e6693838.png"
+  },
+  {
+    "Id": 1121,
+    "Name": "Bánh tráng trộn",
+    "Ingredients": "Bánh tráng, muối tôm, sa tế dầu, đậu phộng, bò khô, trứng cút, xoài xanh",
+    "ServingName": "1 bịch (~200g)",
+    "CookingState": "Ăn vặt (Trộn)",
+    "FileName": "food-1e285074c02db2a6.png"
+  },
+  {
+    "Id": 1122,
+    "Name": "Khoai tây lát Snack đóng gói",
+    "Ingredients": "Khoai tây, dầu thực vật, bột gia vị, muối",
+    "ServingName": "1 gói nhỏ (~45g)",
+    "CookingState": "Ăn vặt (Chiên)",
+    "FileName": "food-2fbc4cc1ca30dfac.png"
+  },
+  {
+    "Id": 1123,
+    "Name": "Bánh gạo lứt ăn kiêng (không đường)",
+    "Ingredients": "Gạo lứt nguyên cám nướng phồng",
+    "ServingName": "2 cái (~18g)",
+    "CookingState": "Ăn vặt (Nướng phồng)",
+    "FileName": "food-5444881fbce60cf7.png"
+  },
+  {
+    "Id": 1124,
+    "Name": "Sô cô la đen 70-85% cacao",
+    "Ingredients": "Cacao khối, bơ cacao, ít đường",
+    "ServingName": "20g (~2 ô nhỏ)",
+    "CookingState": "Ăn vặt (Thanh)",
+    "FileName": "food-2dba2b12ada778a7.png"
+  },
+  {
+    "Id": 1125,
+    "Name": "Sữa tươi không đường (TH/Vinamilk)",
+    "Ingredients": "Sữa bò tươi nguyên chất không thêm đường",
+    "ServingName": "1 hộp (180ml)",
+    "CookingState": "Đồ uống (Uống liền)",
+    "FileName": "food-6e44d151f04cbbbc.png"
+  },
+  {
+    "Id": 1126,
+    "Name": "Sữa tươi ít đường",
+    "Ingredients": "Sữa bò tươi, đường tinh luyện",
+    "ServingName": "1 hộp (180ml)",
+    "CookingState": "Đồ uống (Uống liền)",
+    "FileName": "food-55a5ac1417951876.png"
+  },
+  {
+    "Id": 1127,
+    "Name": "Sữa tươi tách béo không đường (Skim milk)",
+    "Ingredients": "Sữa bò tách hoàn toàn chất béo",
+    "ServingName": "200ml",
+    "CookingState": "Đồ uống (Uống liền)",
+    "FileName": "food-7f349eed9ad84fb8.png"
+  },
+  {
+    "Id": 1128,
+    "Name": "Sữa đậu nành không đường",
+    "Ingredients": "Hạt đậu nành nấu lọc, nước",
+    "ServingName": "200ml",
+    "CookingState": "Đồ uống (Uống liền)",
+    "FileName": "food-ec995e7abc7f9a35.png"
+  },
+  {
+    "Id": 1129,
+    "Name": "Sữa chua trắng không đường",
+    "Ingredients": "Sữa lên men tự nhiên không đường",
+    "ServingName": "1 hộp (100g)",
+    "CookingState": "Sữa (Ăn liền)",
+    "FileName": "food-ef995f572a14bcb1.png"
+  },
+  {
+    "Id": 1130,
+    "Name": "Sữa chua có đường",
+    "Ingredients": "Sữa lên men, đường tinh luyện",
+    "ServingName": "1 hộp (100g)",
+    "CookingState": "Sữa (Ăn liền)",
+    "FileName": "food-288ad1e76f251890.png"
+  },
+  {
+    "Id": 1131,
+    "Name": "Sữa chua Hy Lạp không đường",
+    "Ingredients": "Sữa chua tách whey giàu đạm",
+    "ServingName": "100g",
+    "CookingState": "Sữa (Ăn liền)",
+    "FileName": "food-c758324435292fc7.png"
+  },
+  {
+    "Id": 1132,
+    "Name": "Whey Protein Isolate (1 muỗng chuẩn)",
+    "Ingredients": "Đạm whey cô lập từ sữa",
+    "ServingName": "1 muỗng (~30g)",
+    "CookingState": "Bổ sung (Pha nước)",
+    "FileName": "food-7a709b55e5f8b04d.png"
+  },
+  {
+    "Id": 1133,
+    "Name": "Cà phê sữa đá (sữa đặc)",
+    "Ingredients": "Cà phê đen, 2 muỗng canh sữa đặc có đường, đá",
+    "ServingName": "1 ly (~250ml)",
+    "CookingState": "Đồ uống (Pha)",
+    "FileName": "food-65d901e21e313fab.png"
+  },
+  {
+    "Id": 1134,
+    "Name": "Trà sữa trân châu đường đen (100% đường)",
+    "Ingredients": "Trà đen, bột kem béo/sữa tươi, siro đường đen, trân châu tinh bột",
+    "ServingName": "1 ly size M (~500ml)",
+    "CookingState": "Đồ uống (Pha)",
+    "FileName": "food-a4d48713ee994df1.png"
+  },
+  {
+    "Id": 1135,
+    "Name": "Nước ngọt có gas (Coca/Pepsi thường)",
+    "Ingredients": "Nước có gas, đường mía/HFCS, hương liệu",
+    "ServingName": "1 lon (330ml)",
+    "CookingState": "Đồ uống (Đóng lon)",
+    "FileName": "food-1d3889dd84ef8bdc.png"
+  },
+  {
+    "Id": 1136,
+    "Name": "Nước dừa tươi nguyên chất",
+    "Ingredients": "Nước dừa xiêm tươi không thêm đường",
+    "ServingName": "1 trái (~300ml)",
+    "CookingState": "Đồ uống (Tươi)",
+    "FileName": "food-08ef9bd379e7df95.png"
+  },
+  {
+    "Id": 1137,
+    "Name": "Nước cam ép tươi không đường",
+    "Ingredients": "Cam tươi vắt bỏ xác",
+    "ServingName": "1 ly (250ml)",
+    "CookingState": "Đồ uống (Ép tươi)",
+    "FileName": "food-74dfc7f66883208a.png"
+  },
+  {
+    "Id": 1138,
+    "Name": "Dầu ăn thực vật (Đậu nành/Hướng dương)",
+    "Ingredients": "100% dầu thực vật tinh luyện",
+    "ServingName": "1 muỗng canh (13.6g)",
+    "CookingState": "Gia vị (Nấu ăn)",
+    "FileName": "food-d3bb06b129476fbd.png"
+  },
+  {
+    "Id": 1139,
+    "Name": "Dầu Ô liu nguyên chất (Extra Virgin)",
+    "Ingredients": "100% dầu ép từ quả ô liu",
+    "ServingName": "1 muỗng canh (13.5g)",
+    "CookingState": "Gia vị (Nấu/Trộn)",
+    "FileName": "food-8702236a5bfbd7fe.png"
+  },
+  {
+    "Id": 1140,
+    "Name": "Đường cát trắng",
+    "Ingredients": "Đường mía tinh luyện",
+    "ServingName": "1 muỗng cà phê (5g)",
+    "CookingState": "Gia vị (Nấu ăn)",
+    "FileName": "food-15e7378f66d04b52.png"
+  },
+  {
+    "Id": 1141,
+    "Name": "Nước mắm nguyên chất",
+    "Ingredients": "Cá cơm ủ chượp muối",
+    "ServingName": "1 muỗng canh (15ml)",
+    "CookingState": "Gia vị (Nấu/Chấm)",
+    "FileName": "food-822e9d59f0a2a04d.png"
+  },
+  {
+    "Id": 1142,
+    "Name": "Nước tương (Xì dầu)",
+    "Ingredients": "Đậu nành lên men, lúa mì, muối",
+    "ServingName": "1 muỗng canh (15ml)",
+    "CookingState": "Gia vị (Nấu/Chấm)",
+    "FileName": "food-991d8fce56e94af9.png"
+  },
+  {
+    "Id": 1143,
+    "Name": "Sốt Mayonnaise",
+    "Ingredients": "Dầu thực vật, lòng đỏ trứng gà, giấm",
+    "ServingName": "1 muỗng canh (15g)",
+    "CookingState": "Gia vị (Chấm/Trộn)",
+    "FileName": "food-0933261f0bcb62f4.png"
+  }
+]

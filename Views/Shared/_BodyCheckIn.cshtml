@@ -1,0 +1,17 @@
+@model CalorieBudget
+
+<details class="alert @(Model.BodyCheckInDue ? "alert-warning" : "alert-light border") mb-4"
+         id="body-check-in" open="@(Model.BodyCheckInDue ? "open" : null)">
+    <summary class="fw-semibold">Phản hồi cảm nhận / Điều chỉnh tốc độ</summary>
+    <p class="mt-3 mb-2">Bạn cảm thấy thế nào với mức độ giảm cân hiện tại?</p>
+    @if (Model.BodyCheckInDue)
+    {
+        <p class="small mb-2" data-body-check-in-due>Đã đến kỳ phản hồi sau @GoalPolicy.BodyCheckInDays ngày.</p>
+    }
+    <form asp-controller="Goal" asp-action="BodyCheckIn" method="post" class="d-flex flex-wrap gap-2">
+        <input type="hidden" name="id" value="@Model.Goal!.Id" />
+        <button type="submit" name="feedback" value="Keep" class="btn btn-outline-secondary">Tôi cảm thấy ổn, muốn giữ nguyên</button>
+        <button type="submit" name="feedback" value="Increase" class="btn btn-outline-secondary">Tôi thấy khỏe, muốn tăng tốc độ giảm cân</button>
+        <button type="submit" name="feedback" value="Decrease" class="btn btn-outline-secondary">Không ổn, muốn giảm nhẹ mức độ</button>
+    </form>
+</details>

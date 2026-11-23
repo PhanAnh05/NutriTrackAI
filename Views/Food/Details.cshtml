@@ -1,0 +1,279 @@
+@model FoodDetailsViewModel
+@{
+    ViewData["Title"] = Model.Food.Name + " - Thông tin dinh dưỡng";
+}
+
+<div class="container py-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb small">
+            <li class="breadcrumb-item"><a asp-action="Index" class="text-decoration-none text-muted">Danh mục món ăn</a></li>
+            <li class="breadcrumb-item text-muted">@Model.Food.Category.Name</li>
+            <li class="breadcrumb-item active text-dark" aria-current="page">@Model.Food.Name</li>
+        </ol>
+    </nav>
+
+    <!-- Allergy Warning Banner if matches user profile -->
+    @if (Model.HasAllergyWarning)
+    {
+        <div class="alert alert-danger border border-danger-subtle shadow-sm mb-4" role="alert">
+            <div class="d-flex align-items-start gap-3">
+                <i class="bi bi-exclamation-octagon-fill text-danger fs-3 flex-shrink-0 mt-1"></i>
+                <div>
+                    <h5 class="fw-bold mb-1 text-danger">Cảnh báo Dị ứng Nghiêm trọng!</h5>
+                    <p class="mb-0 text-dark small">
+                        Món <strong>@Model.Food.Name</strong> có chứa thành phần <span class="badge bg-danger text-white">@Model.AllergensFound</span> trùng khớp với danh sách dị ứng trong hồ sơ sức khỏe của bạn (<em>@Model.UserAllergies</em>). Bạn nên tránh sử dụng món này để đảm bảo an toàn.
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="row g-4">
+        <!-- Main Food Card -->
+        <div class="col-lg-8">
+            <div class="card card-custom p-4 p-md-5 border-0 shadow">
+                <!-- Top Header -->
+                <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
+                    <div>
+                        <span class="badge bg-light text-secondary border me-1">@Model.Food.Category.Name</span>
+                        @if (Model.Food.IsVegetarian)
+                        {
+                            <span class="badge bg-success-subtle text-success border border-success-subtle">
+                                <i class="bi bi-flower1 me-1"></i>Món chay
+                            </span>
+                        }
+                        <h2 class="fw-bold text-dark mt-2 mb-1">@Model.Food.Name</h2>
+                        <small class="text-muted">
+                            <i class="bi bi-box me-1"></i>Khẩu phần chuẩn: <strong>@Model.Food.ServingName</strong> (@Model.Food.ServingSize.ToString("0.#")g)
+                        </small>
+                    </div>
+
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <form asp-action="ToggleFavorite" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="foodId" value="@Model.Food.Id" />
+                            <button type="submit" class="btn @(Model.IsFavorite ? "btn-danger" : "btn-outline-danger") px-3 py-2">
+                                <i class="bi @(Model.IsFavorite ? "bi-heart-fill" : "bi-heart") me-1"></i>
+                                @(Model.IsFavorite ? "Đã yêu thích" : "Yêu thích")
+                            </button>
+                        </form>
+                    }
+                </div>
+
+                <partial name="_FoodImage" model="Model.Food" />
+
+                <!-- Calorie & Major Macro Stat Banner -->
+                <div class="p-4 rounded-4 text-white mb-4 shadow-sm" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                    <div class="row align-items-center text-center text-sm-start g-3">
+                        <div class="col-sm-5 border-end-sm">
+                            <span class="text-white-50 small d-block mb-1">Tổng năng lượng</span>
+                            <h1 class="fw-bold mb-0 display-5">@Model.Food.Calories.ToString("0.#") <span class="fs-5 fw-normal text-white-50">kcal</span></h1>
+                            @if (User.Identity?.IsAuthenticated == true && Model.UserDailyTargetCalories > 0)
+                            {
+                                var calPercent = Math.Round((Model.Food.Calories / Model.UserDailyTargetCalories) * 100m, 1);
+                                <small class="text-white-50 d-block mt-1">Chiếm <strong>@calPercent%</strong> mục tiêu calo trong ngày</small>
+                            }
+                        </div>
+                        <div class="col-sm-7">
+                            <div class="row g-2 text-center">
+                                <div class="col-4">
+                                    <div class="p-2 bg-white bg-opacity-25 rounded-3">
+                                        <small class="text-white-50 d-block" style="font-size: 0.75rem;">Chất đạm (P)</small>
+                                        <strong class="fs-5">@Model.Food.Protein.ToString("0.#")g</strong>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="p-2 bg-white bg-opacity-25 rounded-3">
+                                        <small class="text-white-50 d-block" style="font-size: 0.75rem;">Tinh bột (C)</small>
+                                        <strong class="fs-5">@Model.Food.Carb.ToString("0.#")g</strong>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="p-2 bg-white bg-opacity-25 rounded-3">
+                                        <small class="text-white-50 d-block" style="font-size: 0.75rem;">Chất béo (F)</small>
+                                        <strong class="fs-5">@Model.Food.Fat.ToString("0.#")g</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Micronutrients Table -->
+                <h5 class="fw-bold text-dark mb-3">Chỉ số vi lượng chi tiết</h5>
+                <div class="table-responsive mb-4">
+                    <table class="table table-bordered align-middle">
+                        <thead class="table-light small text-secondary">
+                            <tr>
+                                <th>Thành phần dinh dưỡng</th>
+                                <th>Hàm lượng trong khẩu phần</th>
+                                <th>Ý nghĩa dinh dưỡng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Chất xơ (Fiber)</strong></td>
+                                <td class="text-success fw-bold">@Model.Food.Fiber.ToString("0.#") g</td>
+                                <td class="text-muted small">Hỗ trợ tiêu hóa, làm chậm hấp thu đường, tăng cảm giác no</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Đường (Sugar)</strong></td>
+                                <td class="@(Model.Food.Sugar > 20 ? "text-danger fw-bold" : "text-dark")">@Model.Food.Sugar.ToString("0.#") g</td>
+                                <td class="text-muted small">Đường tự nhiên hoặc đường thêm, cần khống chế khi giảm cân</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Muối Natri (Sodium)</strong></td>
+                                <td class="@(Model.Food.Sodium > 1000 ? "text-danger fw-bold" : "text-dark")">@Model.Food.Sodium.ToString("0.#") mg</td>
+                                <td class="text-muted small">Khuyến nghị của WHO &lt; 2.000 mg natri mỗi ngày</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Ingredients Section -->
+                @if (!string.IsNullOrEmpty(Model.Food.Ingredients))
+                {
+                    <h5 class="fw-bold text-dark mb-2">Thành phần nguyên liệu chính</h5>
+                    <p class="text-secondary small mb-4 bg-light p-3 rounded-3 border">
+                        <i class="bi bi-card-text text-primary me-2"></i>@Model.Food.Ingredients
+                    </p>
+                }
+
+                <!-- Health Warning Section if any -->
+                @if (!string.IsNullOrEmpty(Model.Food.HealthWarning))
+                {
+                    <div class="alert alert-warning border border-warning-subtle shadow-sm mb-4">
+                        <div class="d-flex align-items-start gap-2">
+                            <i class="bi bi-info-circle-fill text-warning fs-5 flex-shrink-0 mt-1"></i>
+                            <div>
+                                <strong class="text-dark d-block">Lưu ý sức khỏe từ chuyên gia:</strong>
+                                <span class="text-secondary small">@Model.Food.HealthWarning</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                    <a asp-action="Index" class="btn btn-outline-custom">
+                        <i class="bi bi-arrow-left me-1"></i> Quay lại danh mục
+                    </a>
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <button type="button" class="btn btn-primary-custom px-4" data-bs-toggle="modal" data-bs-target="#modalAddToMeal">
+                            <i class="bi bi-plus-circle me-1"></i> Thêm vào Nhật ký Bữa ăn
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Allergen & Nutrition Guidance -->
+        <div class="col-lg-4">
+            <!-- Allergen Box -->
+            <div class="card card-custom p-4 border-0 shadow-sm mb-4">
+                <h5 class="fw-bold text-dark mb-3"><i class="bi bi-shield-check text-success me-2"></i>Nhãn Dị Ứng Chuẩn Hóa</h5>
+                @if (Model.Food.HasAllergenNotes)
+                {
+                    <div class="p-3 bg-danger-subtle rounded-3 border border-danger-subtle text-danger mb-3">
+                        <strong class="d-block mb-1"><i class="bi bi-exclamation-triangle-fill me-1"></i>Chứa chất gây dị ứng:</strong>
+                        <span>@Model.Food.AllergenNotes</span>
+                    </div>
+                    <small class="text-muted d-block">
+                        Nếu bạn có tiền sử dị ứng với các thành phần trên, hệ thống khuyến cáo không nên thêm món này vào thực đơn hằng ngày.
+                    </small>
+                }
+                else
+                {
+                    <div class="p-3 bg-success-subtle rounded-3 border border-success-subtle text-success">
+                        <i class="bi bi-check-circle-fill me-1"></i> Món ăn này không chứa các chất gây dị ứng phổ biến được đánh dấu.
+                    </div>
+                }
+            </div>
+
+            <!-- Safe Nutrition Note -->
+            <div class="card card-custom p-4 border-0 shadow-sm">
+                <h5 class="fw-bold text-dark mb-3"><i class="bi bi-lightbulb text-warning me-2"></i>Lời Khuyên Sử Dụng</h5>
+                <ul class="text-secondary small ps-3 mb-0">
+                    <li class="mb-2">Kiểm soát định lượng khẩu phần nạp vào để giữ đúng ngân sách calo trong ngày.</li>
+                    <li class="mb-2">Nên phối hợp món này với nhiều rau xanh để bổ sung chất xơ và vitamin vi lượng.</li>
+                    <li>Uống đủ nước sau bữa ăn để hỗ trợ quá trình chuyển hóa năng lượng tốt nhất.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Thêm Nhanh Vào Nhật Ký Bữa Ăn -->
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <div class="modal fade" id="modalAddToMeal" tabindex="-1" aria-labelledby="modalAddToMealLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold text-dark" id="modalAddToMealLabel">
+                        <i class="bi bi-journal-plus text-success me-2"></i>Thêm Món Vào Nhật Ký Bữa Ăn
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form asp-controller="MealLog" asp-action="AddFood" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="FoodId" value="@Model.Food.Id" />
+                    @if (Model.HasAllergyWarning)
+                    {
+                        <input type="hidden" name="ConfirmedAllergy" value="true" />
+                    }
+
+                    <div class="modal-body py-4">
+                        <div class="p-3 bg-light rounded-3 border mb-3">
+                            <strong class="text-dark d-block">@Model.Food.Name</strong>
+                            <small class="text-muted">Định lượng chuẩn: @Model.Food.ServingName (@Model.Food.ServingSize.ToString("0.#")g) = @Model.Food.Calories.ToString("0.#") kcal</small>
+                        </div>
+
+                        @if (Model.HasAllergyWarning)
+                        {
+                            <div class="alert alert-danger py-2 small mb-3">
+                                <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                                Món này chứa thành phần <strong>@Model.AllergensFound</strong> trùng với hồ sơ dị ứng của bạn. Bạn vẫn chắc chắn muốn thêm món này?
+                            </div>
+                        }
+
+                        <!-- Chọn Ngày -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold text-secondary">Ngày ăn:</label>
+                            <input type="date" name="LoggedOn" class="form-control" value="@GoalPolicy.Today.ToString("yyyy-MM-dd")" max="@GoalPolicy.Today.ToString("yyyy-MM-dd")" required />
+                        </div>
+
+                        <!-- Chọn Bữa -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold text-secondary">Bữa ăn:</label>
+                            <select name="MealType" class="form-select" required>
+                                <option value="1">Bữa sáng (Breakfast)</option>
+                                <option value="2" selected>Bữa trưa (Lunch)</option>
+                                <option value="3">Bữa tối (Dinner)</option>
+                                <option value="4">Bữa phụ (Snack)</option>
+                            </select>
+                        </div>
+
+                        <!-- Khẩu phần -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold text-secondary">Định lượng khẩu phần ăn (g hoặc số phần):</label>
+                            <div class="input-group">
+                                <input type="number" step="0.1" min="0.1" max="5000" name="Servings" class="form-control" value="@Model.Food.ServingSize" required />
+                                <span class="input-group-text bg-light">g/phần</span>
+                            </div>
+                            <small class="text-muted">Hệ thống sẽ tự động nhân tỷ lệ calo và dinh dưỡng theo số bạn nhập.</small>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 pt-0">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-primary-custom px-4">
+                            <i class="bi bi-check-circle me-1"></i> Ghi nhận ngay
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}

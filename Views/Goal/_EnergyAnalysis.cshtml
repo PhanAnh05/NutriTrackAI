@@ -1,0 +1,92 @@
+@model NutriTrackAI.Services.CalorieTargetResult
+@using System.Globalization
+@using System.Text.Json
+@{
+    var tone = Model.IsBlocked ? "danger" : Model.WarningFlag ? "warning-emphasis" : "success";
+    var vi = CultureInfo.GetCultureInfo("vi-VN");
+    var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+    options.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+    var paceOptions = JsonSerializer.Serialize(Model.PaceOptions, options);
+    var healthReasons = JsonSerializer.Serialize(Model.Health?.Reasons ?? []);
+}
+<div class="bg-light rounded p-3 p-md-4" data-blocked="@Model.IsBlocked.ToString().ToLowerInvariant()" data-recommended-weeks="@Model.RecommendedWeeks"
+     data-pace-zone="@Model.PaceZone" data-pace-zone-label="@Model.PaceZoneLabel" data-pace-options="@paceOptions" data-max-weekly-rate-kg="@Model.MaxWeeklyRateKg.ToString(CultureInfo.InvariantCulture)"
+     data-applied-weekly-rate-kg="@Model.AppliedWeeklyRateKg.ToString(CultureInfo.InvariantCulture)"
+     data-health-tier="@Model.Health?.Tier" data-health-reasons="@healthReasons"
+     data-hide-details="@Model.HideEnergyDetails.ToString().ToLowerInvariant()"
+     data-requires-intense-pace-ack="@Model.RequiresIntensePaceAck.ToString().ToLowerInvariant()">
+    @if (Model.HideEnergyDetails)
+    {
+        <p class="mb-0" role="status">@Model.BlockedReason</p>
+        @if (Model.RequiresHealthScreening)
+        {
+            <a class="d-inline-block mt-2" asp-controller="Profile" asp-action="Screening"
+               asp-route-returnUrl="@Url.Action("Create", "Goal", new { resume = "goal" })" data-screening-return>Cập nhật sàng lọc sức khỏe</a>
+        }
+    }
+    else
+    {
+    <h2 class="h5">Phân tích năng lượng mục tiêu</h2>
+    <p class="text-@tone fw-semibold">@Model.StatusLabel</p>
+    @if (!string.IsNullOrWhiteSpace(Model.WarningMessage))
+    {
+        <p class="@(Model.PaceZone == PaceZone.VerySlow ? "alert alert-warning py-2" : null)" role="status">@Model.WarningMessage</p>
+    }
+    @if (Model.Health is { Reasons.Count: > 0 } health)
+    {
+        <p class="text-warning-emphasis small" role="status">@string.Join(". ", health.Reasons)</p>
+    }
+    <dl class="row small mb-0">
+        <dt class="col-7">BMR ước tính</dt><dd class="col-5 text-end">@Model.Bmr.ToString("N0", vi) kcal/ngày</dd>
+        <dt class="col-7">TDEE ước tính</dt><dd class="col-5 text-end">@Model.Tdee.ToString("N0", vi) kcal/ngày</dd>
+        <dt class="col-7">BMI mục tiêu</dt><dd class="col-5 text-end">@Model.TargetBmi.ToString("0.00", vi)</dd>
+        <dt class="col-7">Cân nặng cần thay đổi</dt><dd class="col-5 text-end">@Model.WeightDifferenceKg.ToString("0.0", vi) kg</dd>
+        @if (Model.DurationWeeks > 0)
+        {
+            <dt class="col-7">Tốc độ theo thời gian mong muốn</dt><dd class="col-5 text-end">@Model.WeeklyRateKg.ToString("0.00", vi) kg/tuần</dd>
+        }
+        @if (!string.IsNullOrEmpty(Model.PaceZoneLabel))
+        {
+            <dt class="col-7">Mức tốc độ</dt><dd class="col-5 text-end">@Model.PaceZoneLabel</dd>
+        }
+        @if (!Model.IsBlocked && Model.WeightDifferenceKg > 0)
+        {
+            <dt class="col-7">Tốc độ ước tính theo calo áp dụng</dt><dd class="col-5 text-end">@Model.AppliedWeeklyRateKg.ToString("0.00", vi) kg/tuần</dd>
+        }
+        @if (Model.DurationWeeks > 0)
+        {
+            <dt class="col-7">Điều chỉnh cần theo thời hạn</dt><dd class="col-5 text-end">@Model.RequiredDailyAdjustment.ToString("0.##", vi) kcal/ngày</dd>
+        }
+        @if (!Model.IsBlocked)
+        {
+            <dt class="col-7">Điều chỉnh kế hoạch đề xuất</dt><dd class="col-5 text-end">@Model.PlannedDailyAdjustment.ToString("0.##", vi) kcal/ngày</dd>
+            <dt class="col-7">Calo mục tiêu theo kế hoạch</dt><dd class="col-5 text-end fw-bold">@Model.DailyCalorieTarget.ToString("N0", vi) kcal/ngày</dd>
+        }
+        @if (Model.DurationWeeks > 0)
+        {
+            <dt class="col-7">Thời gian mong muốn</dt><dd class="col-5 text-end">@Model.DurationWeeks tuần</dd>
+        }
+        @if (Model.EstimatedWeeks > 0)
+        {
+            <dt class="col-7">Dự kiến nếu giữ mức đề xuất</dt><dd class="col-5 text-end">Khoảng @Model.EstimatedWeeks tuần</dd>
+        }
+        @if (Model.MinimumMathematicalWeeks > 0)
+        {
+            <dt class="col-7">Tối thiểu về toán học theo giới hạn</dt><dd class="col-5 text-end">@Model.MinimumMathematicalWeeks tuần</dd>
+        }
+    </dl>
+    @if (Model.IsBlocked && Model.MinimumMathematicalWeeks > GoalPolicy.MaxGoalWeeks)
+    {
+        <p class="mt-3">Cần đánh giá lại cân nặng đích hoặc phạm vi thời gian hỗ trợ (tối đa 104 tuần).</p>
+    }
+    @if (Model.IntroductoryDailyBudgetKcal is int introductoryBudget)
+    {
+        <p class="mt-3 mb-2">Hai tuần đầu ăn khoảng <strong>@introductoryBudget.ToString("N0", vi) kcal/ngày</strong>.</p>
+    }
+    @if (Model.StagedEstimateWeeks.HasValue)
+    {
+        <p class="small mt-3">Tham khảo nếu sau 14 ngày bạn được đánh giá phù hợp và xác nhận chuyển từ mức làm quen sang mức thông thường: khoảng @Model.StagedEstimateWeeks tuần. Ước tính này cộng năng lượng từng giai đoạn; giai đoạn sau chưa được áp dụng.</p>
+    }
+    <p class="small text-muted mt-3 mb-0">7700 kcal/kg là phép quy đổi xấp xỉ phục vụ đánh giá ban đầu. TDEE và thời gian dự kiến thay đổi theo cân nặng. @GoalPolicy.AdultBmiReference BMI chỉ dùng để sàng lọc. Giới tính Khác dùng hằng số −78 theo quy ước kỹ thuật của đồ án.</p>
+    }
+</div>

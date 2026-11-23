@@ -1,0 +1,141 @@
+@model MealPlanIndexViewModel
+@using System.Globalization
+@using System.Text.Json
+@{
+    var plan = Model.CurrentPlan;
+    if (plan is null) { return; }
+    var vi = CultureInfo.GetCultureInfo("vi-VN");
+    var macros = Model.RecommendedMacros;
+    var nutrients = new[]
+    {
+        (Name: "Chất đạm", Tone: "protein", Grams: plan.TotalProtein, Percent: plan.ProteinPercent),
+        (Name: "Tinh bột", Tone: "carb", Grams: plan.TotalCarb, Percent: plan.CarbPercent),
+        (Name: "Chất béo", Tone: "fat", Grams: plan.TotalFat, Percent: plan.FatPercent)
+    };
+}
+
+<section class="daily-plan" aria-labelledby="planTitleDisplay" data-swap-url="@Url.Action("GetSwapCandidates", "MealPlan")" data-food-url="@Url.Action("Details", "Food", new { id = 0 })">
+    <div class="daily-plan__overview">
+        <header class="daily-plan__header">
+            <div class="daily-plan__heading">
+                <span class="daily-plan__goal"><i class="bi bi-bullseye" aria-hidden="true"></i>@plan.GoalTypeName</span>
+                <h2 id="planTitleDisplay">@plan.Name</h2>
+            </div>
+            <div class="daily-plan__actions">
+                <button type="button" class="daily-plan__button" data-bs-toggle="modal" data-bs-target="#savePlanModal">
+                    <i class="bi bi-bookmark-plus" aria-hidden="true"></i>Lưu thực đơn
+                </button>
+                <form asp-action="ApplyToToday" method="post" onsubmit="return confirm('Bạn có muốn ghi nhận toàn bộ các món trong thực đơn này vào Nhật ký bữa ăn hôm nay không?');">
+                    <input type="hidden" name="planJson" id="applyPlanJsonInput" value="@JsonSerializer.Serialize(plan)" />
+                    <button type="submit" class="daily-plan__button daily-plan__button--primary">
+                        <i class="bi bi-calendar-check" aria-hidden="true"></i>Áp dụng vào Nhật ký hôm nay
+                    </button>
+                </form>
+            </div>
+        </header>
+
+        <div class="daily-plan__metrics">
+            <div class="daily-plan__energy">
+                <span><i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>Năng lượng thực đơn</span>
+                <strong><span data-plan-calories>@plan.TotalCalories.ToString("N0", vi)</span> <small>kcal</small></strong>
+                <span>Mục tiêu @plan.TargetCalories.ToString("N0", vi) kcal</span>
+                <span class="daily-plan__within" hidden="@(!plan.IsWithinTarget)"><i class="bi bi-check-circle" aria-hidden="true"></i><span>Chuẩn calo (lệch <span data-calorie-difference>@plan.CalorieDifferencePercent.ToString("0.##", vi)%</span>)</span></span>
+            </div>
+            <dl class="daily-plan__nutrients">
+                @foreach (var nutrient in nutrients)
+                {
+                    <div class="daily-plan__nutrient daily-plan__nutrient--@nutrient.Tone">
+                        <dt>@nutrient.Name</dt>
+                        <dd><strong>@nutrient.Grams.ToString("0.0", vi)</strong> g</dd>
+                        <dd class="daily-plan__ratio">
+                            <span class="daily-plan__track" aria-hidden="true"><span style="width:@(Math.Clamp(nutrient.Percent, 0, 100))%"></span></span>
+                            <span data-percent>@nutrient.Percent% calo</span>
+                        </dd>
+                    </div>
+                }
+            </dl>
+        </div>
+        <div class="daily-plan__explanation">
+            <i class="bi bi-info-circle" aria-hidden="true"></i>
+            <div><strong>Cơ sở khoa học &amp; lý do đề xuất</strong><p id="planExplanationDisplay">@plan.Explanation</p></div>
+        </div>
+        <p class="daily-plan__feedback" role="status"></p>
+    </div>
+
+    <div class="daily-plan__meals" id="mealsContainer">
+        @for (var mIndex = 0; mIndex < plan.Meals.Count; mIndex++)
+        {
+            var meal = plan.Meals[mIndex];
+            <article class="daily-meal meal-column" data-meal-type="@((int)meal.MealType)" aria-labelledby="meal-heading-@mIndex">
+                <header class="daily-meal__header">
+                    <span class="daily-meal__icon"><i class="bi @meal.MealIcon" aria-hidden="true"></i></span>
+                    <div>
+                        <h3 id="meal-heading-@mIndex">@meal.MealName</h3>
+                        @if (meal.TargetCalories > 0)
+                        {
+                            <p>Ngân sách ~@meal.TargetCalories.ToString("N0", vi) kcal</p>
+                        }
+                        @if (Model.DietaryConstraints.DistributeCarbs && macros is { UnavailableReason: null })
+                        {
+                            <p>Tinh bột tham khảo @((macros.CarbGrams / plan.Meals.Count).ToString("0.0", vi)) g</p>
+                        }
+                    </div>
+                    <div class="daily-meal__energy"><strong class="meal-total-cal">@meal.TotalCalories.ToString("N0", vi)</strong> kcal</div>
+                </header>
+                <ul class="daily-meal__foods">
+                    @for (var iIndex = 0; iIndex < meal.Items.Count; iIndex++)
+                    {
+                        var item = meal.Items[iIndex];
+                        var photo = new Food { Name = item.FoodName, ImageUrl = item.ImageUrl };
+                        var portion = item.ServingUnit;
+                        if (!item.ServingUnit.Any(char.IsDigit))
+                        {
+                            portion = $"{item.Servings.ToString("0.##", vi)} {item.ServingUnit}";
+                        }
+                        else if (item.StandardServingSize > 0 && item.Servings != item.StandardServingSize)
+                        {
+                            var multiple = (item.Servings / item.StandardServingSize).ToString("0.##", vi);
+                            portion = $"{multiple} × khẩu phần {item.ServingUnit}";
+                        }
+                        <li class="daily-food food-item-row" data-food-id="@item.FoodId" data-meal-index="@mIndex" data-item-index="@iIndex">
+                            <span class="daily-food__photo" aria-hidden="true">
+                                <i class="bi bi-egg-fried"></i>
+                                <partial name="_FoodImage" model="photo" />
+                            </span>
+                            <div class="daily-food__content">
+                                <a asp-controller="Food" asp-action="Details" asp-route-id="@item.FoodId" class="item-food-name" target="_blank" rel="noopener">@item.FoodName</a>
+                                <p class="item-servings-text">@portion · @item.Calories.ToString("N0", vi) kcal</p>
+                                <ul class="daily-food__macros" aria-label="Dinh dưỡng của @item.FoodName">
+                                    <li>Đạm @item.Protein.ToString("0.0", vi) g</li>
+                                    <li>Tinh bột @item.Carb.ToString("0.0", vi) g</li>
+                                    <li>Béo @item.Fat.ToString("0.0", vi) g</li>
+                                </ul>
+                            </div>
+                            <button type="button" class="daily-plan__button daily-food__swap" aria-label="Đổi món @item.FoodName" aria-haspopup="dialog">
+                                <i class="bi bi-arrow-left-right" aria-hidden="true"></i>Đổi món
+                            </button>
+                        </li>
+                    }
+                </ul>
+                <footer class="daily-meal__totals">
+                    <span>Đạm <b>@meal.TotalProtein.ToString("0.0", vi) g</b></span>
+                    <span>Tinh bột <b>@meal.TotalCarb.ToString("0.0", vi) g</b></span>
+                    <span>Béo <b>@meal.TotalFat.ToString("0.0", vi) g</b></span>
+                </footer>
+            </article>
+        }
+    </div>
+
+    <section class="daily-plan__shopping" aria-labelledby="plan-shopping-heading" hidden="@(!plan.AggregatedIngredients.Any())">
+        <header>
+            <h3 id="plan-shopping-heading"><i class="bi bi-basket2" aria-hidden="true"></i>Danh sách đi chợ</h3>
+            <span>@plan.AggregatedIngredients.Count nguyên liệu</span>
+        </header>
+        <ul>
+            @foreach (var ingredient in plan.AggregatedIngredients)
+            {
+                <li>@ingredient</li>
+            }
+        </ul>
+    </section>
+</section>

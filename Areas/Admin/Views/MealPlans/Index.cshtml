@@ -1,0 +1,130 @@
+@model List<MealPlan>
+@{
+    ViewData["Title"] = "Quản lý Thực đơn Mẫu";
+}
+
+<div class="container-fluid px-0">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <h2 class="fw-bold mb-1">
+                <i class="bi bi-calendar2-range-fill text-emerald me-2"></i>Thực đơn Dinh dưỡng Mẫu
+            </h2>
+            <p class="text-muted mb-0">Quản lý các thực đơn chuẩn theo từng mục tiêu (Giảm cân, Tăng cân, Duy trì) cho người dùng tham khảo.</p>
+        </div>
+        <div>
+            <a asp-area="Admin" asp-controller="MealPlans" asp-action="Create" class="btn btn-emerald rounded-pill px-3">
+                <i class="bi bi-plus-circle me-1"></i>Tạo Thực đơn Mẫu Mới
+            </a>
+        </div>
+    </div>
+
+    <div class="card-custom p-4 mb-4">
+        @if (!Model.Any())
+        {
+            <div class="text-center py-5 text-muted">
+                <i class="bi bi-calendar-x fs-1 d-block mb-2 opacity-50"></i>
+                <h5>Chưa có thực đơn mẫu nào</h5>
+                <p class="small">Hãy tạo thực đơn mẫu mới để hỗ trợ người dùng áp dụng nhanh.</p>
+                <a asp-area="Admin" asp-controller="MealPlans" asp-action="Create" class="btn btn-emerald btn-sm rounded-pill mt-2">
+                    Tạo thực đơn ngay
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 50px;">ID</th>
+                            <th>Tên Thực đơn</th>
+                            <th>Mục tiêu Phù hợp</th>
+                            <th class="text-end">Calo Mục tiêu</th>
+                            <th class="text-center">Số món</th>
+                            <th class="text-center">Trạng thái</th>
+                            <th class="text-end" style="width: 200px;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var plan in Model)
+                        {
+                            <tr>
+                                <td class="text-muted fw-semibold">#@plan.Id</td>
+                                <td>
+                                    <div class="fw-bold text-slate-900">@plan.Name</div>
+                                    <div class="text-muted small text-truncate" style="max-width: 320px;">
+                                        @(string.IsNullOrEmpty(plan.Explanation) ? "—" : plan.Explanation)
+                                    </div>
+                                </td>
+                                <td>
+                                    @switch (plan.GoalType)
+                                    {
+                                        case GoalType.Lose:
+                                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Giảm cân</span>
+                                            break;
+                                        case GoalType.Gain:
+                                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle">Tăng cân</span>
+                                            break;
+                                        case GoalType.Maintain:
+                                            <span class="badge bg-success-subtle text-success border border-success-subtle">Duy trì</span>
+                                            break;
+                                    }
+                                </td>
+                                <td class="text-end fw-bold">
+                                    @plan.TargetCalories.ToString("N0") <span class="fw-normal text-muted small">kcal</span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-light text-dark border px-2 py-1">
+                                        @(plan.Items?.Count ?? 0) món
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    @if (plan.IsPublic)
+                                    {
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">
+                                            <i class="bi bi-globe me-1"></i>Công khai
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle px-2 py-1">
+                                            <i class="bi bi-lock me-1"></i>Riêng tư
+                                        </span>
+                                    }
+                                </td>
+                                <td class="text-end">
+                                    <div class="d-flex justify-content-end gap-1">
+                                        <!-- Details & Manage Items -->
+                                        <a asp-area="Admin" asp-controller="MealPlans" asp-action="Details" asp-route-id="@plan.Id" class="btn btn-sm btn-outline-primary rounded-3" title="Chi tiết & Thêm/bớt món">
+                                            <i class="bi bi-list-task me-1"></i>Chi tiết
+                                        </a>
+
+                                        <!-- Toggle Public -->
+                                        <form asp-area="Admin" asp-controller="MealPlans" asp-action="TogglePublic" method="post" class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@plan.Id" />
+                                            <button type="submit" class="btn btn-sm @(plan.IsPublic ? "btn-outline-warning" : "btn-outline-success") rounded-3"
+                                                    title="@(plan.IsPublic ? "Chuyển riêng tư" : "Công khai thực đơn")">
+                                                <i class="bi @(plan.IsPublic ? "bi-eye-slash" : "bi-eye")"></i>
+                                            </button>
+                                        </form>
+
+                                        <!-- Delete -->
+                                        <form asp-area="Admin" asp-controller="MealPlans" asp-action="Delete" method="post" class="d-inline"
+                                              onsubmit="return confirm('Bạn có chắc muốn xóa thực đơn mẫu \'@plan.Name\'?');">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@plan.Id" />
+                                            <button type="submit" class="btn btn-sm btn-outline-danger rounded-3" title="Xóa thực đơn">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

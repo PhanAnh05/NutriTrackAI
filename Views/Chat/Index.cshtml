@@ -1,0 +1,354 @@
+@model NutriTrackAI.Models.ViewModels.ChatIndexViewModel
+@using NutriTrackAI.Models.Enums
+@{
+    ViewData["Title"] = "Trợ lý Dinh dưỡng AI (Gemini)";
+}
+
+<div class="container-fluid py-3 px-lg-4">
+    <!-- CSRF Token Container for AJAX -->
+    <form id="antiForgeryForm" style="display:none">
+        @Html.AntiForgeryToken()
+    </form>
+
+    <div class="row g-3" style="min-height: calc(100vh - 190px);">
+        <!-- CỘT TRÁI: Danh sách các phiên trò chuyện (Chat Sessions) -->
+        <div class="col-lg-3 col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100 p-3 bg-white d-flex flex-column">
+                <!-- Nút Cuộc trò chuyện mới -->
+                <form asp-action="NewSession" method="post" class="mb-3">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-emerald text-white rounded-pill w-100 fw-semibold shadow-xs py-2">
+                        <i class="bi bi-plus-lg me-1"></i>Cuộc trò chuyện mới
+                    </button>
+                </form>
+
+                <div class="d-flex justify-content-between align-items-center mb-2 px-1">
+                    <span class="text-muted small fw-semibold text-uppercase">Lịch sử trò chuyện</span>
+                    <span class="badge bg-light text-secondary rounded-pill">@Model.Sessions.Count</span>
+                </div>
+
+                <!-- Danh sách phiên chat cuộn dọc -->
+                <div class="flex-grow-1 overflow-auto pe-1" style="max-height: calc(100vh - 350px);">
+                    @if (Model.Sessions.Any())
+                    {
+                        <div class="list-group list-group-flush gap-1">
+                            @foreach (var s in Model.Sessions)
+                            {
+                                var isActive = Model.ActiveSessionId == s.Id;
+                                <div class="list-group-item list-group-item-action p-2 rounded-3 border-0 d-flex justify-content-between align-items-center @(isActive ? "bg-emerald-soft text-emerald fw-semibold border-start border-3 border-emerald" : "text-slate-800")">
+                                    <a asp-action="Index" asp-route-sessionId="@s.Id" class="text-decoration-none flex-grow-1 text-truncate me-2 @(isActive ? "text-emerald" : "text-slate-800")">
+                                        <i class="bi bi-chat-left-text me-2 opacity-75"></i>@s.Title
+                                    </a>
+                                    <form asp-action="DeleteSession" method="post" onsubmit="return confirm('Xóa phiên trò chuyện này?');" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="sessionId" value="@s.Id" />
+                                        <button type="submit" class="btn btn-sm text-muted p-0 hover-danger opacity-50 hover-opacity-100" title="Xóa">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="p-3 text-center text-muted small">
+                            <i class="bi bi-chat-square-dots fs-3 d-block opacity-50 mb-2"></i>
+                            Chưa có lịch sử trò chuyện.
+                        </div>
+                    }
+                </div>
+
+                <!-- Chân cột trái: Dọn sạch lịch sử -->
+                @if (Model.Sessions.Any())
+                {
+                    <div class="pt-3 border-top mt-auto">
+                        <form asp-action="ClearAllHistory" method="post" onsubmit="return confirm('Bạn có chắc muốn dọn sạch toàn bộ lịch sử trò chuyện không?');">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill w-100">
+                                <i class="bi bi-trash3 me-1"></i>Xóa toàn bộ lịch sử
+                            </button>
+                        </form>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- CỘT PHẢI: Khung hội thoại AI (Chat Window) -->
+        <div class="col-lg-9 col-md-8">
+            <div class="card border-0 shadow-sm rounded-4 h-100 bg-white d-flex flex-column overflow-hidden">
+                <!-- Header khung chat -->
+                <div class="card-header bg-white border-bottom p-3 d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-circle bg-emerald-soft text-emerald d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
+                            <i class="bi bi-robot fs-4"></i>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center gap-2">
+                                <h5 class="fw-bold mb-0 text-slate-800">NutriTrack AI Assistant</h5>
+                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2 py-0 small">
+                                    <i class="bi bi-lightning-charge-fill me-1"></i>Gemini 2.5 Flash
+                                </span>
+                            </div>
+                            <small class="text-muted">
+                                <span class="text-success me-1">●</span>Đang trực tuyến • Sẵn sàng hỗ trợ dinh dưỡng cá nhân hóa
+                            </small>
+                        </div>
+                    </div>
+
+                    <span class="badge bg-light text-slate-800 border px-3 py-2 rounded-pill small d-none d-md-inline-block">
+                        <i class="bi bi-shield-check text-emerald me-1"></i>Kiểm soát an toàn y tế
+                    </span>
+                </div>
+
+                <!-- Thanh Quick Prompts (Các câu hỏi gợi ý nhanh chuẩn bị bảo vệ đồ án) -->
+                <div class="p-2 px-3 bg-light border-bottom overflow-auto text-nowrap" style="scrollbar-width: thin;">
+                    <small class="text-muted me-2 fw-semibold"><i class="bi bi-stars text-warning me-1"></i>Gợi ý nhanh:</small>
+                    @foreach (var prompt in Model.QuickPrompts)
+                    {
+                        <button type="button" class="btn btn-sm btn-white border rounded-pill px-3 py-1 me-2 shadow-xs hover-emerald small"
+                                onclick="sendQuickPrompt('@prompt.Replace("'", "\\'")')">
+                            @prompt
+                        </button>
+                    }
+                </div>
+
+                <!-- Khu vực hiển thị tin nhắn (Chat Messages Scroll Area) -->
+                <div class="flex-grow-1 p-3 p-md-4 overflow-auto" id="chatMessagesContainer" style="max-height: calc(100vh - 380px); min-height: 380px; background-color: #f8fafc;">
+                    @if (!Model.Messages.Any())
+                    {
+                        <!-- Tin nhắn chào mừng mặc định -->
+                        <div class="text-center py-4 my-auto">
+                            <div class="rounded-circle bg-emerald-soft text-emerald d-inline-flex p-3 mb-3">
+                                <i class="bi bi-chat-heart-fill fs-1"></i>
+                            </div>
+                            <h5 class="fw-bold text-slate-800 mb-2">Xin chào! Tôi có thể giúp gì cho chế độ dinh dưỡng của bạn hôm nay?</h5>
+                            <p class="text-muted small mx-auto mb-4" style="max-width: 580px;">
+                                Tôi có thể giải thích số liệu từ nhật ký, mục tiêu cân nặng và danh mục thực phẩm của bạn. Gemini có thể xử lý nội dung bạn nhập và ngữ cảnh dinh dưỡng đã được rút gọn.
+                            </p>
+                            <div class="row g-2 justify-content-center" style="max-width: 600px; margin: 0 auto;">
+                                <div class="col-sm-6 text-start">
+                                    <div class="p-3 bg-white border rounded-4 h-100 shadow-xs cursor-pointer hover-shadow" onclick="sendQuickPrompt('Hôm nay tôi còn ăn được bao nhiêu calo?')">
+                                        <div class="fw-bold text-slate-800 small mb-1">📊 Calo còn lại hôm nay?</div>
+                                        <div class="small text-muted">Kiểm tra ngay số calo bạn còn được nạp hôm nay.</div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 text-start">
+                                    <div class="p-3 bg-white border rounded-4 h-100 shadow-xs cursor-pointer hover-shadow" onclick="sendQuickPrompt('Gợi ý bữa tối dưới 500 kcal')">
+                                        <div class="fw-bold text-slate-800 small mb-1">🥗 Gợi ý bữa tối lành mạnh</div>
+                                        <div class="small text-muted">Gợi ý từ danh mục và nhắc bạn đối chiếu thành phần trên nhãn.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        @foreach (var msg in Model.Messages)
+                        {
+                            if (msg.Role == ChatRole.User)
+                            {
+                                <!-- User Message Bubble -->
+                                <div class="d-flex justify-content-end mb-3">
+                                    <div class="d-flex align-items-end gap-2" style="max-width: 80%;">
+                                        <div class="p-3 rounded-4 bg-emerald text-white shadow-xs">
+                                            <div class="text-break" style="white-space: pre-wrap;">@msg.Content</div>
+                                            <small class="text-white-50 d-block text-end mt-1" style="font-size: 10px;">@msg.CreatedAt.ToString("HH:mm")</small>
+                                        </div>
+                                        <div class="rounded-circle bg-slate-800 text-white d-flex align-items-center justify-content-center flex-shrink-0" style="width: 32px; height: 32px; font-size: 12px;">
+                                            <i class="bi bi-person-fill"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <!-- Bot Message Bubble -->
+                                <div class="d-flex justify-content-start mb-3">
+                                    <div class="d-flex align-items-start gap-2" style="max-width: 85%;">
+                                        <div class="rounded-circle bg-emerald-soft text-emerald d-flex align-items-center justify-content-center flex-shrink-0 mt-1" style="width: 32px; height: 32px;">
+                                            <i class="bi bi-robot"></i>
+                                        </div>
+                                        <div class="p-3 rounded-4 bg-white border shadow-xs text-slate-800">
+                                            <div class="text-break chat-content-rendered" style="white-space: pre-wrap;">@msg.Content</div>
+                                            <small class="text-muted d-block text-end mt-1" style="font-size: 10px;">@msg.CreatedAt.ToString("HH:mm")</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+
+                    <!-- Typing Indicator -->
+                    <div id="typingIndicator" class="d-flex justify-content-start mb-3 d-none">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="rounded-circle bg-emerald-soft text-emerald d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                <i class="bi bi-robot"></i>
+                            </div>
+                            <div class="p-3 rounded-4 bg-white border shadow-xs d-flex align-items-center gap-2">
+                                <span class="spinner-grow spinner-grow-sm text-emerald" role="status"></span>
+                                <span class="small text-muted">NutriTrack AI đang suy nghĩ & tra cứu dữ liệu...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Chat Bar -->
+                <div class="p-3 bg-white border-top">
+                    <form id="chatForm" onsubmit="handleChatSubmit(event)">
+                        <div class="input-group">
+                            <input type="text" id="chatInputMessage" class="form-control rounded-start-pill py-2 px-3 border-end-0 shadow-none" 
+                                   placeholder="Hỏi trợ lý AI (ví dụ: 'Hôm nay tôi còn ăn được bao nhiêu calo?', 'Gợi ý bữa tối dưới 500 kcal')..." 
+                                   autocomplete="off" required maxlength="2000" aria-describedby="chatPrivacyNotice" />
+                            <button type="submit" id="btnSendMessage" class="btn btn-emerald text-white rounded-end-pill px-4 fw-semibold shadow-xs">
+                                <i class="bi bi-send-fill me-1"></i>Gửi
+                            </button>
+                        </div>
+                        <p id="chatPrivacyNotice" class="small text-muted mt-2 mb-0">Đừng nhập thông tin cá nhân nhạy cảm (họ tên, bệnh, thuốc) vào cuộc trò chuyện.</p>
+                    </form>
+                    <div class="text-center mt-2">
+                        <small class="text-muted" style="font-size: 11px;">
+                            <i class="bi bi-info-circle me-1 text-warning"></i>Nội dung do trợ lý AI tạo ra chỉ mang tính tham khảo dinh dưỡng & lối sống, không thay thế tư vấn y tế.
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let currentSessionId = @(Model.ActiveSessionId.HasValue ? Model.ActiveSessionId.Value.ToString() : "null");
+
+        // Scroll to bottom on load
+        function scrollToBottom() {
+            const container = document.getElementById('chatMessagesContainer');
+            if (container) {
+                container.scrollTop = container.scrollHeight;
+            }
+        }
+        window.addEventListener('DOMContentLoaded', scrollToBottom);
+
+        function sendQuickPrompt(promptText) {
+            document.getElementById('chatInputMessage').value = promptText;
+            document.getElementById('chatForm').dispatchEvent(new Event('submit'));
+        }
+
+        async function handleChatSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('chatInputMessage');
+            const message = input.value.trim();
+            if (!message) return;
+
+            // Clear input & disable button
+            input.value = '';
+            document.getElementById('btnSendMessage').disabled = true;
+
+            // Render user message immediately
+            appendUserMessage(message);
+
+            // Show typing indicator
+            const typingIndicator = document.getElementById('typingIndicator');
+            typingIndicator.classList.remove('d-none');
+            scrollToBottom();
+
+            try {
+                const token = document.querySelector('#antiForgeryForm input[name="__RequestVerificationToken"]')?.value || '';
+
+                const response = await fetch('/Chat/SendMessage', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': token
+                    },
+                    body: JSON.stringify({
+                        sessionId: currentSessionId,
+                        message: message
+                    })
+                });
+
+                typingIndicator.classList.add('d-none');
+                document.getElementById('btnSendMessage').disabled = false;
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        currentSessionId = data.sessionId;
+                        appendBotMessage(data.botResponse, data.timestamp, data.isMedicalRisk);
+                        // Cập nhật title hoặc history URL nếu là phiên mới
+                        if (!window.location.search.includes(`sessionId=${data.sessionId}`)) {
+                            window.history.replaceState(null, '', `/Chat?sessionId=${data.sessionId}`);
+                        }
+                    } else {
+                        appendBotMessage(data.message || 'Đã xảy ra lỗi khi xử lý tin nhắn.', 'Vừa xong', true);
+                    }
+                } else {
+                    appendBotMessage('Không thể kết nối đến máy chủ. Vui lòng kiểm tra lại kết nối mạng.', 'Vừa xong', true);
+                }
+            } catch (err) {
+                console.error('Chat error:', err);
+                typingIndicator.classList.add('d-none');
+                document.getElementById('btnSendMessage').disabled = false;
+                appendBotMessage('Đã xảy ra lỗi trong quá trình gửi tin nhắn. Vui lòng thử lại.', 'Vừa xong', true);
+            }
+
+            scrollToBottom();
+        }
+
+        function appendUserMessage(text) {
+            const container = document.getElementById('chatMessagesContainer');
+            const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            const div = document.createElement('div');
+            div.className = 'd-flex justify-content-end mb-3';
+            div.innerHTML = `
+                <div class="d-flex align-items-end gap-2" style="max-width: 80%;">
+                    <div class="p-3 rounded-4 bg-emerald text-white shadow-xs">
+                        <div class="text-break" style="white-space: pre-wrap;">${escapeHtml(text)}</div>
+                        <small class="text-white-50 d-block text-end mt-1" style="font-size: 10px;">${now}</small>
+                    </div>
+                    <div class="rounded-circle bg-slate-800 text-white d-flex align-items-center justify-content-center flex-shrink-0" style="width: 32px; height: 32px; font-size: 12px;">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
+                </div>
+            `;
+            container.appendChild(div);
+            scrollToBottom();
+        }
+
+        function appendBotMessage(text, timestamp, isRisk) {
+            const container = document.getElementById('chatMessagesContainer');
+            const borderClass = isRisk ? 'border-danger bg-danger-subtle' : 'bg-white border';
+
+            const div = document.createElement('div');
+            div.className = 'd-flex justify-content-start mb-3';
+            div.innerHTML = `
+                <div class="d-flex align-items-start gap-2" style="max-width: 85%;">
+                    <div class="rounded-circle bg-emerald-soft text-emerald d-flex align-items-center justify-content-center flex-shrink-0 mt-1" style="width: 32px; height: 32px;">
+                        <i class="bi bi-robot"></i>
+                    </div>
+                    <div class="p-3 rounded-4 ${borderClass} shadow-xs text-slate-800">
+                        <div class="text-break" style="white-space: pre-wrap;">${escapeHtml(text)}</div>
+                        <small class="text-muted d-block text-end mt-1" style="font-size: 10px;">${timestamp || 'Vừa xong'}</small>
+                    </div>
+                </div>
+            `;
+            container.appendChild(div);
+            scrollToBottom();
+        }
+
+        function escapeHtml(string) {
+            const entityMap = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            };
+            return String(string).replace(/[&<>"']/g, function (s) {
+                return entityMap[s];
+            });
+        }
+    </script>
+}

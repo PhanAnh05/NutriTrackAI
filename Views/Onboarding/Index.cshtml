@@ -1,0 +1,708 @@
+@model OnboardingViewModel
+@{
+    ViewData["Title"] = "Thiết lập Hồ sơ Sức khỏe & Mục tiêu Dinh dưỡng";
+    var hasPaceAcknowledgmentError = ViewData.ModelState.TryGetValue(nameof(OnboardingViewModel.AcknowledgeIntensePace), out var paceAcknowledgment)
+        && paceAcknowledgment.Errors.Count > 0;
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-9 col-xl-8">
+            <!-- Header Card -->
+            <div class="text-center mb-4">
+                <span class="badge badge-custom-emerald mb-2">
+                    <i class="bi bi-person-check-fill me-1"></i> Khảo sát Onboarding
+                </span>
+                <h2 class="fw-bold text-dark">Thiết Lập Kế Hoạch Dinh Dưỡng Cá Nhân Hóa</h2>
+                <p class="text-muted small max-w-600 mx-auto">
+                    Cung cấp thông tin thể trạng và mục tiêu của bạn để hệ thống tự động tính toán BMR, TDEE, và ước tính ngân sách calo theo quy tắc hệ thống.
+                </p>
+            </div>
+
+            <!-- Wizard Step Indicator -->
+            <div class="card card-custom p-3 mb-4 shadow-sm border-0">
+                <div class="d-flex justify-content-between position-relative text-center">
+                    <div class="wizard-step active" id="step-tab-1">
+                        <div class="step-circle mb-1 mx-auto">1</div>
+                        <span class="small fw-semibold d-none d-sm-block text-dark">Thể trạng</span>
+                    </div>
+                    <div class="wizard-step" id="step-tab-2">
+                        <div class="step-circle mb-1 mx-auto">2</div>
+                        <span class="small fw-semibold d-none d-sm-block text-secondary">Sức khỏe</span>
+                    </div>
+                    <div class="wizard-step" id="step-tab-3">
+                        <div class="step-circle mb-1 mx-auto">3</div>
+                        <span class="small fw-semibold d-none d-sm-block text-secondary">Mục tiêu</span>
+                    </div>
+                    <div class="wizard-step" id="step-tab-4">
+                        <div class="step-circle mb-1 mx-auto">4</div>
+                        <span class="small fw-semibold d-none d-sm-block text-secondary">Lối sống</span>
+                    </div>
+                    <div class="wizard-step" id="step-tab-5">
+                        <div class="step-circle mb-1 mx-auto">5</div>
+                        <span class="small fw-semibold d-none d-sm-block text-secondary">Xác nhận</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Container -->
+            <div class="card card-custom p-4 p-md-5 border-0 shadow">
+                <form id="onboardingForm" asp-action="Complete" method="post" data-draft-owner="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value">
+                    @Html.AntiForgeryToken()
+
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-4" role="alert"></div>
+
+                    <!-- ======================================================= -->
+                    <!-- BƯỚC 1: NHÂN TRẮC HỌC -->
+                    <!-- ======================================================= -->
+                    <div class="wizard-pane" id="step-pane-1">
+                        <h4 class="fw-bold text-dark mb-3">Bước 1: Thông tin nhân trắc học</h4>
+                        <p class="text-muted small mb-4">Các chỉ số cơ bản để tính toán tỷ lệ trao đổi chất (BMR) và chỉ số khối cơ thể (BMI).</p>
+
+                        <!-- Giới tính -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold text-secondary small">Giới tính sinh học</label>
+                            <div class="row g-2">
+                                <div class="col-4">
+                                    <input type="radio" class="btn-check" asp-for="Gender" value="@Gender.Male" id="gender-male">
+                                    <label class="btn btn-outline-custom w-100 py-2 d-flex flex-column align-items-center" for="gender-male">
+                                        <i class="bi bi-gender-male fs-4 mb-1 text-primary"></i>
+                                        <span>Nam</span>
+                                    </label>
+                                </div>
+                                <div class="col-4">
+                                    <input type="radio" class="btn-check" asp-for="Gender" value="@Gender.Female" id="gender-female">
+                                    <label class="btn btn-outline-custom w-100 py-2 d-flex flex-column align-items-center" for="gender-female">
+                                        <i class="bi bi-gender-female fs-4 mb-1 text-danger"></i>
+                                        <span>Nữ</span>
+                                    </label>
+                                </div>
+                                <div class="col-4">
+                                    <input type="radio" class="btn-check" asp-for="Gender" value="@Gender.Other" id="gender-other">
+                                    <label class="btn btn-outline-custom w-100 py-2 d-flex flex-column align-items-center" for="gender-other">
+                                        <i class="bi bi-gender-ambiguous fs-4 mb-1 text-success"></i>
+                                        <span>Khác</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <span asp-validation-for="Gender" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Ngày sinh -->
+                        <div class="mb-4">
+                            <label asp-for="DateOfBirth" class="form-label fw-semibold text-secondary small"></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light text-muted"><i class="bi bi-calendar3"></i></span>
+                                <input asp-for="DateOfBirth" class="form-control" type="date" />
+                            </div>
+                            <span asp-validation-for="DateOfBirth" class="text-danger small"></span>
+                            <small class="text-muted">Độ tuổi áp dụng hệ thống từ 13 đến 100 tuổi.</small>
+                        </div>
+
+                        <!-- Chiều cao & Cân nặng -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label asp-for="HeightCm" class="form-label fw-semibold text-secondary small"></label>
+                                <div class="input-group">
+                                    <input asp-for="HeightCm" class="form-control" type="number" step="0.1" min="100" max="250" placeholder="170" />
+                                    <span class="input-group-text bg-light">cm</span>
+                                </div>
+                                <span asp-validation-for="HeightCm" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="CurrentWeightKg" class="form-label fw-semibold text-secondary small"></label>
+                                <div class="input-group">
+                                    <input asp-for="CurrentWeightKg" class="form-control" type="number" step="0.1" min="20" max="300" placeholder="70" />
+                                    <span class="input-group-text bg-light">kg</span>
+                                </div>
+                                <span asp-validation-for="CurrentWeightKg" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end mt-4">
+                            <button type="button" class="btn btn-primary-custom px-4" onclick="goToStep(2)">
+                                Tiếp tục <i class="bi bi-arrow-right ms-1"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ======================================================= -->
+                    <div class="wizard-pane d-none" id="step-pane-2">
+                        <h4 class="fw-bold text-dark mb-3">Bước 2: Tình trạng sức khỏe</h4>
+                        @Html.EditorFor(model => model.Screening)
+                        <div class="d-flex flex-wrap justify-content-between gap-2 mt-4">
+                            <button type="button" class="btn btn-outline-custom px-4" onclick="goToStep(1)">Quay lại</button>
+                            <button type="button" class="btn btn-primary-custom px-4" onclick="goToStep(3)">Tiếp tục</button>
+                        </div>
+                    </div>
+                    <!-- BƯỚC 3: MỤC TIÊU CÂN NẶNG -->
+                    <!-- ======================================================= -->
+                    <div class="wizard-pane d-none" id="step-pane-3">
+                        <h4 class="fw-bold text-dark mb-3">Bước 3: Mục tiêu vóc dáng</h4>
+                        <p class="text-muted small mb-4">Chọn định hướng cân nặng và lộ trình thời gian thực hiện mong muốn.</p>
+
+                        <!-- Goal Type -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold text-secondary small">Bạn muốn hướng tới mục tiêu nào?</label>
+                            <div class="row g-2">
+                                <div class="col-4">
+                                    <input type="radio" class="btn-check" asp-for="GoalType" value="@GoalType.Lose" id="goal-lose">
+                                    <label class="btn btn-outline-custom w-100 py-3 text-center" for="goal-lose">
+                                        <i class="bi bi-graph-down-arrow fs-4 d-block mb-1 text-danger"></i>
+                                        <strong class="d-block small">Giảm cân</strong>
+                                        <small class="text-muted" style="font-size: 0.75rem;">Giảm mỡ thừa</small>
+                                    </label>
+                                </div>
+                                <div class="col-4">
+                                    <input type="radio" class="btn-check" asp-for="GoalType" value="@GoalType.Maintain" id="goal-maintain">
+                                    <label class="btn btn-outline-custom w-100 py-3 text-center" for="goal-maintain">
+                                        <i class="bi bi-dash-circle fs-4 d-block mb-1 text-primary"></i>
+                                        <strong class="d-block small">Giữ cân</strong>
+                                        <small class="text-muted" style="font-size: 0.75rem;">Duy trì thể trạng</small>
+                                    </label>
+                                </div>
+                                <div class="col-4">
+                                    <input type="radio" class="btn-check" asp-for="GoalType" value="@GoalType.Gain" id="goal-gain">
+                                    <label class="btn btn-outline-custom w-100 py-3 text-center" for="goal-gain">
+                                        <i class="bi bi-graph-up-arrow fs-4 d-block mb-1 text-success"></i>
+                                        <strong class="d-block small">Tăng cân</strong>
+                                        <small class="text-muted" style="font-size: 0.75rem;">Tăng cơ & thể lực</small>
+                                    </label>
+                                </div>
+                            </div>
+                            <span asp-validation-for="GoalType" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3" id="targetWeightContainer">
+                            <label asp-for="TargetWeightKg" class="form-label"></label>
+                            <div class="input-group">
+                                <input asp-for="TargetWeightKg" class="form-control" type="number" step="0.1" min="20" max="300" />
+                                <span class="input-group-text bg-light">kg</span>
+                            </div>
+                            <span asp-validation-for="TargetWeightKg" class="text-danger small"></span>
+                        </div>
+
+                        <partial name="_PaceChoices" model="Model.Analysis" />
+                        <input type="hidden" name="UseManualWeeks" value="@Model.UseManualWeeks.ToString().ToLowerInvariant()" />
+                        <button type="button" class="btn btn-link p-0 mb-2" data-manual-toggle
+                                aria-controls="onboardingManualDuration" aria-expanded="true">Tự nhập số tuần</button>
+                        <div class="mb-3" id="onboardingManualDuration" data-manual-duration>
+                            <label asp-for="DurationWeeks" class="form-label"></label>
+                            <div class="input-group">
+                                <input asp-for="DurationWeeks" class="form-control" type="number"
+                                       min="@(Model.GoalType == GoalType.Maintain ? 1 : GoalPolicy.MinGoalWeeks)" max="104"
+                                       data-change-min-weeks="@GoalPolicy.MinGoalWeeks" />
+                                <span class="input-group-text bg-light">tuần</span>
+                            </div>
+                            <span asp-validation-for="DurationWeeks" class="text-danger small"></span>
+                        </div>
+
+                        <div id="onboardingGoalAnalysis" aria-live="polite" aria-busy="false">
+                            <div id="onboardingSafetyEvaluationBox" class="bg-light rounded p-3 mb-3" hidden>
+                                <p id="onboardingSafetyMessage" class="small mb-0"></p>
+                                <div id="onboardingReviewScreening" class="mt-2" hidden>
+                                    <a asp-controller="Profile" asp-action="Screening"
+                                       asp-route-returnUrl="@Url.Action("Index", "Onboarding", new { resume = "goal" })"
+                                       data-screening-return>Cập nhật sàng lọc sức khỏe</a>
+                                </div>
+                            </div>
+                            <p class="small mb-2" id="onboardingPaceSummary" hidden></p>
+                            <p class="small text-warning-emphasis mb-2" id="onboardingHealthReasons" hidden></p>
+                            <p class="small mb-2" id="onboardingIntroductoryBudget" hidden></p>
+                        </div>
+                        <div class="form-check mb-3" id="onboardingIntroductory" hidden>
+                            <input asp-for="Introductory" class="form-check-input" />
+                            <label asp-for="Introductory" class="form-check-label">Bắt đầu với giai đoạn làm quen</label>
+                        </div>
+                        <div class="form-check mb-3" data-pace-ack hidden="@(Model?.Analysis?.RequiresIntensePaceAck != true)">
+                            <input asp-for="AcknowledgeIntensePace" class="form-check-input" aria-describedby="onboardingPaceAckMessage" />
+                            <label asp-for="AcknowledgeIntensePace" class="form-check-label">Tôi đã xem tốc độ giảm cân ở vùng Mạnh và mức calo dự kiến.</label>
+                            <span asp-validation-for="AcknowledgeIntensePace" id="onboardingPaceAckMessage" class="text-danger small d-block"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="button" class="btn btn-outline-custom px-4" onclick="goToStep(2)">
+                                <i class="bi bi-arrow-left me-1"></i> Quay lại
+                            </button>
+                            <button type="button" id="btnStep2Next" class="btn btn-primary-custom px-4" onclick="goToStep(4)">
+                                Tiếp tục <i class="bi bi-arrow-right ms-1"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ======================================================= -->
+                    <!-- BƯỚC 4: LỐI SỐNG & THÓI QUEN ĂN UỐNG -->
+                    <!-- ======================================================= -->
+                    <div class="wizard-pane d-none" id="step-pane-4">
+                        <h4 class="fw-bold text-dark mb-3">Bước 4: Lối sống & Thói quen dinh dưỡng</h4>
+                        <p class="text-muted small mb-4">Thông tin giúp Chatbot AI và thuật toán lọc dị ứng thiết kế thực đơn phù hợp nhất.</p>
+
+                        <!-- Activity Level -->
+                        <div class="mb-4">
+                            <label asp-for="ActivityLevel" class="form-label fw-semibold text-secondary small"></label>
+                            <select asp-for="ActivityLevel" class="form-select">
+                                <option value="@ActivityLevel.Sedentary">Ít vận động (Dân văn phòng, hầu như không tập luyện - Hệ số 1.2)</option>
+                                <option value="@ActivityLevel.Light">Vận động nhẹ (Tập 1-3 buổi/tuần, đi bộ nhẹ nhàng - Hệ số 1.375)</option>
+                                <option value="@ActivityLevel.Moderate">Vận động vừa phải (Tập thể thao 3-5 buổi/tuần - Hệ số 1.55)</option>
+                                <option value="@ActivityLevel.Active">Vận động nhiều (Tập nặng 6-7 buổi/tuần - Hệ số 1.725)</option>
+                                <option value="@ActivityLevel.VeryActive">Vận động rất nhiều (VĐV chuyên nghiệp, lao động thể lực nặng - Hệ số 1.9)</option>
+                            </select>
+                            <span asp-validation-for="ActivityLevel" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Diet Type -->
+                        <div class="mb-4">
+                            <label asp-for="DietType" class="form-label fw-semibold text-secondary small"></label>
+                            <select asp-for="DietType" class="form-select">
+                                <option value="@DietType.Normal">Bình thường (Đa dạng mọi nhóm thực phẩm)</option>
+                                <option value="@DietType.Vegetarian">Ăn chay (Không thịt, cá, gia cầm)</option>
+                                <option value="@DietType.LowCarb">Giảm tinh bột</option>
+                                <option value="@DietType.HighProtein">Giàu đạm</option>
+                            </select>
+                            <span asp-validation-for="DietType" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Allergies & Disliked Foods -->
+                        <div class="row g-3 mb-4" id="onboardingEnergyStats">
+                            <div class="col-md-6">
+                                <label asp-for="Allergies" class="form-label fw-semibold text-secondary small"></label>
+                                <input asp-for="Allergies" class="form-control" placeholder="Ví dụ: tôm, đậu phộng, hải sản, sữa" />
+                                <small class="text-muted">Các món chứa nguyên liệu này sẽ tự động bị loại khỏi thực đơn gợi ý.</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="DislikedFoods" class="form-label fw-semibold text-secondary small"></label>
+                                <input asp-for="DislikedFoods" class="form-control" placeholder="Ví dụ: hành tây, khổ qua, ớt chuông" />
+                            </div>
+                        </div>
+
+                        <!-- Health Notes -->
+                        <div class="mb-4">
+                            <label asp-for="HealthNotes" class="form-label fw-semibold text-secondary small"></label>
+                            <textarea asp-for="HealthNotes" class="form-control" rows="2" placeholder="Ghi chú riêng về sức khỏe"></textarea>
+                            <p class="form-text">@GoalPolicy.HealthNotesHelp</p>
+                            <small class="text-muted">Lưu ý: Không dùng ghi chú này để chẩn đoán hay điều trị bệnh lý.</small>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="button" class="btn btn-outline-custom px-4" onclick="goToStep(3)">
+                                <i class="bi bi-arrow-left me-1"></i> Quay lại
+                            </button>
+                            <button type="button" class="btn btn-primary-custom px-4" onclick="calculateAndGoToStep4()">
+                                Xem kết quả phân tích <i class="bi bi-calculator ms-1"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ======================================================= -->
+                    <!-- BƯỚC 5: PREVIEW & XÁC NHẬN -->
+                    <!-- ======================================================= -->
+                    <div class="wizard-pane d-none" id="step-pane-5">
+                        <div class="text-center mb-4">
+                            <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill mb-2">
+                                <i class="bi bi-check2-circle me-1"></i> Hoàn tất phân tích
+                            </span>
+                            <h4 class="fw-bold text-dark">Kế Hoạch Dinh Dưỡng Được Cá Nhân Hóa</h4>
+                            <p class="text-secondary small">Vui lòng kiểm tra lại các chỉ số khuyến nghị trước khi bắt đầu hành trình.</p>
+                            <p class="small fw-semibold mb-0" id="onboardingPaceConfirmation"></p>
+                        </div>
+
+                        <!-- Warning Alert Box if WarningFlag == true -->
+                        <div id="warningBox" class="alert alert-danger d-none mb-4" role="alert">
+                            <div class="d-flex align-items-start gap-2">
+                                <i class="bi bi-exclamation-triangle-fill fs-5 flex-shrink-0"></i>
+                                <div>
+                                    <strong class="d-block">Cảnh báo ngưỡng an toàn sức khỏe:</strong>
+                                    <span id="warningMessageText"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4 Stat Cards Row -->
+                        <div class="row g-3 mb-4">
+                            <!-- BMI Card -->
+                            <div class="col-6 col-md-3">
+                                <div class="p-3 bg-light rounded-3 text-center h-100 border">
+                                    <small class="text-muted d-block mb-1" title="@GoalPolicy.AdultBmiReference">Chỉ số BMI</small>
+                                    <h4 class="fw-bold text-dark mb-1" id="previewBmi">--</h4>
+                                    <span class="badge" id="previewBmiBadge">--</span>
+                                </div>
+                            </div>
+                            <!-- BMR Card -->
+                            <div class="col-6 col-md-3">
+                                <div class="p-3 bg-light rounded-3 text-center h-100 border">
+                                    <small class="text-muted d-block mb-1">Năng lượng BMR</small>
+                                    <h4 class="fw-bold text-dark mb-1" id="previewBmr">--</h4>
+                                    <small class="text-muted">kcal / ngày</small>
+                                </div>
+                            </div>
+                            <!-- TDEE Card -->
+                            <div class="col-6 col-md-3">
+                                <div class="p-3 bg-light rounded-3 text-center h-100 border">
+                                    <small class="text-muted d-block mb-1">Năng lượng TDEE</small>
+                                    <h4 class="fw-bold text-dark mb-1" id="previewTdee">--</h4>
+                                    <small class="text-muted">kcal tiêu hao</small>
+                                </div>
+                            </div>
+                            <!-- Target Calories Card -->
+                            <div class="col-6 col-md-3">
+                                <div class="p-3 rounded-3 text-center h-100 text-white shadow-sm" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                                    <small class="text-white-50 d-block mb-1">Calo mục tiêu</small>
+                                    <h3 class="fw-bold mb-0" id="previewCalorieTarget">--</h3>
+                                    <small class="text-white-50">kcal / ngày</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Macro Breakdown Card -->
+                        <p class="small text-warning-emphasis" id="onboardingMacroNotice" role="status"></p>
+                        <div class="card p-3 bg-light border mb-4" id="onboardingMacros">
+                            <h6 class="fw-bold text-dark mb-2">Phân bổ dinh dưỡng đa lượng khuyến nghị (Macro)</h6>
+                            <div class="row g-3 text-center">
+                                <div class="col-4">
+                                    <div class="p-2 bg-white rounded border">
+                                        <small class="text-muted d-block">Chất đạm (Protein)</small>
+                                        <strong class="text-success fs-5" id="previewProteinGrams">--g</strong>
+                                        <div class="small text-muted" id="previewProteinPercent">--%</div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="p-2 bg-white rounded border">
+                                        <small class="text-muted d-block">Tinh bột (Carb)</small>
+                                        <strong class="text-warning-emphasis fs-5" id="previewCarbGrams">--g</strong>
+                                        <div class="small text-muted" id="previewCarbPercent">--%</div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="p-2 bg-white rounded border">
+                                        <small class="text-muted d-block">Chất béo (Fat)</small>
+                                        <strong class="text-primary fs-5" id="previewFatGrams">--g</strong>
+                                        <div class="small text-muted" id="previewFatPercent">--%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-wrap justify-content-between gap-2 mt-4">
+                            <button type="button" class="btn btn-outline-custom px-4" onclick="goToStep(4)">
+                                <i class="bi bi-arrow-left me-1"></i> Chỉnh sửa
+                            </button>
+                            <button type="submit" class="btn btn-primary-custom btn-lg px-5">
+                                <i class="bi bi-check-circle-fill me-2"></i> Hoàn tất & Vào Dashboard
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .wizard-step {
+        flex: 1;
+        cursor: pointer;
+    }
+    .wizard-step .step-circle {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background-color: var(--slate-100);
+        color: var(--slate-500);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        transition: all 0.2s ease;
+    }
+    .wizard-step.active .step-circle {
+        background-color: var(--primary);
+        color: #ffffff;
+        box-shadow: 0 0 0 4px var(--primary-light);
+    }
+    .wizard-step.completed .step-circle {
+        background-color: var(--primary-dark);
+        color: #ffffff;
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/health-screening.js" asp-append-version="true"></script>
+    <script src="~/js/pace-picker.js" asp-append-version="true"></script>
+    <script src="~/js/goal-draft.js" asp-append-version="true"></script>
+
+    <script>
+        let currentStep = 1;
+        let obTrackingOnly = false;
+        let obPaceRequired = false;
+        let obGoalBlocked = true;
+
+        function readScreening(fields) {
+            return {
+                NoConditions: fields.get('Screening.NoConditions') === 'true',
+                Conditions: fields.getAll('Screening.Conditions'),
+                DoctorAwareOfPlan: fields.get('Screening.DoctorAwareOfPlan') === 'true'
+            };
+        }
+
+        function goToStep(step) {
+            // Validation trước khi rời bước
+            if (step > currentStep) {
+                if (currentStep === 1) {
+                    const h = parseFloat(document.getElementById("HeightCm").value);
+                    const w = parseFloat(document.getElementById("CurrentWeightKg").value);
+                    const dob = document.getElementById("DateOfBirth").value;
+                    if (!dob || isNaN(h) || h < 100 || h > 250 || isNaN(w) || w < 20 || w > 300) {
+                        alert("Vui lòng điền ngày sinh, chiều cao (100-250cm) và cân nặng (20-300kg) hợp lệ.");
+                        return;
+                    }
+                } else if (currentStep === 2) {
+                    const screening = readScreening(new FormData(obForm));
+                    if (!screening.NoConditions && screening.Conditions.length === 0) {
+                        document.querySelector('[data-health-error]').textContent = 'Hãy hoàn thành sàng lọc sức khỏe.';
+                        document.querySelector('[data-health-none]').focus();
+                        return;
+                    }
+                } else if (currentStep === 3 && !obTrackingOnly) {
+                    if (obStep2NextBtn && obStep2NextBtn.disabled) {
+                        alert("Mục tiêu hiện tại chưa đạt ngưỡng an toàn hoặc không hợp lý. Vui lòng điều chỉnh lại theo khuyến nghị trước khi tiếp tục.");
+                        return;
+                    }
+
+                    if (!obDurationInput.checkValidity() || (getObGoalType() !== "Maintain" && !obTargetWeightInput.checkValidity())) {
+                        alert("Vui lòng nhập cân nặng mong muốn và thời gian dự kiến hợp lệ.");
+                        return;
+                    }
+                }
+            }
+
+            // Chuyển pane
+            document.querySelectorAll(".wizard-pane").forEach(el => el.classList.add("d-none"));
+            document.getElementById("step-pane-" + step).classList.remove("d-none");
+
+            // Cập nhật step indicator
+            for (let i = 1; i <= 5; i++) {
+                const tab = document.getElementById("step-tab-" + i);
+                tab.classList.remove("active", "completed");
+                if (i === step) tab.classList.add("active");
+                else if (i < step) tab.classList.add("completed");
+            }
+
+            currentStep = step;
+            if (currentStep === 3 && typeof updateOnboardingRecommendation === "function") {
+                updateOnboardingRecommendation();
+            }
+            window.scrollTo({ top: 100, behavior: "smooth" });
+        }
+
+        function applyPreviewData(data) {
+            document.getElementById('onboardingEnergyStats').hidden = data.hideEnergyDetails;
+            document.getElementById("previewBmi").innerText = Number(data.bmi).toFixed(1);
+            const badge = document.getElementById("previewBmiBadge");
+            badge.innerText = data.bmiCategory;
+            badge.className = "badge " + data.bmiBadgeClass;
+
+            document.getElementById("previewBmr").innerText = Math.round(data.bmr).toLocaleString("vi-VN");
+            document.getElementById("previewTdee").innerText = Math.round(data.tdee).toLocaleString("vi-VN");
+            document.getElementById("previewCalorieTarget").innerText = data.trackingOnly ? "Chỉ theo dõi" : data.dailyCalorieTarget.toLocaleString("vi-VN");
+            document.getElementById('onboardingPaceConfirmation').textContent = !data.trackingOnly && data.paceZoneLabel
+                ? `${data.paceZoneLabel} · Khoảng ${obPaceFormat.format(data.appliedWeeklyRateKg)} kg/tuần theo calo áp dụng`
+                : '';
+
+            document.getElementById('onboardingMacros').hidden = data.hideEnergyDetails || !!data.macroUnavailableReason;
+            document.getElementById('onboardingMacroNotice').textContent = data.macroUnavailableReason ?? '';
+            const grams = new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 1 });
+            document.getElementById("previewProteinGrams").innerText = grams.format(data.proteinGrams) + " g";
+            document.getElementById("previewProteinPercent").innerText = data.proteinPercent + "% calo";
+
+            document.getElementById("previewCarbGrams").innerText = grams.format(data.carbGrams) + " g";
+            document.getElementById("previewCarbPercent").innerText = data.carbPercent + "% calo";
+
+            document.getElementById("previewFatGrams").innerText = grams.format(data.fatGrams) + " g";
+            document.getElementById("previewFatPercent").innerText = data.fatPercent + "% calo";
+
+            const warningBox = document.getElementById("warningBox");
+            const warningText = document.getElementById("warningMessageText");
+            if (data.warningFlag && data.warningMessage) {
+                warningText.innerText = data.warningMessage;
+                warningBox.classList.remove("d-none");
+            } else {
+                warningBox.classList.add("d-none");
+            }
+        }
+
+        async function calculateAndGoToStep4() {
+            const btn = document.querySelector('button[onclick="calculateAndGoToStep4()"]');
+            const originalBtnHtml = btn ? btn.innerHTML : "";
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Đang phân tích...';
+            }
+
+            try {
+                const data = await evaluateOnboardingSafety();
+                if (!data) {
+                    alert("Chưa tải được phân tích từ máy chủ. Vui lòng thử lại.");
+                    return;
+                }
+                if (obGoalBlocked || (obPaceRequired && !obPaceAcknowledgment.checked)) {
+                    goToStep(3);
+                    return;
+                }
+                applyPreviewData(data);
+                goToStep(5);
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = originalBtnHtml;
+                }
+            }
+        }
+
+        const obForm = document.getElementById('onboardingForm');
+        const resumedGoalDraft = window.restoreGoalDraft(obForm);
+        const obHeightInput = obForm.elements.HeightCm;
+        const obCurrentWeightInput = obForm.elements.CurrentWeightKg;
+        const obTargetWeightInput = obForm.elements.TargetWeightKg;
+        const obDurationInput = obForm.elements.DurationWeeks;
+        const obStep2NextBtn = document.getElementById('btnStep2Next');
+        const obGoalAnalysis = document.getElementById('onboardingGoalAnalysis');
+        const obEvalBox = document.getElementById('onboardingSafetyEvaluationBox');
+        const obSafetyMessage = document.getElementById('onboardingSafetyMessage');
+        const obScreeningLink = document.getElementById('onboardingReviewScreening');
+        const obPaceSummary = document.getElementById('onboardingPaceSummary');
+        const obHealthReasons = document.getElementById('onboardingHealthReasons');
+        const obIntroductory = document.getElementById('onboardingIntroductory');
+        const obIntroductoryBudget = document.getElementById('onboardingIntroductoryBudget');
+        const obPacePicker = window.createPacePicker(obForm);
+        const obPaceAcknowledgment = obForm.querySelector('input[type="checkbox"][name="AcknowledgeIntensePace"]');
+        const obPaceFormat = new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 2 });
+        let obRequest, obTimer;
+        let obPreviewLoading = false;
+        let obWasMaintain = false;
+        let obChangeTarget = getObGoalType() === 'Maintain' ? '' : obTargetWeightInput.value;
+
+        function getObGoalType() {
+            return obForm.querySelector('input[name="GoalType"]:checked')?.value ?? 'Lose';
+        }
+
+        function updateOnboardingRecommendation() {
+            const maintain = getObGoalType() === 'Maintain';
+            obDurationInput.min = maintain ? '1' : obDurationInput.dataset.changeMinWeeks;
+            obTargetWeightInput.readOnly = maintain;
+            if (maintain) {
+                if (!obWasMaintain && obTargetWeightInput.value !== obCurrentWeightInput.value)
+                    obChangeTarget = obTargetWeightInput.value;
+                obTargetWeightInput.value = obCurrentWeightInput.value;
+            } else if (obWasMaintain) {
+                obTargetWeightInput.value = obChangeTarget;
+            }
+            obWasMaintain = maintain;
+            clearTimeout(obTimer);
+            obRequest?.abort();
+            setOnboardingPreviewLoading(true);
+            obTimer = setTimeout(evaluateOnboardingSafety, 300);
+        }
+
+        function setOnboardingPreviewLoading(loading) {
+            obPreviewLoading = loading;
+            obGoalAnalysis.setAttribute('aria-busy', String(loading));
+            obPacePicker.setLoading(loading);
+            syncOnboardingNextButton();
+        }
+
+        function showOnboardingText(element, text) {
+            element.textContent = text;
+            element.hidden = !text;
+        }
+
+        async function evaluateOnboardingSafety() {
+            clearTimeout(obTimer);
+            obRequest?.abort();
+            const request = new AbortController();
+            obRequest = request;
+            const fields = new FormData(obForm);
+            const payload = Object.fromEntries(fields.entries());
+            payload.Screening = readScreening(fields);
+            payload.AcknowledgeIntensePace = obPaceAcknowledgment.checked;
+            payload.Introductory = fields.get('Introductory') === 'true';
+            payload.UseManualWeeks = fields.get('UseManualWeeks') === 'true';
+            for (const key of ['HeightCm', 'CurrentWeightKg', 'TargetWeightKg', 'DurationWeeks', 'DailyWaterGoalMl']) {
+                if (fields.has(key)) payload[key] = key === 'TargetWeightKg' && fields.get(key) === '' ? null : Number(fields.get(key));
+            }
+            setOnboardingPreviewLoading(true);
+            try {
+                const response = await fetch('@Url.Action("CalculatePreview", "Onboarding")', {
+                    method: 'POST', signal: request.signal,
+                    headers: { 'Content-Type': 'application/json', RequestVerificationToken: fields.get('__RequestVerificationToken') },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) throw new Error('preview');
+                const data = await response.json();
+                if (obRequest !== request || request.signal.aborted) return;
+                if (!data.success) throw new Error('preview');
+
+                const maintain = getObGoalType() === 'Maintain';
+                obTrackingOnly = data.trackingOnly;
+                obForm.noValidate = obTrackingOnly;
+                obPaceRequired = !data.isBlocked && data.requiresIntensePaceAck;
+                obGoalBlocked = data.isBlocked && !obTrackingOnly;
+                obIntroductory.hidden = data.hideEnergyDetails || maintain;
+                if (obPacePicker.render(data.paceOptions, obPaceRequired, { maintain, hideDetails: data.hideEnergyDetails })) {
+                    return evaluateOnboardingSafety();
+                }
+
+                obScreeningLink.hidden = !data.requiresHealthScreening;
+                obEvalBox.hidden = !data.warningMessage;
+                obSafetyMessage.textContent = data.warningMessage ?? '';
+                showOnboardingText(obHealthReasons, data.hideEnergyDetails ? '' : data.healthReasons.join('. '));
+                showOnboardingText(obPaceSummary, data.hideEnergyDetails || !data.paceZoneLabel ? ''
+                    : `${data.paceZoneLabel} · Khoảng ${obPaceFormat.format(data.weeklyRateKg)} kg/tuần theo thời hạn${data.isBlocked ? '' : ` · Ngân sách ${obPaceFormat.format(data.dailyCalorieTarget)} kcal/ngày`}`);
+                showOnboardingText(obIntroductoryBudget, data.introductoryDailyBudgetKcal == null ? ''
+                    : `Hai tuần đầu ăn khoảng ${obPaceFormat.format(data.introductoryDailyBudgetKcal)} kcal/ngày.`);
+                return data;
+            } catch (e) {
+                if (request.signal.aborted || obRequest !== request) return;
+                obGoalBlocked = true;
+                obPaceRequired = false;
+                obPacePicker.render([], false, { hideDetails: true });
+                obScreeningLink.hidden = true;
+                obEvalBox.hidden = false;
+                obSafetyMessage.textContent = 'Chưa tải được phân tích từ máy chủ.';
+                for (const element of [obPaceSummary, obHealthReasons, obIntroductoryBudget]) showOnboardingText(element, '');
+            } finally {
+                if (obRequest === request && !request.signal.aborted) setOnboardingPreviewLoading(false);
+            }
+        }
+
+        function syncOnboardingNextButton() {
+            obStep2NextBtn.disabled = obPreviewLoading || obGoalBlocked || (obPaceRequired && !obPaceAcknowledgment.checked);
+        }
+
+        function refreshOnboardingPace() {
+            obPacePicker.resetAcknowledgment();
+            updateOnboardingRecommendation();
+        }
+
+        obForm.addEventListener('change', event => {
+            if (event.target.matches('[name="DateOfBirth"], [name="ActivityLevel"], [name="Gender"], [name="GoalType"], [data-health-screening] input, [name="Introductory"]'))
+                refreshOnboardingPace();
+        });
+        for (const input of [obTargetWeightInput, obCurrentWeightInput, obHeightInput])
+            input.addEventListener('input', refreshOnboardingPace);
+        obDurationInput.addEventListener('input', () => {
+            obPacePicker.useManualDuration();
+            refreshOnboardingPace();
+        });
+        obForm.addEventListener('pacechange', refreshOnboardingPace);
+        obPaceAcknowledgment.addEventListener('change', syncOnboardingNextButton);
+        obForm.addEventListener('submit', event => {
+            if (currentStep !== 5) event.preventDefault();
+        });
+
+        if (resumedGoalDraft || @hasPaceAcknowledgmentError.ToString().ToLowerInvariant()) goToStep(3);
+        else if (@(ViewData.ModelState.Any(entry => entry.Key.StartsWith(nameof(OnboardingViewModel.Screening), StringComparison.Ordinal)
+            && entry.Value?.Errors.Count > 0).ToString().ToLowerInvariant())) goToStep(2);
+        else updateOnboardingRecommendation();
+    </script>
+}

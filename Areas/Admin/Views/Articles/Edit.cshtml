@@ -1,0 +1,65 @@
+@model AdminArticleEditViewModel
+@{
+    ViewData["Title"] = "Chỉnh sửa Bài viết / FAQ";
+}
+
+<div class="container-fluid px-0" style="max-width: 850px;">
+    <div class="mb-4">
+        <a asp-area="Admin" asp-controller="Articles" asp-action="Index" class="btn btn-sm btn-light border rounded-pill mb-3">
+            <i class="bi bi-arrow-left me-1"></i>Quay lại danh sách
+        </a>
+        <h2 class="fw-bold mb-1">
+            <i class="bi bi-pencil-square text-emerald me-2"></i>Chỉnh sửa Bài viết / FAQ #@Model.Id
+        </h2>
+        <p class="text-muted mb-0">Cập nhật nội dung tri thức dinh dưỡng: <strong>@Model.Title</strong></p>
+    </div>
+
+    <div class="card-custom p-4">
+        <form asp-area="Admin" asp-controller="Articles" asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3 small"></div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-12 col-md-8">
+                    <label asp-for="Title" class="form-label fw-semibold">Tiêu đề Bài viết / Câu hỏi FAQ <span class="text-danger">*</span></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-4">
+                    <label asp-for="Type" class="form-label fw-semibold">Phân loại <span class="text-danger">*</span></label>
+                    <select asp-for="Type" class="form-select">
+                        <option value="@ArticleType.Faq" selected="@(Model.Type == ArticleType.Faq)">Câu hỏi thường gặp (FAQ)</option>
+                        <option value="@ArticleType.Article" selected="@(Model.Type == ArticleType.Article)">Bài viết dinh dưỡng (Article)</option>
+                        <option value="@ArticleType.Disclaimer" selected="@(Model.Type == ArticleType.Disclaimer)">Tuyên bố y tế (Disclaimer)</option>
+                    </select>
+                    <span asp-validation-for="Type" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Body" class="form-label fw-semibold">Nội dung chi tiết <span class="text-danger">*</span></label>
+                <textarea asp-for="Body" class="form-control" rows="8"></textarea>
+                <span class="form-text small text-muted">Hệ thống RAG sẽ phân tích nội dung này để trả lời các câu hỏi tương ứng của người dùng qua Chatbot AI.</span>
+                <span asp-validation-for="Body" class="text-danger small d-block"></span>
+            </div>
+
+            <div class="mb-4 form-check form-switch">
+                <input asp-for="IsPublished" class="form-check-input" type="checkbox" id="isPublishedSwitch">
+                <label class="form-check-label fw-semibold" for="isPublishedSwitch">Xuất bản ngay (Hiển thị cho User và kích hoạt cho AI RAG)</label>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 pt-3 border-top">
+                <a asp-area="Admin" asp-controller="Articles" asp-action="Index" class="btn btn-light rounded-pill px-4">Hủy</a>
+                <button type="submit" class="btn btn-emerald rounded-pill px-4">
+                    <i class="bi bi-check2-circle me-1"></i>Lưu Thay Đổi
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,33 @@
+@model BodyAdjustmentPreview
+@{
+    ViewData["Title"] = "Xem trước điều chỉnh tốc độ giảm cân";
+}
+
+<div class="container py-4">
+    <h1 class="h3">@ViewData["Title"]</h1>
+    <p class="text-muted">Xem lại thay đổi trước khi xác nhận.</p>
+    <dl class="row">
+        <dt class="col-sm-5">Calo mục tiêu/ngày</dt>
+        <dd class="col-sm-7">@Model.OldCalories.ToString("N0") → @Model.NewCalories.ToString("N0") kcal</dd>
+        <dt class="col-sm-5">Tốc độ giảm dự kiến</dt>
+        <dd class="col-sm-7">@Model.OldWeeklyRate.ToString("0.00") → @Model.NewWeeklyRate.ToString("0.00") kg/tuần</dd>
+        <dt class="col-sm-5">Thời gian còn lại dự kiến</dt>
+        <dd class="col-sm-7">
+            @if (Model.NewTargetDate is DateTime targetDate)
+            {
+                <span>Khoảng @Model.NewWeeks tuần, đến @targetDate.ToString("dd/MM/yyyy"). Ngày mục tiêu sẽ cập nhật khi xác nhận.</span>
+            }
+            else
+            {
+                <span>Chưa có ngày hoàn thành dự kiến với mức này. Ngày mục tiêu đã lưu được giữ lại.</span>
+            }
+        </dd>
+    </dl>
+    <form asp-action="ConfirmBodyAdjustment" method="post" class="d-flex flex-wrap gap-2">
+        <input type="hidden" name="id" value="@Model.GoalId" />
+        <input type="hidden" name="feedback" value="@Model.Feedback" />
+        <input type="hidden" name="fingerprint" value="@Model.Fingerprint" />
+        <a asp-action="Index" class="btn btn-outline-secondary">Quay lại</a>
+        <button type="submit" class="btn btn-primary-custom">Xác nhận điều chỉnh</button>
+    </form>
+</div>

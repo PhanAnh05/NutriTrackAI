@@ -1,0 +1,114 @@
+/* Shared page shell from the NutriTrackAI dashboard handoff. */
+.dashboard-shell {
+    --nt-brand-700: #075C43;
+    --nt-brand-600: #087B51;
+    --nt-brand-500: #0B9B64;
+    --nt-brand-400: #2ACB82;
+    --nt-mint-100: #DFF8EA;
+    --nt-mint-50: #F1FBF5;
+    --nt-bg: #F5FAF8;
+    --nt-surface: #FFFFFF;
+    --nt-ink: #16372F;
+    --nt-muted: #6F857D;
+    --nt-stroke: #DCECE5;
+    --nt-water: #39A9EC;
+    --nt-protein: #EF6256;
+    --nt-carbs: #5F6DE6;
+    --nt-fats: #F59E0B;
+    --nt-warning-bg: #FFF5D9;
+    --nt-radius-card: 18px;
+    --nt-radius-button: 11px;
+    --nt-shadow-card: 0 8px 30px rgba(11,96,66,.07);
+    --nt-font: 'Be Vietnam Pro', system-ui, sans-serif;
+    --forest: var(--nt-brand-700);
+    --leaf: var(--nt-brand-600);
+    --ink: var(--nt-ink);
+    --caption: #425b53;
+    --line: var(--nt-stroke);
+    --mist: var(--nt-mint-50);
+    --paper: var(--nt-surface);
+    --protein: var(--nt-brand-500);
+    --carb: var(--nt-carbs);
+    --fat: var(--nt-fats);
+    background: linear-gradient(110deg, var(--nt-bg), #fbfdfc 45%, #f6fafb);
+    color: var(--ink);
+    font-family: var(--nt-font);
+    --bs-body-font-family: var(--nt-font);
+}
+.dashboard-shell main {
+    position: relative;
+    isolation: isolate;
+}
+.dashboard-shell main::before, .dashboard-shell main::after {
+    content: ""; position: absolute; z-index: -1; pointer-events: none; top: 0;
+}
+.dashboard-shell main::before {
+    inset-inline: 0; height: clamp(170px, 18vw, 245px);
+    background:
+        radial-gradient(ellipse 28% 76% at 84% -18%, #b7e9d0 0 96%, transparent 98%),
+        radial-gradient(ellipse 27% 68% at 104% 8%, #d7f3e3 0 96%, transparent 98%),
+        radial-gradient(ellipse 20% 55% at -8% 38%, #def5e6 0 92%, transparent 97%),
+        linear-gradient(175deg, #f1faf5, transparent 74%);
+}
+@supports (clip-path: shape(from 0% 100%, line to 100% 100%, close)) {
+    .dashboard-shell main::before {
+        background: linear-gradient(174deg, #b7ebd2 12%, #d8f3e5 50%, transparent 96%);
+        clip-path: shape(from 0% 46%, curve to 22% 48% with 9% 58% / 15% 64%,
+            curve to 48% 61% with 34% 26% / 38% 64%,
+            curve to 79% 5% with 63% 66% / 70% 2%,
+            curve to 100% 3% with 90% 2% / 92% 40%,
+            line to 100% 100%, line to 0% 100%, close);
+    }
+}
+.dashboard-shell main::after {
+    right: 0; width: clamp(60px, 9vw, 132px); height: clamp(50px, 7vw, 110px);
+    background: url('../images/dashboard/handoff/leaf-branch.png') left 45% bottom 20% / 115% auto no-repeat;
+    transform: rotate(180deg);
+    opacity: .72;
+}
+.dashboard-shell .navbar-custom { background: #fff; border-color: var(--line); box-shadow: 0 2px 12px rgb(11 96 66 / 4%); }
+.dashboard-shell .brand-logo { font-weight: 800; letter-spacing: -.04em; }
+.dashboard-shell .brand-icon { background: linear-gradient(145deg, #40c657, #00843c); border-radius: .6rem; }
+.dashboard-shell .navbar-toggler { width: 44px; height: 44px; color: var(--forest); }
+.dashboard-shell .navbar-toggler-icon {
+    width: 1.35rem; height: 1rem;
+    border-block: 2px solid currentColor;
+    background: linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat;
+}
+.dashboard-shell .nav-link[aria-current] { color: var(--forest); background: linear-gradient(125deg, #f4fadd, #d6f8e9); }
+.dashboard-shell .nav-link[aria-current]::after { display: none; }
+.dashboard-shell .footer-custom { margin-top: 0 !important; padding: 0 0 clamp(2rem,4vw,3.6rem); border: 0;
+    background:
+        radial-gradient(ellipse 18% 30% at 1% 115%, #b5eaa5 98%, transparent 100%),
+        radial-gradient(ellipse 20% 27% at 54% 116%, #c5efdb 98%, transparent 100%),
+        radial-gradient(ellipse 20% 40% at 100% 118%, #d7f2de 98%, transparent 100%); }
+.dashboard-shell .medical-disclaimer-box { background: linear-gradient(110deg, #fff9e7, #fffcf5 68%, #fff6df); border: 1px solid #f2d99f;
+    border-radius: var(--nt-radius-card); color: #4d482e; box-shadow: var(--nt-shadow-card); }
+.dashboard-shell :is(.dashboard-page, .meal-plan-page), .dashboard-shell footer .container {
+    max-width: 1400px;
+    padding-inline: clamp(16px, 4vw, 54px);
+}
+.dashboard-shell .navbar :focus-visible { outline: 3px solid #007a67; outline-offset: 3px; }
+@media (min-width: 992px) {
+    .dashboard-shell .navbar-custom > .container-fluid { max-width: 1400px; padding-inline: clamp(1rem, 3.5vw, 48px) !important; }
+    .dashboard-shell .navbar-nav { flex: 1; justify-content: center; }
+    .dashboard-shell .navbar-nav .nav-link { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; min-height: 44px; max-width: 7.5rem; padding: .35rem .55rem !important; text-align: center; font-size: .83rem; line-height: 1.22; }
+    .dashboard-shell .navbar-nav .nav-link i { margin: 0 0 .2rem !important; }
+    .dashboard-shell .navbar-nav .badge { font-size: .65rem; }
+    .dashboard-shell .navbar .dropdown-toggle { min-height: 44px; max-width: 180px; padding: .4rem .65rem; font-size: .83rem; }
+    .dashboard-shell .dropdown-toggle span { min-width: 0; max-width: 16ch; overflow: hidden; text-overflow: ellipsis; }
+}
+@media (min-width: 992px) and (max-width: 1130px) {
+    .dashboard-shell .brand-logo { margin-right: .4rem; font-size: 1.12rem; }
+    .dashboard-shell .navbar-nav { margin-left: .25rem !important; }
+    .dashboard-shell .navbar .dropdown-toggle { max-width: 154px; font-size: .77rem; }
+    .dashboard-shell .navbar-nav .nav-link { max-width: 6rem; }
+    .dashboard-shell .navbar-nav .badge { margin: 0 !important; padding: .12rem .3rem; }
+    .dashboard-shell .navbar-nav .nav-link { padding-inline: .38rem !important; font-size: .78rem; }
+}
+@media (max-width: 991.98px) {
+    .dashboard-shell .navbar-nav .nav-link { min-height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .dashboard-shell *, .dashboard-shell *::before, .dashboard-shell *::after { scroll-behavior: auto !important; transition-duration: 0s !important; animation-duration: 0s !important; }
+}

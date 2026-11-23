@@ -1,0 +1,251 @@
+@model GoalIndexViewModel
+@{
+    ViewData["Title"] = "Quản lý Mục tiêu Cân nặng";
+}
+
+<div class="container py-5">
+    @if (TempData["SuccessMessage"] is string success) { <div class="alert alert-success" role="status">@success</div> }
+    @if (TempData["ErrorMessage"] is string error) { <div class="alert alert-warning" role="alert">@error</div> }
+    <!-- Header -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <span class="badge badge-custom-emerald mb-2">Định hướng vóc dáng</span>
+            <h1 class="h3 fw-bold text-dark mb-1">Mục tiêu cân nặng</h1>
+            <p class="text-muted small mb-0">Theo dõi tiến độ thực hiện và mức calo khuyến nghị tương ứng.</p>
+        </div>
+        <div>
+            <a asp-action="Create" class="btn btn-primary-custom px-4 py-2">
+                <i class="bi bi-plus-circle me-1"></i> Thiết Lập Mục Tiêu Mới
+            </a>
+        </div>
+    </div>
+
+    @if (Model.Budget is { Suspended: true } suspendedBudget)
+    {
+        <div class="alert alert-warning" role="status">@suspendedBudget.Explanation
+            <a asp-controller="Profile" asp-action="Index" asp-fragment="health-screening" class="alert-link">Cập nhật sàng lọc sức khỏe</a>
+        </div>
+    }
+    @if (Model.Budget?.Goal?.GoalType == GoalType.Lose && !Model.Budget.Suspended)
+    {
+        <partial name="_BodyCheckIn" model="Model.Budget" />
+    }
+
+    <!-- Active Goal Section -->
+    @if (Model.ActiveGoal != null)
+    {
+        <div class="card card-custom p-4 p-md-5 border-0 shadow mb-5" style="background: #f0fdf4;">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge @(Model.ActiveGoal.GoalType == GoalType.Lose ? "bg-danger text-white" : Model.ActiveGoal.GoalType == GoalType.Gain ? "bg-success text-white" : "bg-primary text-white") py-2 px-3 rounded-pill fs-6">
+                        <i class="bi bi-bullseye me-1"></i>
+                        @(Model.ActiveGoal.GoalType == GoalType.Lose ? "Giảm cân" : Model.ActiveGoal.GoalType == GoalType.Gain ? "Tăng cân" : "Duy trì cân nặng")
+                    </span>
+                    <span class="badge bg-success-subtle text-success border border-success-subtle py-2 px-3 rounded-pill">
+                        <i class="bi bi-check-circle-fill me-1"></i> Đang kích hoạt
+                    </span>
+                </div>
+                <small class="text-muted">
+                    Bắt đầu: <strong>@Model.ActiveGoal.StartDate.ToString("dd/MM/yyyy")</strong> &bull; Ngày mong muốn: <strong>@Model.ActiveGoal.TargetDate.ToString("dd/MM/yyyy")</strong>
+                </small>
+            </div>
+
+            <!-- Warning Flag Alert if safety violated -->
+            @if (Model.ActiveGoal.WarningFlag && !string.IsNullOrEmpty(Model.ActiveGoal.WarningMessage))
+            {
+                <div class="alert alert-warning border border-warning-subtle shadow-sm mb-4" role="alert">
+                    <div class="d-flex align-items-start gap-2">
+                        <i class="bi bi-exclamation-triangle-fill text-warning fs-5 flex-shrink-0 mt-1"></i>
+                        <div>
+                            <strong class="d-block text-dark">Lưu ý quy tắc hệ thống:</strong>
+                            <span class="text-secondary small">@Model.ActiveGoal.WarningMessage</span>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!-- 4 Metrics Row -->
+            <div class="row g-3 mb-4 text-center">
+                <div class="col-6 col-md-3">
+                    <div class="p-3 bg-white rounded-3 border shadow-sm h-100">
+                        <small class="text-muted d-block mb-1">Cân nặng bắt đầu</small>
+                        <h4 class="fw-bold text-dark mb-0">@Model.ActiveGoal.StartWeight.ToString("0.0") kg</h4>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="p-3 bg-white rounded-3 border shadow-sm h-100">
+                        <small class="text-muted d-block mb-1">Cân nặng hiện tại</small>
+                        <h4 class="fw-bold text-success mb-0">@Model.CurrentWeightKg.ToString("0.0") kg</h4>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="p-3 bg-white rounded-3 border shadow-sm h-100">
+                        <small class="text-muted d-block mb-1">Cân nặng mục tiêu</small>
+                        <h4 class="fw-bold text-primary mb-0">@Model.ActiveGoal.TargetWeight.ToString("0.0") kg</h4>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="p-3 bg-white rounded-3 border shadow-sm h-100">
+                        <small class="text-muted d-block mb-1">Thời gian còn lại</small>
+                        <h4 class="fw-bold text-dark mb-0">@Model.DaysRemaining ngày</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Bar Section -->
+            <div class="bg-white p-4 rounded-3 border shadow-sm mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="fw-bold text-dark">Tiến trình đạt được</span>
+                    <span class="fw-bold text-success fs-5">@Model.ProgressPercent%</span>
+                </div>
+                <div class="progress" style="height: 14px;">
+                    <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: @Model.ProgressPercent%;" aria-valuenow="@Model.ProgressPercent" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div class="d-flex justify-content-between text-muted small mt-2">
+                    <span>Đã thay đổi: <strong>@Model.TotalWeightChangeAchieved.ToString("0.0") kg</strong></span>
+                    <span>Còn cách đích: <strong>@Model.WeightChangeRemainingKg.ToString("0.0") kg</strong></span>
+                </div>
+            </div>
+
+            @if (Model.Budget != null)
+            {
+                <section class="bg-white rounded p-3 p-md-4 mb-4">
+                    <h2 class="h5">Kế hoạch năng lượng hiện tại</h2>
+                    <dl class="row mb-2">
+                        <dt class="col-sm-6">Giai đoạn</dt><dd class="col-sm-6">@Model.Budget.Phase</dd>
+                        <dt class="col-sm-6">TDEE hiện tại</dt><dd class="col-sm-6">@Model.Budget.Tdee.ToString("N0") kcal/ngày</dd>
+                        <dt class="col-sm-6">Mức thâm hụt / thặng dư</dt><dd class="col-sm-6">@Model.Budget.Adjustment.ToString("0.##") kcal/ngày</dd>
+                        <dt class="col-sm-6">Ngày mong muốn</dt><dd class="col-sm-6">@Model.ActiveGoal.TargetDate.ToString("dd/MM/yyyy")</dd>
+                        <dt class="col-sm-6">Ngày dự kiến cập nhật</dt><dd class="col-sm-6">@(Model.Budget.EstimatedDate?.ToString("dd/MM/yyyy") ?? "Theo dõi xu hướng / chưa thể ước tính")</dd>
+                        <dt class="col-sm-6">@(Model.Review?.IsDue == true ? "Đã đến kỳ đánh giá từ" : "Đánh giá kế hoạch tiếp theo")</dt><dd class="col-sm-6">@Model.Budget.NextReviewOn?.ToString("dd/MM/yyyy")</dd>
+                    </dl>
+                    <p class="small mb-0">@Model.Budget.Explanation</p>
+                </section>
+            }
+            @if (Model.Review != null)
+            {
+                <section class="bg-white rounded p-3 p-md-4 mb-4">
+                    <h2 class="h5">Đánh giá xu hướng cân nặng và nhật ký sau 14 ngày</h2>
+                    <p>@Model.Review.Message</p>
+                    <p class="small">Dữ liệu gần đây: @Model.Review.WeightDays ngày cân · @Model.Review.MealDays ngày ghi bữa ăn.
+                        @if (Model.Review.WeeklyRate.HasValue) { <span>Tốc độ theo xu hướng: @Model.Review.WeeklyRate.Value.ToString("0.00") kg/tuần.</span> }
+                    </p>
+                    @if (Model.Review.WeeklyRate.HasValue)
+                    {
+                        <div class="small mb-3">
+                            <p class="mb-1">Kỳ nhật ký: @Model.Review.PeriodStart?.ToString("dd/MM/yyyy") – @Model.Review.PeriodEnd?.ToString("dd/MM/yyyy").
+                                Trung bình nhóm 7 ngày đầu: @Model.Review.FirstWindowAverage?.ToString("0.000") kg;
+                                nhóm 7 ngày cuối: @Model.Review.LastWindowAverage?.ToString("0.000") kg.
+                                Khoảng cách giữa ngày trung bình hai nhóm: @Model.Review.TrendIntervalDays?.ToString("0.##") ngày.</p>
+                            <p class="mb-1">Đầu → cuối kỳ: @Model.Review.PeriodFirstWeight?.ToString("0.0") → @Model.Review.PeriodLastWeight?.ToString("0.0") kg.
+                                Tốc độ đầu–cuối kỳ: @Model.Review.EndpointWeeklyRate?.ToString("0.00") kg/tuần.</p>
+                            <p class="mb-0">Tốc độ xu hướng so sánh hai trung bình, còn tốc độ đầu–cuối chỉ dùng hai mốc cân nên nhạy với dao động từng ngày.
+                                Số dương là thay đổi theo hướng mục tiêu (với duy trì: dương là tăng).
+                                Phần trăm tiến trình phía trên tính từ cân nặng bắt đầu mục tiêu, không chỉ từ đầu kỳ 14 ngày.</p>
+                        </div>
+                    }
+                    @if (Model.Review.IsDue)
+                    {
+                        <form asp-action="Review" method="post" class="mb-3">
+                            <input type="hidden" name="id" value="@Model.ActiveGoal.Id" />
+                            <input type="hidden" name="fingerprint" value="@Model.Review.Fingerprint" />
+                            @if (Model.Review.ProposedAdjustment.HasValue)
+                            {
+                                <p>Mức hiện tại: @Model.Budget?.Adjustment.ToString("0.##") → đề xuất: <strong>@Model.Review.ProposedAdjustment.Value.ToString("0.##") kcal/ngày</strong>.</p>
+                                <label for="adjustment" class="form-label">Mức điều chỉnh muốn xác nhận</label>
+                                <select name="adjustment" id="adjustment" class="form-select mb-2">
+                                    <option value="@Model.Review.ProposedAdjustment.Value.ToString(System.Globalization.CultureInfo.InvariantCulture)">@Model.Review.ProposedAdjustment.Value.ToString("0.##") kcal/ngày</option>
+                                    @if (Model.Review.MayIncrease)
+                                    {
+                                        @foreach (var value in new[] { 550m, 600m, 650m, 700m })
+                                        {
+                                            if (value > Model.Budget!.Adjustment && value != Model.Review.ProposedAdjustment && value <= Model.Budget.MaximumAdjustment)
+                                            { <option value="@value">@value kcal/ngày (backend kiểm tra lại sàn calo)</option> }
+                                        }
+                                    }
+                                </select>
+                                <div class="form-check mb-2"><input type="checkbox" name="confirmed" value="true" id="confirmPlan" class="form-check-input" /><label for="confirmPlan" class="form-check-label">Tôi đã xem mức thay đổi và đồng ý áp dụng.</label></div>
+                                <button name="apply" value="true" class="btn btn-primary-custom">Áp dụng đề xuất</button>
+                            }
+                            <button name="apply" value="false" class="btn btn-outline-custom">Giữ kế hoạch hiện tại</button>
+                        </form>
+                    }
+                    <form asp-action="Extend" method="post" class="d-flex flex-column flex-sm-row gap-2 align-items-sm-end">
+                        <input type="hidden" name="id" value="@Model.ActiveGoal.Id" />
+                        <div><label for="extendWeeks" class="form-label small">Thời gian mới tính từ hôm nay (tuần)</label><input id="extendWeeks" type="number" name="weeks" min="1" max="104" class="form-control" required /></div>
+                        <button class="btn btn-outline-custom">Xác nhận kéo dài thời gian</button>
+                    </form>
+                </section>
+            }
+
+            <!-- Target Calories Badge -->
+            <div class="p-3 rounded-3 text-white d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 shadow-sm" style="background: #059669;">
+                <div>
+                    <h5 class="fw-bold mb-1"><i class="bi bi-lightning-charge-fill me-1"></i>Ngân sách calo khuyến nghị</h5>
+                    <small class="text-white-50">Tốc độ điều chỉnh: ~@Model.ActiveGoal.WeeklyRateKg.ToString("0.00") kg / tuần</small>
+                </div>
+                <div class="fs-3 fw-bold text-white bg-white bg-opacity-25 py-2 px-4 rounded-pill">
+                    @Model.DailyCalorieTarget.ToString("N0") kcal / ngày
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="card card-custom p-5 text-center border-0 shadow-sm mb-5">
+            <i class="bi bi-bullseye text-muted mb-3" style="font-size: 3rem;"></i>
+            <h4 class="fw-bold text-dark mb-2">Bạn chưa có mục tiêu cân nặng nào đang hiệu lực</h4>
+            <p class="text-muted small mb-4">Hãy thiết lập mục tiêu mới để hệ thống tính toán ngân sách calo phù hợp cho bạn.</p>
+            <div>
+                <a asp-action="Create" class="btn btn-primary-custom px-4 py-2">
+                    <i class="bi bi-plus-circle me-1"></i> Thiết lập mục tiêu ngay
+                </a>
+            </div>
+        </div>
+    }
+
+    <!-- Past Goals History Table -->
+    <div class="card card-custom p-4 border-0 shadow-sm">
+        <h5 class="fw-bold text-dark mb-3">Lịch sử các mục tiêu trước đây</h5>
+        @if (Model.PastGoals.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light small text-secondary">
+                        <tr>
+                            <th>Mục tiêu</th>
+                            <th>Bắt đầu</th>
+                            <th>Mục tiêu</th>
+                            <th>Thời gian</th>
+                            <th>Tốc độ (kg/tuần)</th>
+                            <th>Calo/ngày</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var g in Model.PastGoals)
+                        {
+                            <tr>
+                                <td>
+                                    <span class="badge @(g.GoalType == GoalType.Lose ? "bg-danger-subtle text-danger" : g.GoalType == GoalType.Gain ? "bg-success-subtle text-success" : "bg-primary-subtle text-primary")">
+                                        @(g.GoalType == GoalType.Lose ? "Giảm cân" : g.GoalType == GoalType.Gain ? "Tăng cân" : "Duy trì")
+                                    </span>
+                                </td>
+                                <td>@g.StartWeight.ToString("0.0") kg</td>
+                                <td><strong>@g.TargetWeight.ToString("0.0") kg</strong></td>
+                                <td class="small text-muted">@g.StartDate.ToString("dd/MM/yy") &rarr; @g.TargetDate.ToString("dd/MM/yy")</td>
+                                <td>@g.WeeklyRateKg.ToString("0.00")</td>
+                                <td>@g.DailyCalorieTarget.ToString("N0") kcal</td>
+                                <td><span class="badge bg-secondary-subtle text-secondary">Đã thay thế</span></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p class="text-muted small mb-0">Chưa có lịch sử mục tiêu cũ.</p>
+        }
+    </div>
+</div>

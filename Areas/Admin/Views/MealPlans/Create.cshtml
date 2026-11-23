@@ -1,0 +1,69 @@
+@model AdminMealPlanEditViewModel
+@{
+    ViewData["Title"] = "Tạo Thực đơn Mẫu Mới";
+}
+
+<div class="container-fluid px-0" style="max-width: 800px;">
+    <div class="mb-4">
+        <a asp-area="Admin" asp-controller="MealPlans" asp-action="Index" class="btn btn-sm btn-light border rounded-pill mb-3">
+            <i class="bi bi-arrow-left me-1"></i>Quay lại danh sách
+        </a>
+        <h2 class="fw-bold mb-1">
+            <i class="bi bi-plus-circle text-emerald me-2"></i>Tạo Thực đơn Mẫu Mới
+        </h2>
+        <p class="text-muted mb-0">Bước 1: Thiết lập thông tin và mục tiêu calo. Bước 2: Thêm món ăn vào từng bữa.</p>
+    </div>
+
+    <div class="card-custom p-4">
+        <form asp-area="Admin" asp-controller="MealPlans" asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3 small"></div>
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label fw-semibold">Tên Thực đơn Mẫu <span class="text-danger">*</span></label>
+                <input asp-for="Name" class="form-control" placeholder="Ví dụ: Thực đơn Eat Clean 1500 kcal, Thực đơn Tăng cân 2400 kcal..." />
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-12 col-md-6">
+                    <label asp-for="GoalType" class="form-label fw-semibold">Mục tiêu Thể trạng <span class="text-danger">*</span></label>
+                    <select asp-for="GoalType" class="form-select">
+                        <option value="@GoalType.Lose">Giảm cân (Lose Weight)</option>
+                        <option value="@GoalType.Gain">Tăng cân (Gain Weight)</option>
+                        <option value="@GoalType.Maintain">Duy trì cân nặng (Maintain)</option>
+                    </select>
+                    <span asp-validation-for="GoalType" class="text-danger small"></span>
+                </div>
+
+                <div class="col-12 col-md-6">
+                    <label asp-for="TargetCalories" class="form-label fw-semibold">Năng lượng Mục tiêu (kcal) <span class="text-danger">*</span></label>
+                    <input asp-for="TargetCalories" type="number" class="form-control" placeholder="Ví dụ: 1500, 1800, 2200..." />
+                    <span asp-validation-for="TargetCalories" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Explanation" class="form-label fw-semibold">Lời giải thích & Lời khuyên dinh dưỡng</label>
+                <textarea asp-for="Explanation" class="form-control" rows="3" placeholder="Ghi chú về phân bổ dưỡng chất, đối tượng khuyến nghị hoặc lưu ý khi áp dụng..."></textarea>
+                <span asp-validation-for="Explanation" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-4 form-check form-switch">
+                <input asp-for="IsPublic" class="form-check-input" type="checkbox" id="isPublicSwitch" checked>
+                <label class="form-check-label fw-semibold" for="isPublicSwitch">Công khai cho toàn bộ người dùng áp dụng</label>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 pt-3 border-top">
+                <a asp-area="Admin" asp-controller="MealPlans" asp-action="Index" class="btn btn-light rounded-pill px-4">Hủy</a>
+                <button type="submit" class="btn btn-emerald rounded-pill px-4">
+                    Tiếp tục thêm món <i class="bi bi-arrow-right ms-1"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

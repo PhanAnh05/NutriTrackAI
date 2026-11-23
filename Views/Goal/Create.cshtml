@@ -1,0 +1,67 @@
+@model GoalCreateViewModel
+@{ ViewData["Title"] = "Thiết lập mục tiêu mới"; }
+<div class="container py-4 py-md-5">
+    <div class="row justify-content-center"><div class="col-lg-9">
+        <div class="card card-custom p-3 p-md-4">
+            <h1 class="h3 fw-bold">Thiết lập mục tiêu cân nặng</h1>
+            <p class="small text-muted">Nhập cân nặng mong muốn để xem các phương án thời gian theo hồ sơ hiện tại.</p>
+            <p>Cân nặng hiện tại: <strong>@Model.StartWeight.ToString("0.0") kg</strong> · Chiều cao: @Model.HeightCm.ToString("0.#") cm · BMI: @Model.CurrentBmi.ToString("0.00")</p>
+            <form asp-action="Create" method="post" id="goalCreateForm" data-draft-owner="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value"
+                  data-current-weight="@Model.StartWeight.ToString(System.Globalization.CultureInfo.InvariantCulture)">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="All" class="text-danger" role="alert"></div>
+                <fieldset class="mb-4 goal-type-options">
+                    <legend class="h6">Loại mục tiêu</legend>
+                    <div class="row g-2">
+                        @foreach (var option in new[] { (GoalType.Lose, "Giảm cân"), (GoalType.Maintain, "Duy trì"), (GoalType.Gain, "Tăng cân") })
+                        {
+                            <div class="col-4">
+                                <input type="radio" class="btn-check" asp-for="GoalType" value="@option.Item1" id="goal-@option.Item1" />
+                                <label class="btn btn-outline-custom w-100 py-3" for="goal-@option.Item1">@option.Item2</label>
+                            </div>
+                        }
+                    </div>
+                </fieldset>
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="TargetWeight" class="form-label">Cân nặng mong muốn (kg)</label>
+                        <input asp-for="TargetWeight" type="number" step="0.1" min="20" max="300" class="form-control" />
+                        <span asp-validation-for="TargetWeight" class="text-danger small"></span>
+                    </div>
+                </div>
+                <partial name="_PaceChoices" model="Model.Analysis" />
+                <input type="hidden" name="UseManualWeeks" value="@Model.UseManualWeeks.ToString().ToLowerInvariant()" />
+                <button type="button" class="btn btn-link p-0 mb-2" data-manual-toggle aria-controls="goalManualDuration" aria-expanded="true">Tự nhập số tuần</button>
+                <div class="mb-3" id="goalManualDuration" data-manual-duration>
+                    <label asp-for="DurationWeeks" class="form-label">Thời gian mong muốn (tuần)</label>
+                    <input asp-for="DurationWeeks" type="number" min="@(Model.GoalType == GoalType.Maintain ? 1 : GoalPolicy.MinGoalWeeks)" max="104" data-change-min-weeks="@GoalPolicy.MinGoalWeeks" class="form-control" />
+                    <span asp-validation-for="DurationWeeks" class="text-danger small"></span>
+                </div>
+                <div class="form-check mb-3" data-introductory-control>
+                    <input asp-for="Introductory" class="form-check-input" />
+                    <label asp-for="Introductory" class="form-check-label">Bắt đầu với giai đoạn làm quen (tối đa 250 kcal/ngày)</label>
+                    <p class="small text-muted">Đánh giá sau 14 ngày. Sang giai đoạn ổn định cần đủ dữ liệu và xác nhận; mức điều chỉnh không tự tăng theo tuần.</p>
+                </div>
+                <section id="energyAnalysis" aria-live="polite" aria-busy="false">
+                    <partial name="_EnergyAnalysis" model="Model.Analysis" />
+                </section>
+                <div class="form-check mt-3" data-pace-ack hidden="@(Model.Analysis?.RequiresIntensePaceAck != true)">
+                    <input asp-for="AcknowledgeIntensePace" class="form-check-input" aria-describedby="paceAckError" />
+                    <label asp-for="AcknowledgeIntensePace" class="form-check-label">Tôi đã xem tốc độ giảm cân ở vùng Mạnh và mức calo dự kiến.</label>
+                    <span asp-validation-for="AcknowledgeIntensePace" id="paceAckError" class="text-danger small d-block"></span>
+                </div>
+                <p id="previewError" class="text-danger small" role="alert"></p>
+                <div class="d-flex justify-content-between gap-2 mt-4">
+                    <a asp-action="Index" class="btn btn-outline-custom">Quay lại</a>
+                    <button type="submit" class="btn btn-primary-custom" id="btnSubmitGoal">Xác nhận tạo mục tiêu</button>
+                </div>
+            </form>
+        </div>
+    </div></div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/pace-picker.js" asp-append-version="true"></script>
+    <script src="~/js/goal-draft.js" asp-append-version="true"></script>
+    <script src="~/js/goal-planning.js" asp-append-version="true"></script>
+}

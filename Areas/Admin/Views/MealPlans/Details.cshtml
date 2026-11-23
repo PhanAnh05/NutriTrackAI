@@ -1,0 +1,284 @@
+@model MealPlan
+@{
+    ViewData["Title"] = $"Chi tiết Thực đơn: {Model.Name}";
+    var foods = ViewBag.Foods as List<Food> ?? new();
+
+    decimal totalCalories = 0;
+    decimal totalProtein = 0;
+    decimal totalCarb = 0;
+    decimal totalFat = 0;
+
+    foreach (var item in Model.Items)
+    {
+        if (item.Food != null && item.Food.ServingSize > 0)
+        {
+            var ratio = item.Servings / item.Food.ServingSize;
+            totalCalories += item.Food.Calories * ratio;
+            totalProtein += item.Food.Protein * ratio;
+            totalCarb += item.Food.Carb * ratio;
+            totalFat += item.Food.Fat * ratio;
+        }
+    }
+
+    var calDiff = totalCalories - Model.TargetCalories;
+}
+
+<div class="container-fluid px-0">
+    <!-- Header -->
+    <div class="mb-4">
+        <a asp-area="Admin" asp-controller="MealPlans" asp-action="Index" class="btn btn-sm btn-light border rounded-pill mb-3">
+            <i class="bi bi-arrow-left me-1"></i>Quay lại danh sách thực đơn
+        </a>
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div>
+                <div class="d-flex align-items-center gap-2">
+                    <h2 class="fw-bold mb-0">@Model.Name</h2>
+                    @if (Model.IsPublic)
+                    {
+                        <span class="badge bg-success-subtle text-success border border-success-subtle">Công khai</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">Riêng tư</span>
+                    }
+                </div>
+                <p class="text-muted mb-0 mt-1">@(string.IsNullOrEmpty(Model.Explanation) ? "Thực đơn dinh dưỡng mẫu" : Model.Explanation)</p>
+            </div>
+            <div class="d-flex gap-2">
+                <form asp-area="Admin" asp-controller="MealPlans" asp-action="TogglePublic" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <button type="submit" class="btn btn-sm @(Model.IsPublic ? "btn-outline-warning" : "btn-outline-success") rounded-pill px-3">
+                        <i class="bi @(Model.IsPublic ? "bi-eye-slash" : "bi-eye") me-1"></i>
+                        @(Model.IsPublic ? "Chuyển riêng tư" : "Công khai")
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overview Metrics Row -->
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-md-4">
+            <div class="card-custom p-4 h-100">
+                <span class="text-muted small fw-semibold">NĂNG LƯỢNG MỤC TIÊU</span>
+                <div class="h3 fw-bold my-1 text-slate-900">@Model.TargetCalories.ToString("N0") <span class="fs-6 fw-normal text-muted">kcal</span></div>
+                <div class="small text-muted">
+                    Mục tiêu: 
+                    <strong class="text-emerald">
+                        @(Model.GoalType == GoalType.Lose ? "Giảm cân" : (Model.GoalType == GoalType.Gain ? "Tăng cân" : "Duy trì"))
+                    </strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+            <div class="card-custom p-4 h-100">
+                <span class="text-muted small fw-semibold">NĂNG LƯỢNG THỰC TẾ (TỔNG CÁC MÓN)</span>
+                <div class="h3 fw-bold my-1 @(Math.Abs(calDiff) <= (Model.TargetCalories * 0.1m) ? "text-success" : "text-danger")">
+                    @totalCalories.ToString("N0") <span class="fs-6 fw-normal text-muted">kcal</span>
+                </div>
+                <div class="small">
+                    Độ lệch: 
+                    <span class="fw-semibold @(calDiff > 0 ? "text-danger" : "text-primary")">
+                        @(calDiff > 0 ? "+" : "")@calDiff.ToString("N0") kcal
+                    </span>
+                    (@(Model.TargetCalories > 0 ? (totalCalories / Model.TargetCalories * 100).ToString("0.#") : 0)%)
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+            <div class="card-custom p-4 h-100">
+                <span class="text-muted small fw-semibold">TỔNG HỢP MACRO</span>
+                <div class="d-flex align-items-center justify-content-between mt-2">
+                    <div>
+                        <div class="fw-bold text-danger">@totalProtein.ToString("0.#")g</div>
+                        <small class="text-muted">Protein</small>
+                    </div>
+                    <div>
+                        <div class="fw-bold text-warning-emphasis">@totalCarb.ToString("0.#")g</div>
+                        <small class="text-muted">Carb</small>
+                    </div>
+                    <div>
+                        <div class="fw-bold text-info-emphasis">@totalFat.ToString("0.#")g</div>
+                        <small class="text-muted">Fat</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Meals Breakdown -->
+    @{
+        var mealTypes = new[]
+        {
+            new { Type = MealType.Breakfast, Title = "Bữa Sáng", Icon = "bi-sunrise-fill", Color = "text-warning" },
+            new { Type = MealType.Lunch, Title = "Bữa Trưa", Icon = "bi-sun-fill", Color = "text-danger" },
+            new { Type = MealType.Dinner, Title = "Bữa Tối", Icon = "bi-moon-stars-fill", Color = "text-indigo" },
+            new { Type = MealType.Snack, Title = "Bữa Phụ", Icon = "bi-cup-hot-fill", Color = "text-success" }
+        };
+    }
+
+    <div class="row g-4 mb-4">
+        @foreach (var meal in mealTypes)
+        {
+            var items = Model.Items.Where(i => i.MealType == meal.Type).OrderBy(i => i.SortOrder).ToList();
+            decimal mealCalories = 0;
+            foreach (var item in items)
+            {
+                if (item.Food != null && item.Food.ServingSize > 0)
+                {
+                    mealCalories += item.Food.Calories * (item.Servings / item.Food.ServingSize);
+                }
+            }
+
+            <div class="col-12 col-xl-6">
+                <div class="card-custom p-4 h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi @meal.Icon @meal.Color fs-5"></i>
+                            <h5 class="fw-bold mb-0">@meal.Title</h5>
+                            <span class="badge bg-light text-muted border">@mealCalories.ToString("N0") kcal</span>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-emerald rounded-pill" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#addItemModal" 
+                                data-meal-type="@((int)meal.Type)" 
+                                data-meal-name="@meal.Title">
+                            <i class="bi bi-plus-circle me-1"></i>Thêm món
+                        </button>
+                    </div>
+
+                    @if (!items.Any())
+                    {
+                        <div class="text-center py-4 text-muted small">
+                            <i class="bi bi-inbox fs-2 d-block opacity-25 mb-1"></i>
+                            Chưa có món nào trong bữa này.
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="list-group list-group-flush">
+                            @foreach (var item in items)
+                            {
+                                var food = item.Food!;
+                                var ratio = food.ServingSize > 0 ? item.Servings / food.ServingSize : 1;
+                                var cals = food.Calories * ratio;
+                                var p = food.Protein * ratio;
+                                var c = food.Carb * ratio;
+                                var f = food.Fat * ratio;
+
+                                <div class="list-group-item px-0 py-2 d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="rounded-2 bg-light border p-1" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="bi bi-egg-fried text-muted"></i>
+                                        </div>
+                                        <div>
+                                            <div class="fw-semibold text-slate-800">@food.Name</div>
+                                            <div class="small text-muted">
+                                                @item.Servings.ToString("0.#")g (@food.ServingName)
+                                                <span class="ms-1">| P: @p.ToString("0.#")g &bull; C: @c.ToString("0.#")g &bull; F: @f.ToString("0.#")g</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex align-items-center gap-3">
+                                        <span class="fw-bold text-slate-900">@cals.ToString("0.#") <small class="fw-normal text-muted">kcal</small></span>
+                                        <form asp-area="Admin" asp-controller="MealPlans" asp-action="RemoveItem" method="post" class="d-inline"
+                                              onsubmit="return confirm('Xóa món @food.Name khỏi bữa @meal.Title?');">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="itemId" value="@item.Id" />
+                                            <input type="hidden" name="mealPlanId" value="@Model.Id" />
+                                            <button type="submit" class="btn btn-sm btn-link text-danger p-0" title="Xóa món">
+                                                <i class="bi bi-x-circle fs-5"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Modal Add Item to Meal -->
+<div class="modal fade" id="addItemModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <form asp-area="Admin" asp-controller="MealPlans" asp-action="AddItem" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="mealPlanId" value="@Model.Id" />
+                <input type="hidden" name="mealType" id="modalMealTypeInput" value="1" />
+
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="modalMealTitle">Thêm Món vào Bữa</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body py-3">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Chọn món ăn từ kho dữ liệu: <span class="text-danger">*</span></label>
+                        <select name="foodId" id="foodSelect" class="form-select" required>
+                            <option value="">-- Chọn món ăn --</option>
+                            @foreach (var food in foods)
+                            {
+                                <option value="@food.Id" data-serving="@food.ServingSize" data-serving-name="@food.ServingName" data-cal="@food.Calories">
+                                    @food.Name (@food.ServingName - @food.Calories.ToString("0.#") kcal)
+                                </option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Khẩu phần (g / ml): <span class="text-danger">*</span></label>
+                        <input type="number" step="0.1" name="servings" id="servingsInput" class="form-control" value="100" required />
+                        <span class="form-text small text-muted" id="servingHelpText">Nhập trọng lượng thực tế cho món ăn này.</span>
+                    </div>
+                </div>
+
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-light rounded-pill" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-emerald rounded-pill px-4">
+                        <i class="bi bi-plus-lg me-1"></i>Thêm vào thực đơn
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const modal = document.getElementById('addItemModal');
+            const mealTypeInput = document.getElementById('modalMealTypeInput');
+            const mealTitle = document.getElementById('modalMealTitle');
+            const foodSelect = document.getElementById('foodSelect');
+            const servingsInput = document.getElementById('servingsInput');
+            const helpText = document.getElementById('servingHelpText');
+
+            modal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                const mealType = button.getAttribute('data-meal-type');
+                const mealName = button.getAttribute('data-meal-name');
+
+                mealTypeInput.value = mealType;
+                mealTitle.textContent = 'Thêm Món vào ' + mealName;
+            });
+
+            foodSelect.addEventListener('change', function () {
+                const selected = this.options[this.selectedIndex];
+                const serving = selected.getAttribute('data-serving');
+                const servingName = selected.getAttribute('data-serving-name');
+                if (serving) {
+                    servingsInput.value = serving;
+                    helpText.textContent = 'Khẩu phần chuẩn mặc định: ' + servingName + ' (' + serving + 'g)';
+                }
+            });
+        });
+    </script>
+}

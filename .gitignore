@@ -1,0 +1,39 @@
+# .NET and Visual Studio output
+[Bb]in/
+[Oo]bj/
+.vs/
+TestResults/
+*.user
+*.suo
+
+# Local development tools and reports
+/.agents/
+/.codex/
+/.impeccable/
+/.qa/
+/.taste-skill/
+
+# Local secrets and databases
+.env
+.env.*
+!.env.example
+appsettings.Local.json
+*.pfx
+*.p12
+*.pem
+*.key
+/.db-backups/
+*.bak
+*.mdf
+*.ldf
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Runtime uploads. The app ships with its generated food catalogue images.
+/wwwroot/uploads/*
+!/wwwroot/uploads/foods/
+/wwwroot/uploads/foods/*
+!/wwwroot/uploads/foods/generated/

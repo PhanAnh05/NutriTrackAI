@@ -1,0 +1,88 @@
+.dashboard-page .hydration-card {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+}
+
+.hydration-reading,
+.hydration-goal {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem 1rem;
+}
+
+.dashboard-tracking-row h2 i { color: var(--nt-brand-500, #0b9b64); }
+@media (min-width: 992px) {
+    .dashboard-tracking-row > .col-lg-4 { width: 38%; }
+    .dashboard-tracking-row > .col-lg-8 { width: 62%; }
+}
+
+.hydration-card .hydration-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    min-height: 44px;
+    color: var(--forest);
+    font-size: .875rem;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: .22em;
+}
+
+.hydration-link:hover { text-decoration: underline; }
+.hydration-link:active { opacity: .8; }
+
+.hydration-reading { flex: 1 0 auto; }
+.hydration-reading > div { min-width: 0; }
+.hydration-label, .hydration-goal, .hydration-status {
+    color: var(--caption);
+    font-size: .875rem;
+}
+
+.hydration-volume {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: .38rem;
+    color: var(--ink);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.hydration-volume strong {
+    color: var(--ink);
+    font-size: clamp(2.25rem, 3.2vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -.04em;
+    line-height: 1.18;
+}
+
+.hydration-illustration {
+    width: clamp(88px, 31%, 128px);
+    height: auto;
+    max-height: 132px;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+}
+
+.hydration-goal {
+    flex-wrap: wrap;
+    margin-bottom: .45rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.hydration-goal strong { color: var(--forest); }
+.hydration-card .dash-progress { height: 9px; }
+.hydration-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+.hydration-actions button { min-height: 44px; flex: 1 0 6rem; }
+.hydration-actions button:active { opacity: .85; }
+.hydration-actions button:disabled { opacity: .65; cursor: progress; }
+.hydration-status { margin: 0; line-height: 1.5; min-height: 1.5em; }
+.hydration-card .hydration-exercise { align-self: start; margin-top: auto; text-decoration: none; }
+
+@media (prefers-reduced-motion: reduce) {
+    .hydration-card .dash-progress-bar-emerald,
+    .hydration-actions button { transition: none; }
+}
