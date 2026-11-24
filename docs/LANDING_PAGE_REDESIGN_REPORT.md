@@ -2,9 +2,9 @@
 
 - **Dự án**: Website hỗ trợ quản lý cân nặng và tư vấn dinh dưỡng cá nhân hóa tích hợp AI (`NutriTrackAI`)
 - **Nhánh phát triển**: `feature/landing-page-ui-redesign`
-- **Checkpoint sao lưu gốc**: `667c1ba` (`667c1bacc039a23541c31ad098cfd66de7f491e5` trên nhánh `main`)
+- **Checkpoint sao lưu gốc**: `667c1ba` (`667c1bacc039a23541c31ad098cfd66de7f491e5` tại thời điểm tách nhánh từ `main`)
 - **Phương pháp & Tiêu chuẩn áp dụng**: Skill `ui-ux-pro-max` — *Modern HealthTech SaaS, Editorial Food Photography, Refined Minimalism, WCAG 2.2 AA*
-- **Trạng thái tích hợp**: Hoàn tất kiểm tra nghiệm thu trên nhánh `feature/landing-page-ui-redesign` (chưa merge vào `main`, chưa push lên remote, bảo toàn nguyên vẹn toàn bộ Backend, CSDL, API và thuật toán nghiệp vụ)
+- **Phạm vi báo cáo** — Kết quả thiết kế và nghiệm thu được Antigravity ghi nhận trên nhánh `feature/landing-page-ui-redesign` trước khi bàn giao.
 
 ---
 
@@ -27,7 +27,7 @@ Toàn bộ quá trình nâng cấp Landing Page được thực hiện theo quy 
 1. **Giai đoạn 1 — Thiết lập Checkpoint Git An toàn**: Rà soát [`.gitignore`](../.gitignore), kiểm tra các tệp cấu hình nhạy cảm, lưu mốc nguyên trạng `667c1ba` trên `main` và tách nhánh riêng `feature/landing-page-ui-redesign`.
 2. **Giai đoạn 2 — Thiết kế lại Kiến trúc Giao diện (Master Prompt Redesign)**: Xây dựng hệ thống token `.home-landing`, nâng cấp toàn diện từ Navbar, Hero Slideshow 3 trang chiếu, Giới thiệu, Quy trình 4 bước, Thực đơn mẫu, Khoa học & An toàn, FAQ đến Cảnh báo y tế và Footer tối màu; nén bộ ảnh `.webp`.
 3. **Giai đoạn 3 — Tinh chỉnh Thẩm mỹ Cuối cùng (Art Director Final Polish)**: Giảm mật độ chữ trung tâm trên Hero để giữ trọn không gian ảnh món ăn, loại bỏ chồng lớp nền xanh (*green-on-green*) ở phần Giới thiệu, nâng cấp phần *Cách sử dụng* lên bố cục biên tập 2 tầng, khử lặp thông tin calo trên thẻ Thực đơn mẫu và đưa Cảnh báo y tế về khung thông báo lâm sàng đơn lớp trang nhã.
-4. **Giai đoạn 4 — Chuẩn hóa Thư viện Ảnh Nghiệm thu**: Lưu bộ 14 ảnh chụp màn hình sau tinh chỉnh vào [`wwwroot/images/landingpage`](../wwwroot/images/landingpage) và dọn sạch các ảnh chụp cũ trước tinh chỉnh trong thư mục này.
+4. **Giai đoạn 4 — Chuẩn hóa thư viện ảnh nghiệm thu**. Bộ 14 ảnh sau tinh chỉnh hiện nằm trong [thư mục ảnh nghiệm thu](screenshots/landing-page-redesign/), cùng 13 ảnh đợt đầu đã lưu trong `docs/`. Antigravity đã dọn các bản ảnh đợt đầu khỏi `wwwroot` tại commit `e07be34`.
 5. **Giai đoạn 5 — Kiểm tra Nghiệm thu Cuối cùng (Final Acceptance QA)**: Xác minh thực tế Navbar sticky khi cuộn, gia cố skip-link bàn phím chỉ hiện khi `:focus-visible`, cập nhật nút `"Bắt Đầu Ngay"` trên Hero tự động điều hướng sang Dashboard khi người dùng đã đăng nhập (`/Dashboard` hoặc `/Admin/Dashboard`) và chạy toàn bộ `243/243` bài kiểm thử tự động.
 
 ### Bảng chi tiết toàn bộ Commit Git
@@ -45,17 +45,7 @@ Toàn bộ quá trình nâng cấp Landing Page được thực hiện theo quy 
 | **8** | `5f538c0` | `chore(landing)` | `save post-polish QA screenshots into wwwroot/images/landingpage` — Đưa 14 ảnh chụp màn hình sau tinh chỉnh vào `wwwroot/images/landingpage`. |
 | **9** | `e07be34` | `chore(landing)` | `remove pre-polish screenshots from wwwroot/images/landingpage` — Xóa 15 ảnh chụp cũ trong `wwwroot/images/landingpage` theo yêu cầu. |
 | **10** | `de3b0db` | `fix(landing)` | `route signed-in hero CTA to dashboard and harden skip-link focus` — Điều hướng nút `"Bắt Đầu Ngay"` sang Dashboard khi đã đăng nhập, gia cố `.home-skip-link` và cập nhật bài test `WorkflowTests.cs`. |
-
-### Lệnh thao tác Git tham khảo (khi cần nghiệm thu hợp nhất hoặc khôi phục)
-
-```powershell
-# 1. Quay về trạng thái gốc trước khi làm Landing Page (nếu cần đối chiếu):
-git switch main
-
-# 2. Hợp nhất chính thức nhánh giao diện vào main (chỉ chạy khi bạn quyết định sử dụng chính thức):
-git switch main
-git merge --no-ff feature/landing-page-ui-redesign -m "merge: integrate redesigned NutriTrackAI landing page"
-```
+| **11** | `e197c04` | `docs(landing)` | `update comprehensive work and commit report through final acceptance` — Tổng hợp kết quả nghiệm thu trước khi bàn giao. |
 
 ---
 
@@ -86,11 +76,11 @@ Toàn bộ quy tắc giao diện mới được cô lập trong phạm vi `.home
   - **Slide 3 (*ĐỒNG HÀNH CÙNG SỨC KHỎE CỦA BẠN*)**: Bố cục biên tập căn trái trên nền đá đen, giữ thanh nhấn `.home-hero-accent` và không chứa nút CTA theo đúng đặc tả.
   - **Thanh điều khiển đáy**: Chỉ báo đang chọn dạng viên thuốc ngọc lục bảo (`1.45rem × 0.48rem`) kèm nút Tạm dừng/Tiếp tục hỗ trợ `prefers-reduced-motion`.
 
-![Hero Slide 1 sau tinh chỉnh ở 1440px](../wwwroot/images/landingpage/after-1440px-hero-slide1.png)
+![Hero Slide 1 sau tinh chỉnh ở 1440px](screenshots/landing-page-redesign/after-1440px-hero-slide1.png)
 
-![Hero Slide 2 sau tinh chỉnh ở 1440px](../wwwroot/images/landingpage/after-1440px-hero-slide2.png)
+![Hero Slide 2 sau tinh chỉnh ở 1440px](screenshots/landing-page-redesign/after-1440px-hero-slide2.png)
 
-![Hero Slide 3 sau tinh chỉnh ở 1440px](../wwwroot/images/landingpage/after-1440px-hero-slide3.png)
+![Hero Slide 3 sau tinh chỉnh ở 1440px](screenshots/landing-page-redesign/after-1440px-hero-slide3.png)
 
 ---
 
@@ -100,7 +90,7 @@ Toàn bộ quy tắc giao diện mới được cô lập trong phạm vi `.home
 - Thanh ghi chú cá nhân hóa dùng viền nhấn trái tinh tế (`border-left: 3px solid var(--home-emerald)`).
 - Khối dữ liệu `.home-intro-data` tách 2 tầng rõ ràng: thanh ngang 3 chỉ số cốt lõi (`Chỉ số BMI` · `BMR / TDEE` · `Cân bằng calo ngày` — không bị rớt chữ lẻ dòng) đặt trên 3 thẻ số liệu thực từ CSDL (`202+ Món ăn trong danh mục`, `10+ Bài tập có chỉ số MET`, `Theo hồ sơ — Lọc dị ứng an toàn`).
 
-![Section Giới thiệu sau tinh chỉnh ở 1440px](../wwwroot/images/landingpage/after-1440px-intro.png)
+![Section Giới thiệu sau tinh chỉnh ở 1440px](screenshots/landing-page-redesign/after-1440px-intro.png)
 
 ---
 
@@ -110,16 +100,16 @@ Toàn bộ quy tắc giao diện mới được cô lập trong phạm vi `.home
 - **Tầng 2**: Trải ngang 4 bước (`01. Tạo hồ sơ cá nhân` → `02. Đặt mục tiêu cân nặng` → `03. Ghi món và khẩu phần` → `04. Hỏi trợ lý AI`) trên toàn chiều rộng container với huy hiệu biểu tượng nền trắng và đường nối ngang trực quan.
 - **Tuân thủ nghiêm ngặt yêu cầu thiết kế**: Hoàn toàn không có nút `"Xem tổng quan"`, `"Bắt đầu ngay"` hay `"Tạo tài khoản"`.
 
-![Section Cách sử dụng 2 tầng sau tinh chỉnh ở 1440px](../wwwroot/images/landingpage/after-1440px-workflow.png)
+![Section Cách sử dụng 2 tầng sau tinh chỉnh ở 1440px](screenshots/landing-page-redesign/after-1440px-workflow.png)
 
 ---
 
 ### 3.4. Section "Thực đơn mẫu tiêu biểu" (`#thuc-don-mau`)
 
-- Lưới thích ứng thông minh: Hiển thị 2 cột lớn cân đối khi có 2 thực đơn mẫu công khai (và tự chuyển 3 cột khi có từ 3 thực đơn).
+- Lưới thích ứng thông minh: Trên màn hình đủ rộng, lưới hiển thị một cột cho 1 thực đơn, hai cột cho 2 hoặc 4 thực đơn và ba cột cho 3 thực đơn.
 - Hệ thống phân cấp 7 lớp rõ ràng, không lặp lại con số calo: Ảnh món ăn tỷ lệ `16:10` → Nhãn mục tiêu + nhãn `Ảnh minh họa` → Tên thực đơn → Dòng năng lượng duy nhất `2.200 kcal/ngày` (`1.500 kcal/ngày`) → Đoạn mô tả 3 dòng đầy đủ → Chân thẻ gồm thông tin số món & đối chiếu dị ứng bên trái và liên kết `Xem chi tiết →` bên phải.
 
-![Section Thực đơn mẫu sau tinh chỉnh ở 1440px](../wwwroot/images/landingpage/after-1440px-meal-plans.png)
+![Section Thực đơn mẫu sau tinh chỉnh ở 1440px](screenshots/landing-page-redesign/after-1440px-meal-plans.png)
 
 ---
 
@@ -128,7 +118,7 @@ Toàn bộ quy tắc giao diện mới được cô lập trong phạm vi `.home
 - **Khoa học và an toàn**: Nền xám xanh dịu `#F5F8F6` với 3 thẻ đồng bộ chiều cao (*Dữ liệu Viện Dinh dưỡng & USDA*, *Sàng lọc dị ứng theo hồ sơ*, *Bảo vệ sức khỏe*).
 - **Câu hỏi thường gặp (FAQ)**: Cột giới thiệu bên trái căn tĩnh tự nhiên cùng nút `Xem tất cả Kiến thức & FAQ →`; cột phải là danh sách Accordion dữ liệu động từ bảng `Articles`.
 
-![Section Khoa học & An toàn và FAQ sau tinh chỉnh ở 1440px](../wwwroot/images/landingpage/after-1440px-safety-faq.png)
+![Section Khoa học & An toàn và FAQ sau tinh chỉnh ở 1440px](screenshots/landing-page-redesign/after-1440px-safety-faq.png)
 
 ---
 
@@ -137,21 +127,23 @@ Toàn bộ quy tắc giao diện mới được cô lập trong phạm vi `.home
 - **Cảnh báo y tế (`#medical-disclaimer`)**: Đặt trong khung thông báo lâm sàng đơn lớp trang nhã (`#FFFCF3`, viền trái vàng hổ phách `3.5px`) trên nền trắng liền mạch, giữ **nguyên văn 100%** nội dung cảnh báo y tế bắt buộc của dự án.
 - **Footer (`#101828`)**: Nền Navy tối với 3 cột cân đối (*NutriTrackAI*, *KHÁM PHÁ*, *AN TOÀN & CHÍNH SÁCH*).
 
-![Cảnh báo y tế và Footer sau tinh chỉnh ở 1440px](../wwwroot/images/landingpage/after-1440px-disclaimer-footer.png)
+![Cảnh báo y tế và Footer sau tinh chỉnh ở 1440px](screenshots/landing-page-redesign/after-1440px-disclaimer-footer.png)
 
 ---
 
 ## 4. Thiết kế Responsive & Ảnh chụp Giao diện Mobile (`390px`)
 
+Tên ảnh phân đoạn giữ nhãn nghiệm thu ban đầu. Kích thước PNG thực tế là `1024 × 640` px cho ảnh desktop và `474 × 1024` px cho ảnh mobile. Kích thước ảnh toàn trang được ghi ở mục 5.
+
 Đã xác minh trên trình duyệt thực tế qua **8 kích thước màn hình** (`1920×1080`, `1440×900`, `1366×768`, `1024×768`, `768×1024`, `430×932`, `390×844`, `375×812`) với kết quả `horizontalOverflow = false` (`scrollWidth == innerWidth`) trên mọi độ phân giải.
 
 | Hero & Giới thiệu Mobile (`390px`) | Cách sử dụng — Timeline dọc (`390px`) |
 | :---: | :---: |
-| ![Mobile Hero 390px](../wwwroot/images/landingpage/after-390px-hero.png) | ![Mobile Workflow 390px](../wwwroot/images/landingpage/after-390px-workflow.png) |
+| ![Mobile Hero 390px](screenshots/landing-page-redesign/after-390px-hero.png) | ![Mobile Workflow 390px](screenshots/landing-page-redesign/after-390px-workflow.png) |
 
 | Thẻ Thực đơn mẫu 1 (`390px`) | Thẻ Thực đơn mẫu 2 (`390px`) |
 | :---: | :---: |
-| ![Mobile Meal Card 1 390px](../wwwroot/images/landingpage/after-390px-meal-card1.png) | ![Mobile Meal Card 2 390px](../wwwroot/images/landingpage/after-390px-meal-card2.png) |
+| ![Mobile Meal Card 1 390px](screenshots/landing-page-redesign/after-390px-meal-card1.png) | ![Mobile Meal Card 2 390px](screenshots/landing-page-redesign/after-390px-meal-card2.png) |
 
 ---
 
@@ -159,17 +151,17 @@ Toàn bộ quy tắc giao diện mới được cô lập trong phạm vi `.home
 
 ### 5.1. Toàn bộ Landing Page ở độ rộng `1440px` (`1440 × 4870 px`)
 
-- Đường dẫn file: [`wwwroot/images/landingpage/after-landing-1440px-full.png`](../wwwroot/images/landingpage/after-landing-1440px-full.png)
+- Đường dẫn file: [`screenshots/landing-page-redesign/after-landing-1440px-full.png`](screenshots/landing-page-redesign/after-landing-1440px-full.png)
 
-![Toàn bộ Landing Page NutriTrackAI sau tinh chỉnh ở 1440px](../wwwroot/images/landingpage/after-landing-1440px-full.png)
+![Toàn bộ Landing Page NutriTrackAI sau tinh chỉnh ở 1440px](screenshots/landing-page-redesign/after-landing-1440px-full.png)
 
 ---
 
 ### 5.2. Toàn bộ Landing Page ở độ rộng `390px` (`390 × 7032 px`)
 
-- Đường dẫn file: [`wwwroot/images/landingpage/after-landing-390px-full.png`](../wwwroot/images/landingpage/after-landing-390px-full.png)
+- Đường dẫn file: [`screenshots/landing-page-redesign/after-landing-390px-full.png`](screenshots/landing-page-redesign/after-landing-390px-full.png)
 
-![Toàn bộ Landing Page NutriTrackAI sau tinh chỉnh ở 390px](../wwwroot/images/landingpage/after-landing-390px-full.png)
+![Toàn bộ Landing Page NutriTrackAI sau tinh chỉnh ở 390px](screenshots/landing-page-redesign/after-landing-390px-full.png)
 
 ---
 
@@ -187,7 +179,7 @@ Toàn bộ quy tắc giao diện mới được cô lập trong phạm vi `.home
   - [`wwwroot/images/home/hero-3-slate.webp`](../wwwroot/images/home/hero-3-slate.webp), [`wwwroot/images/home/about-healthy.webp`](../wwwroot/images/home/about-healthy.webp)
   - [`wwwroot/images/home/workflow-lifestyle.jpg`](../wwwroot/images/home/workflow-lifestyle.jpg), [`wwwroot/images/home/workflow-lifestyle.webp`](../wwwroot/images/home/workflow-lifestyle.webp)
   - [`wwwroot/images/home/plan-1.webp`](../wwwroot/images/home/plan-1.webp), [`wwwroot/images/home/plan-2.webp`](../wwwroot/images/home/plan-2.webp), [`wwwroot/images/home/plan-3.webp`](../wwwroot/images/home/plan-3.webp)
-- Bộ 14 ảnh chụp màn hình nghiệm thu lưu tại [`wwwroot/images/landingpage/`](../wwwroot/images/landingpage/).
+- Bộ 14 ảnh chụp màn hình nghiệm thu lưu tại [`docs/screenshots/landing-page-redesign/`](screenshots/landing-page-redesign/).
 
 ### 6.3. Các thành phần nghiệp vụ được bảo toàn 100%
 - Không thay đổi bất kỳ Controller, Service, Filter, Entity, ViewModel, Migration, cấu trúc CSDL SQL Server, cơ chế xác thực Identity hay thuật toán BMI / BMR / TDEE / Thực đơn / Chatbot AI nào.
