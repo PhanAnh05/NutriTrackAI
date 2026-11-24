@@ -62,11 +62,11 @@
                                 </div>
                                 @if (i == 0)
                                 {
-                                    <h1 class="home-hero-title">@slide.Title <span class="d-inline-block">@slide.TitleEnding</span></h1>
+                                    <h1 class="home-hero-title"><span class="home-hero-line">@slide.Title</span> <span class="home-hero-line">@slide.TitleEnding</span></h1>
                                 }
                                 else
                                 {
-                                    <h2 class="home-hero-title">@slide.Title <span class="d-inline-block">@slide.TitleEnding</span></h2>
+                                    <h2 class="home-hero-title"><span class="home-hero-line">@slide.Title</span> <span class="home-hero-line">@slide.TitleEnding</span></h2>
                                 }
                                 <p class="home-hero-lead">@slide.Lead</p>
                                 @if (slide.ShowActions)
@@ -114,7 +114,7 @@
         </figure>
         <div class="home-intro-copy">
             <p class="home-eyebrow">NUTRITRACKAI</p>
-            <h2 id="home-intro-title">Hiểu bữa ăn,<br />theo dõi mục tiêu</h2>
+            <h2 id="home-intro-title">Hiểu bữa ăn, theo dõi mục tiêu</h2>
             <p class="home-intro-lead">Hiểu rõ dinh dưỡng trong từng bữa ăn. Theo dõi calories, cân nặng và vận động dễ dàng cùng NutriTrackAI.</p>
             <p class="home-intro-note"><i class="bi bi-person-check" aria-hidden="true"></i><span>Cá nhân hóa thực đơn phù hợp với mục tiêu sức khỏe của bạn.</span></p>
             <div class="home-intro-data">
@@ -152,41 +152,43 @@
 </section>
 
 <section class="home-section home-workflow" id="cach-su-dung" aria-labelledby="home-workflow-title">
-    <div class="container home-wrap home-workflow-layout">
-        <div class="home-workflow-content">
-            <p class="home-eyebrow">HƯỚNG DẪN SỬ DỤNG</p>
-            <h2 id="home-workflow-title">Cách sử dụng<br class="d-none d-lg-inline" /> NutriTrackAI</h2>
-            <p class="home-workflow-lead">Bắt đầu hành trình ăn uống khoa học và đạt mục tiêu sức khỏe chỉ với 4 bước đơn giản.</p>
-            <ol class="home-workflow-steps" role="list">
-                @foreach (var step in steps)
-                {
-                    <li class="home-workflow-step">
-                        <div class="home-workflow-track" aria-hidden="true">
-                            <span class="home-workflow-icon"><i class="bi @step.Icon"></i></span>
-                        </div>
-                        <div class="home-workflow-step-copy">
-                            <h3><span class="home-step-num">@step.Number.</span> @step.Title</h3>
-                            <p>@step.Detail</p>
-                        </div>
-                    </li>
-                }
-            </ol>
-        </div>
-        <figure class="home-workflow-figure">
-            <div class="home-workflow-media">
-                @if (HasHomeImage("workflow-lifestyle.jpg"))
-                {
-                    <picture>
-                        @if (HasHomeImage("workflow-lifestyle.webp"))
-                        {
-                            <source srcset="@Url.Content("~/images/home/workflow-lifestyle.webp")" type="image/webp" />
-                        }
-                        <img src="~/images/home/workflow-lifestyle.jpg" width="1200" height="896" loading="lazy" decoding="async"
-                             alt="Minh họa người dùng theo dõi bữa ăn lành mạnh trên ứng dụng NutriTrackAI" onerror="this.hidden = true" />
-                    </picture>
-                }
+    <div class="container home-wrap home-workflow-shell">
+        <div class="home-workflow-top">
+            <div class="home-workflow-content">
+                <p class="home-eyebrow">HƯỚNG DẪN SỬ DỤNG</p>
+                <h2 id="home-workflow-title">Cách sử dụng NutriTrackAI</h2>
+                <p class="home-workflow-lead">Bắt đầu hành trình ăn uống khoa học và đạt mục tiêu sức khỏe chỉ với 4 bước đơn giản — từ thiết lập chỉ số cơ thể đến nhật ký bữa ăn và tư vấn AI hằng ngày.</p>
             </div>
-        </figure>
+            <figure class="home-workflow-figure">
+                <div class="home-workflow-media">
+                    @if (HasHomeImage("workflow-lifestyle.jpg"))
+                    {
+                        <picture>
+                            @if (HasHomeImage("workflow-lifestyle.webp"))
+                            {
+                                <source srcset="@Url.Content("~/images/home/workflow-lifestyle.webp")" type="image/webp" />
+                            }
+                            <img src="~/images/home/workflow-lifestyle.jpg" width="1200" height="896" loading="lazy" decoding="async"
+                                 alt="Minh họa người dùng theo dõi bữa ăn lành mạnh trên ứng dụng NutriTrackAI" onerror="this.hidden = true" />
+                        </picture>
+                    }
+                </div>
+            </figure>
+        </div>
+        <ol class="home-workflow-steps" role="list">
+            @foreach (var step in steps)
+            {
+                <li class="home-workflow-step">
+                    <div class="home-workflow-track" aria-hidden="true">
+                        <span class="home-workflow-icon"><i class="bi @step.Icon"></i></span>
+                    </div>
+                    <div class="home-workflow-step-copy">
+                        <h3><span class="home-step-num">@step.Number.</span> @step.Title</h3>
+                        <p>@step.Detail</p>
+                    </div>
+                </li>
+            }
+        </ol>
     </div>
 </section>
 
@@ -252,10 +254,10 @@
                             }
                         </div>
                         <div class="home-meal-body">
-                            <h3 class="home-meal-heading">
-                                <span>@displayTitle</span>
-                                <span class="home-meal-kcal">@kcalText</span>
-                            </h3>
+                            <div class="home-meal-header">
+                                <h3 class="home-meal-heading">@displayTitle</h3>
+                                <p class="home-meal-kcal">@plan.TargetCalories.ToString("N0", vietnamese) kcal<span>/ngày</span></p>
+                            </div>
                             @if (!string.IsNullOrWhiteSpace(plan.Description))
                             {
                                 <p class="home-meal-description">@plan.Description</p>
@@ -264,12 +266,11 @@
                             {
                                 <p class="home-meal-description">Thực đơn cân bằng dinh dưỡng với @plan.FoodCount món ăn theo bữa trong ngày.</p>
                             }
-                            <ul class="home-meal-meta" aria-label="Thông tin thực đơn">
-                                <li><i class="bi bi-basket2" aria-hidden="true"></i><span>@plan.FoodCount món trong ngày</span></li>
-                                <li><i class="bi bi-shield-check" aria-hidden="true"></i><span>Đối chiếu dị ứng theo hồ sơ</span></li>
-                            </ul>
                             <div class="home-meal-footer">
-                                <strong>@plan.TargetCalories.ToString("N0", vietnamese) kcal/ngày</strong>
+                                <ul class="home-meal-meta" aria-label="Thông tin thực đơn">
+                                    <li><i class="bi bi-basket2" aria-hidden="true"></i><span>@plan.FoodCount món trong ngày</span></li>
+                                    <li><i class="bi bi-shield-check" aria-hidden="true"></i><span>Đối chiếu dị ứng theo hồ sơ</span></li>
+                                </ul>
                                 <a asp-area="" asp-controller="MealPlan" asp-action="Index" asp-route-planId="@plan.Id" class="home-meal-link"
                                    aria-label="Xem chi tiết @plan.Name">Xem chi tiết <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
                             </div>
