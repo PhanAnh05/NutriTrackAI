@@ -284,23 +284,25 @@
 <section class="home-section home-safety" aria-labelledby="home-safety-title">
     <div class="container home-wrap">
         <div class="home-section-heading">
+            <p class="home-eyebrow">NỀN TẢNG TIN CẬY</p>
             <h2 id="home-safety-title">Khoa học và an toàn</h2>
+            <p>Mọi tính toán năng lượng, gợi ý thực đơn và phản hồi từ trợ lý AI đều đặt giới hạn an toàn sức khỏe lên hàng đầu.</p>
         </div>
         <div class="home-safety-grid">
-            <article>
-                <i class="bi bi-journal-richtext" aria-hidden="true"></i>
+            <article class="home-safety-card">
+                <span class="home-safety-icon" aria-hidden="true"><i class="bi bi-journal-richtext"></i></span>
                 <h3>Dữ liệu Viện Dinh dưỡng &amp; USDA</h3>
-                <p>Trợ lý AI có thể tra cứu calo và thành phần từ danh mục món ăn của hệ thống.</p>
+                <p>Trợ lý AI có thể tra cứu calo và thành phần dinh dưỡng trực tiếp từ danh mục món ăn chuẩn hóa của hệ thống.</p>
             </article>
-            <article>
-                <i class="bi bi-shield-check" aria-hidden="true"></i>
+            <article class="home-safety-card">
+                <span class="home-safety-icon" aria-hidden="true"><i class="bi bi-shield-check"></i></span>
                 <h3>Sàng lọc dị ứng theo hồ sơ</h3>
-                <p>Lọc món theo hồ sơ và cảnh báo trong nhật ký khi phát hiện thành phần trùng với dị ứng bạn đã khai báo.</p>
+                <p>Lọc món theo hồ sơ cá nhân và bật cảnh báo trong nhật ký khi phát hiện thành phần trùng với dị ứng bạn đã khai báo.</p>
             </article>
-            <article>
-                <i class="bi bi-heart-pulse" aria-hidden="true"></i>
+            <article class="home-safety-card">
+                <span class="home-safety-icon" aria-hidden="true"><i class="bi bi-heart-pulse"></i></span>
                 <h3>Bảo vệ sức khỏe</h3>
-                <p>Giới hạn mức điều chỉnh calo và bật cảnh báo khi câu hỏi liên quan đến bệnh lý hoặc thuốc.</p>
+                <p>Giới hạn mức điều chỉnh calo hợp lý và bật cảnh báo tham khảo chuyên môn khi câu hỏi liên quan đến bệnh lý hoặc thuốc.</p>
             </article>
         </div>
     </div>
@@ -309,8 +311,10 @@
 <section class="home-section home-faq" id="faq-section" aria-labelledby="home-faq-title">
     <div class="container home-wrap home-faq-grid">
         <div class="home-faq-intro">
+            <p class="home-eyebrow">HỖ TRỢ &amp; GIẢI ĐÁP</p>
             <h2 id="home-faq-title">Câu hỏi thường gặp</h2>
-            <a asp-area="" asp-controller="Home" asp-action="Articles" class="home-text-link">Xem tất cả Kiến thức &amp; FAQ <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+            <p class="home-faq-lead">Tìm hiểu nhanh nguyên tắc cân bằng năng lượng, cách chọn món ăn linh hoạt và lộ trình sử dụng hiệu quả.</p>
+            <a asp-area="" asp-controller="Home" asp-action="Articles" class="home-faq-more">Xem tất cả Kiến thức &amp; FAQ <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
         </div>
         <div class="accordion home-accordion" id="faqAccordion">
             @if (Model.Faqs.Count == 0)
@@ -324,7 +328,10 @@
                 <div class="accordion-item">
                     <h3 class="accordion-header" id="@questionId">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@answerId"
-                                aria-expanded="false" aria-controls="@answerId">@faq.Title</button>
+                                aria-expanded="false" aria-controls="@answerId">
+                            <span>@faq.Title</span>
+                            <span class="home-accordion-chevron" aria-hidden="true"><i class="bi bi-chevron-down"></i></span>
+                        </button>
                     </h3>
                     <div id="@answerId" class="accordion-collapse collapse" aria-labelledby="@questionId" data-bs-parent="#faqAccordion">
                         <div class="accordion-body">@faq.Body</div>
