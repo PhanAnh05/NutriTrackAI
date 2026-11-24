@@ -1437,87 +1437,134 @@ footer.footer-custom {
     font-size: clamp(.95rem, 1.15vw, 1.05rem);
 }
 
-.home-workflow { background: var(--home-mint); }
+/* Section 3: Workflow — "Cách sử dụng NutriTrackAI" */
+.home-workflow {
+    background: var(--home-mint);
+}
+
 .home-workflow-layout {
     display: grid;
-    grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
-    gap: clamp(1rem, 2vw, 1.75rem);
-}
-.home-workflow-intro {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    padding: clamp(1.5rem, 4vw, 3.5rem);
-    border-radius: 1rem;
-    background: var(--home-ink);
-    color: #fff;
-}
-.home-workflow-intro h2 {
-    max-width: 14ch;
-    font-size: clamp(2rem, 3.5vw, 3.2rem);
-    line-height: 1.12;
-}
-.home-workflow-intro p {
-    max-width: 34ch;
-    margin: 1rem 0 1.6rem;
-    color: var(--home-mint-strong);
-}
-.home-workflow-action {
-    display: inline-flex;
+    grid-template-columns: minmax(0, 1.24fr) minmax(0, .92fr);
+    gap: clamp(2rem, 4.2vw, 3.75rem);
     align-items: center;
-    gap: .65rem;
-    min-height: 48px;
-    padding: .65rem 1rem;
-    border-radius: .375rem;
-    background: var(--home-brand);
-    color: #082c24;
-    font-weight: 750;
-    text-decoration: none;
 }
-.home-workflow-action:hover {
-    background: var(--home-mint-strong);
-    color: var(--home-ink);
+
+.home-workflow-content {
+    min-width: 0;
 }
-.home-workflow-action:focus-visible { outline-color: #fff; }
+
+.home-workflow-lead {
+    max-width: 48ch;
+    margin: .9rem 0 0;
+    font-size: 1.04rem;
+    color: var(--home-muted);
+}
+
 .home-workflow-steps {
     display: grid;
-    gap: .5rem;
-    margin: 0;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.2rem;
+    margin: 2rem 0 0;
     padding: 0;
     list-style: none;
 }
+
 .home-workflow-step {
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.home-workflow-track {
     display: flex;
     align-items: center;
-    gap: clamp(.75rem, 1.4vw, 1.15rem);
-    padding: .95rem clamp(.75rem, 2vw, 1.35rem);
-    border-radius: .75rem;
-    background: #fff;
+    margin-bottom: .95rem;
 }
+
+.home-workflow-step:not(:last-child) .home-workflow-track::after {
+    content: "";
+    flex: 1;
+    height: 1.5px;
+    margin-left: .7rem;
+    background: #b9dfc9;
+}
+
 .home-workflow-icon {
     display: grid;
     place-items: center;
-    flex: 0 0 2.625rem;
-    height: 2.625rem;
-    border-radius: .625rem;
-    background: var(--home-mint-strong);
-    color: var(--home-action);
-    font-size: 1.2rem;
+    flex: 0 0 3.25rem;
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 14px;
+    background: #e2f5eb;
+    border: 1px solid #c7e6d5;
+    color: var(--home-emerald);
+    font-size: 1.32rem;
+    box-shadow: 0 6px 14px -8px rgb(0 143 104 / 24%);
 }
-.home-workflow-step-copy { flex: 1; min-width: 0; }
+
+.home-workflow-step-copy {
+    min-width: 0;
+}
+
 .home-workflow-step h3 {
-    margin: 0 0 .25rem;
-    font-size: 1.05rem;
+    margin: 0 0 .4rem;
+    color: var(--home-forest);
+    font-size: .98rem;
     font-weight: 750;
     line-height: 1.35;
 }
-.home-workflow-step p { margin: 0; font-size: .925rem; }
-.home-workflow-step a { color: inherit; text-decoration: none; }
-.home-workflow-step a:hover { color: var(--home-action); text-decoration: underline; }
-.home-workflow-step-arrow { color: var(--home-action); }
+
+.home-step-num {
+    color: var(--home-action);
+    font-variant-numeric: tabular-nums;
+}
+
+.home-workflow-step p {
+    margin: 0;
+    font-size: .885rem;
+    line-height: 1.56;
+    color: var(--home-muted);
+}
+
+.home-workflow-figure {
+    margin: 0;
+    min-width: 0;
+}
+
+.home-workflow-media {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--home-radius-lg);
+    background: #ffffff;
+    border: 1px solid rgb(7 61 50 / 8%);
+    box-shadow: var(--home-shadow-lg);
+}
+
 .home-safety-grid h3 { margin: 0 0 .35rem; font-size: 1rem; font-weight: 750; line-height: 1.4; }
+
+/* Section 4: Meal Plans — "Thực đơn mẫu tiêu biểu" */
+.home-showcase {
+    background: var(--home-bg);
+}
+
+.home-meal-grid {
+    display: grid;
+    gap: clamp(1.35rem, 2.5vw, 2.15rem);
+}
+
+.home-meal-grid.is-single {
+    max-width: 44rem;
+    margin-inline: auto;
+}
+
+.home-meal-grid.is-two-col {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.home-meal-grid.is-three-col {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
 
 .meal-showcase-card {
     display: flex;
@@ -1525,9 +1572,18 @@ footer.footer-custom {
     height: 100%;
     overflow: hidden;
     border: 1px solid var(--home-rule);
-    border-radius: 16px;
-    background: white;
+    border-radius: var(--home-radius-lg);
+    background: #ffffff;
+    box-shadow: var(--home-shadow-sm);
+    transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
 }
+
+.meal-showcase-card:hover {
+    transform: translateY(-4px);
+    border-color: #bcdcc9;
+    box-shadow: var(--home-shadow-md);
+}
+
 .home-meal-media {
     position: relative;
     display: grid;
@@ -1535,42 +1591,192 @@ footer.footer-custom {
     isolation: isolate;
     overflow: hidden;
     aspect-ratio: 16 / 10;
-    background: linear-gradient(135deg, #e6f7ee, #bde7d4);
+    background: linear-gradient(135deg, #e6f6ec, #c5ead6);
 }
-.home-meal-fallback { color: var(--home-action); font-size: 2rem; }
-.home-meal-media img { position: absolute; inset: 0; transition: transform .3s ease-out; }
-.meal-showcase-card:hover img { transform: scale(1.04); }
-.home-meal-goal, .home-meal-photo-label { position: absolute; padding: .28rem .62rem; border-radius: 100px; font-size: .8125rem; line-height: 1.25; }
-.home-meal-goal { inset: .75rem auto auto .75rem; background: #f2fffa; color: #07543d; font-weight: 750; }
-.home-meal-photo-label { inset: auto .65rem .65rem auto; background: #12382e; color: white; }
-.home-meal-body { display: flex; flex-direction: column; flex: 1; gap: .55rem; padding: 1.25rem; }
-.home-meal-body h3 { margin: 0; font-size: 1.13rem; line-height: 1.35; font-weight: 750; overflow-wrap: anywhere; }
-.home-meal-body p { margin: 0; }
-.home-meal-description { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+
+.home-meal-fallback {
+    color: var(--home-action);
+    font-size: 2.25rem;
+}
+
+.home-meal-media img {
+    position: absolute;
+    inset: 0;
+    transition: transform .32s ease-out;
+}
+
+.meal-showcase-card:hover .home-meal-media img {
+    transform: scale(1.035);
+}
+
+.home-meal-goal,
+.home-meal-photo-label {
+    position: absolute;
+    z-index: 1;
+    border-radius: 999px;
+    line-height: 1.25;
+}
+
+.home-meal-goal {
+    inset: 1rem auto auto 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .38rem .85rem;
+    background: rgb(255 255 255 / 95%);
+    color: var(--home-forest);
+    font-size: .825rem;
+    font-weight: 750;
+    box-shadow: 0 4px 14px rgb(7 32 26 / 14%);
+}
+
+.home-meal-goal i {
+    color: var(--home-emerald);
+    font-size: .92rem;
+}
+
+.home-meal-photo-label {
+    inset: auto .85rem .85rem auto;
+    padding: .24rem .65rem;
+    background: rgb(16 44 39 / 76%);
+    color: #f2faf6;
+    font-size: .75rem;
+    font-weight: 600;
+    backdrop-filter: blur(4px);
+}
+
+.home-meal-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: .75rem;
+    padding: clamp(1.35rem, 2.3vw, 1.85rem);
+}
+
+.home-meal-heading {
+    display: flex;
+    flex-direction: column;
+    gap: .22rem;
+    margin: 0;
+    color: var(--home-forest);
+    font-size: clamp(1.22rem, 1.55vw, 1.45rem);
+    line-height: 1.28;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    overflow-wrap: anywhere;
+}
+
+.home-meal-kcal {
+    color: var(--home-emerald);
+    font-variant-numeric: tabular-nums;
+}
+
+.home-meal-body p {
+    margin: 0;
+}
+
+.home-meal-description {
+    font-size: .965rem;
+    line-height: 1.6;
+    color: var(--home-muted);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.home-meal-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .45rem 1.15rem;
+    margin: .1rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.home-meal-meta li {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    color: var(--home-ink);
+    font-size: .84rem;
+    font-weight: 600;
+}
+
+.home-meal-meta i {
+    color: var(--home-emerald);
+    font-size: .95rem;
+}
+
 .home-meal-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: .15rem .6rem;
+    gap: .35rem .75rem;
     margin-top: auto;
-    padding-top: .5rem;
+    padding-top: .95rem;
+    border-top: 1px solid #edf3ef;
 }
-.home-meal-footer strong { color: var(--home-action); font-size: .93rem; }
+
+.home-meal-footer strong {
+    color: var(--home-action);
+    font-size: .98rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+}
+
+.home-meal-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    min-height: 44px;
+    color: var(--home-forest);
+    font-size: .95rem;
+    font-weight: 750;
+    text-decoration: none;
+    transition: color .18s ease;
+}
+
+.home-meal-link i {
+    transition: transform .18s ease;
+}
+
+.home-meal-link:hover {
+    color: var(--home-action);
+}
+
+.home-meal-link:hover i {
+    transform: translateX(3px);
+}
+
 .home-text-link {
     display: inline-flex;
     align-items: center;
-    gap: .38rem;
+    gap: .4rem;
     min-height: 44px;
-    color: var(--home-action-hover);
-    font-size: .9rem;
+    color: var(--home-action);
+    font-size: .93rem;
     font-weight: 700;
     text-decoration: none;
     text-underline-offset: .2em;
 }
-.home-text-link:hover { color: var(--home-action-hover); text-decoration: underline; }
-.home-empty { padding: 1.15rem 1.35rem; border-radius: 14px; background: var(--home-mint); }
-.home-empty p { margin: 0; }
+
+.home-text-link:hover {
+    color: var(--home-action-hover);
+    text-decoration: underline;
+}
+
+.home-empty {
+    padding: 1.35rem 1.5rem;
+    border-radius: var(--home-radius-md);
+    background: var(--home-mint);
+    border: 1px solid var(--home-rule);
+}
+
+.home-empty p {
+    margin: 0;
+}
 
 .home-safety { background: #f8fafc; }
 .home-safety .home-section-heading { text-align: left; }
@@ -1631,6 +1837,9 @@ footer.home-footer { padding: 0; border: 0; background: white; }
 }
 @media (max-width: 1199.98px) {
     .home-header .navbar-expand-xl .navbar-collapse { padding-block: .45rem .65rem; }
+    .home-workflow-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.4rem 1.5rem; }
+    .home-workflow-step:nth-child(even) .home-workflow-track::after { display: none; }
+    .home-meal-grid.is-three-col { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (min-width: 992px) and (max-width: 1199.98px) {
     .home-intro-data { grid-template-columns: 1fr; }
@@ -1639,9 +1848,34 @@ footer.home-footer { padding: 0; border: 0; background: white; }
     .home-header .navbar-collapse { padding-block: .45rem .65rem; }
     .home-editorial { grid-template-columns: 1fr; gap: 2rem; }
     .home-intro-copy .home-intro-lead { max-width: 65ch; }
-    .home-workflow-layout { grid-template-columns: 1fr; }
+    .home-workflow-layout { grid-template-columns: 1fr; gap: 2.25rem; }
     .home-safety-grid { gap: .7rem; }
     .home-footer-grid { gap: 1.4rem; }
+}
+@media (max-width: 767.98px) {
+    .home-carousel { --home-hero-height: clamp(21.5rem, 88vw, 27rem); }
+    .home-carousel .carousel-item.is-editorial-left .home-hero-inner { justify-content: center; text-align: center; }
+    .home-carousel .carousel-item.is-editorial-left .home-hero-eyebrow { justify-content: center; }
+    .home-carousel .carousel-item.is-editorial-left .home-hero-lead { margin-inline: auto; }
+    .home-hero-subtitle { font-size: clamp(.7rem, 2.8vw, .8125rem); letter-spacing: .08em; }
+    .home-hero-title { font-size: clamp(1.75rem, 7.2vw, 2.35rem); }
+    .home-hero-lead { font-size: .94rem; }
+    .home-hero-actions { margin-top: 1.3rem; }
+    .home-button { min-width: 8.5rem; min-height: 44px; padding-inline: 1rem; font-size: .88rem; }
+    .home-meal-grid.is-two-col,
+    .home-meal-grid.is-three-col { grid-template-columns: 1fr; }
+    .home-workflow-steps { grid-template-columns: 1fr; gap: 0; margin-top: 1.6rem; }
+    .home-workflow-step { flex-direction: row; align-items: stretch; gap: 1rem; }
+    .home-workflow-track { flex-direction: column; align-items: center; margin-bottom: 0; }
+    .home-workflow-step:nth-child(even) .home-workflow-track::after,
+    .home-workflow-step:not(:last-child) .home-workflow-track::after {
+        display: block;
+        width: 1.5px;
+        height: auto;
+        flex: 1;
+        margin: .45rem 0;
+    }
+    .home-workflow-step:not(:last-child) .home-workflow-step-copy { padding-bottom: 1.25rem; }
 }
 @media (max-width: 650px) {
     .home-intro-data { grid-template-columns: 1fr; }
@@ -1658,15 +1892,16 @@ footer.home-footer { padding: 0; border: 0; background: white; }
     .home-stat dd { flex-direction: row; align-items: center; gap: .6rem; }
     .home-stat dt { text-align: right; }
 }
-@media (max-width: 767.98px) {
-    .home-carousel { --home-hero-height: clamp(20rem, 90vw, 26rem); }
-    .home-hero-subtitle { font-size: clamp(.6875rem, 2.9vw, .8125rem); letter-spacing: .08em; }
-    .home-hero-title { font-size: clamp(1.5rem, 7.2vw, 2.25rem); }
-    .home-hero-actions { margin-top: 1.25rem; }
-    .home-button { min-width: 8rem; min-height: 44px; padding-inline: .8rem; font-size: .875rem; }
-}
 @media (prefers-reduced-motion: reduce) {
-    .home-button { transition: none; }
-    .meal-showcase-card img { transition: none; }
-    .meal-showcase-card:hover img { transform: none; }
+    .home-skip-link,
+    .home-button,
+    .home-stat,
+    .meal-showcase-card,
+    .meal-showcase-card .home-meal-media img,
+    .home-meal-link i { transition: none; }
+    .home-button:hover,
+    .home-stat:hover,
+    .meal-showcase-card:hover,
+    .meal-showcase-card:hover .home-meal-media img,
+    .home-meal-link:hover i { transform: none; }
 }

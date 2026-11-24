@@ -18,17 +18,16 @@
             Lead: "Dinh dưỡng thông minh, theo dõi sức khỏe dễ dàng và cá nhân hóa lộ trình phù hợp với mục tiêu của bạn.",
             Image: "~/images/home/Cinematic Rice Bowl Feast on Charcoal Slate.png", Webp: "~/images/home/hero-3-slate.webp", Width: 1672, Height: 941, ShowActions: false, AlignLeft: true)
     };
-    var hasAccountSession = User.Identity?.IsAuthenticated == true;
     var steps = new[]
     {
-        (Icon: "bi-person-plus", Title: "Tạo hồ sơ cá nhân", Controller: "Profile",
-            Detail: "Nhập chiều cao, cân nặng, mức vận động và dị ứng thực phẩm."),
-        (Icon: "bi-bullseye", Title: "Đặt mục tiêu cân nặng", Controller: "Goal",
-            Detail: "Chọn mục tiêu duy trì, giảm hoặc tăng cân để ước tính ngân sách calo mỗi ngày."),
-        (Icon: "bi-journal-check", Title: "Ghi món và khẩu phần", Controller: "MealLog",
-            Detail: "Tham khảo thực đơn gợi ý rồi ghi món và lượng bạn đã ăn vào nhật ký."),
-        (Icon: "bi-chat-dots", Title: "Hỏi trợ lý AI", Controller: "Chat",
-            Detail: "Chẳng hạn, hỏi “Hôm nay tôi còn bao nhiêu calo cho bữa tối?”")
+        (Number: "01", Icon: "bi-person-vcard", Title: "Tạo hồ sơ cá nhân",
+            Detail: "Nhập chiều cao, cân nặng, mức vận động và thông tin dị ứng thực phẩm."),
+        (Number: "02", Icon: "bi-bullseye", Title: "Đặt mục tiêu cân nặng",
+            Detail: "Chọn mục tiêu duy trì, giảm hoặc tăng cân để tính nhu cầu năng lượng phù hợp."),
+        (Number: "03", Icon: "bi-journal-check", Title: "Ghi món và khẩu phần",
+            Detail: "Tham khảo thực đơn gợi ý và ghi lại món ăn, khẩu phần vào nhật ký."),
+        (Number: "04", Icon: "bi-chat-dots", Title: "Hỏi trợ lý AI",
+            Detail: "Trao đổi về dinh dưỡng, calories và nhận gợi ý phù hợp.")
     };
 
     bool HasHomeImage(string filename) => HostEnvironment.WebRootFileProvider.GetFileInfo($"images/home/{filename}").Exists;
@@ -154,53 +153,47 @@
 
 <section class="home-section home-workflow" id="cach-su-dung" aria-labelledby="home-workflow-title">
     <div class="container home-wrap home-workflow-layout">
-        <div class="home-workflow-intro">
-            <h2 id="home-workflow-title">Cách sử dụng NutriTrackAI</h2>
-            <p>Theo dõi bữa ăn mỗi ngày và điều chỉnh thực đơn theo mục tiêu.</p>
-            @if (hasAccountSession)
-            {
-                <a class="home-workflow-action" asp-area="" asp-controller="Dashboard" asp-action="Index">
-                    Xem tổng quan <i class="bi bi-arrow-right" aria-hidden="true"></i>
-                </a>
-            }
-            else
-            {
-                <a class="home-workflow-action" asp-area="" asp-controller="Account" asp-action="Register">
-                    Tạo tài khoản <i class="bi bi-arrow-right" aria-hidden="true"></i>
-                </a>
-            }
+        <div class="home-workflow-content">
+            <p class="home-eyebrow">HƯỚNG DẪN SỬ DỤNG</p>
+            <h2 id="home-workflow-title">Cách sử dụng<br class="d-none d-lg-inline" /> NutriTrackAI</h2>
+            <p class="home-workflow-lead">Bắt đầu hành trình ăn uống khoa học và đạt mục tiêu sức khỏe chỉ với 4 bước đơn giản.</p>
+            <ol class="home-workflow-steps" role="list">
+                @foreach (var step in steps)
+                {
+                    <li class="home-workflow-step">
+                        <div class="home-workflow-track" aria-hidden="true">
+                            <span class="home-workflow-icon"><i class="bi @step.Icon"></i></span>
+                        </div>
+                        <div class="home-workflow-step-copy">
+                            <h3><span class="home-step-num">@step.Number.</span> @step.Title</h3>
+                            <p>@step.Detail</p>
+                        </div>
+                    </li>
+                }
+            </ol>
         </div>
-        <ol class="home-workflow-steps" role="list">
-            @foreach (var step in steps)
-            {
-                <li class="home-workflow-step">
-                    <span class="home-workflow-icon" aria-hidden="true"><i class="bi @step.Icon"></i></span>
-                    <div class="home-workflow-step-copy">
-                        <h3>
-                            @if (hasAccountSession)
-                            {
-                                <a class="stretched-link" asp-area="" asp-controller="@step.Controller" asp-action="Index">@step.Title</a>
-                            }
-                            else
-                            {
-                                @step.Title
-                            }
-                        </h3>
-                        <p>@step.Detail</p>
-                    </div>
-                    @if (hasAccountSession)
-                    {
-                        <i class="bi bi-chevron-right home-workflow-step-arrow" aria-hidden="true"></i>
-                    }
-                </li>
-            }
-        </ol>
+        <figure class="home-workflow-figure">
+            <div class="home-workflow-media">
+                @if (HasHomeImage("workflow-lifestyle.jpg"))
+                {
+                    <picture>
+                        @if (HasHomeImage("workflow-lifestyle.webp"))
+                        {
+                            <source srcset="@Url.Content("~/images/home/workflow-lifestyle.webp")" type="image/webp" />
+                        }
+                        <img src="~/images/home/workflow-lifestyle.jpg" width="1200" height="896" loading="lazy" decoding="async"
+                             alt="Minh họa người dùng theo dõi bữa ăn lành mạnh trên ứng dụng NutriTrackAI" onerror="this.hidden = true" />
+                    </picture>
+                }
+            </div>
+        </figure>
     </div>
 </section>
 
 <section class="home-section home-showcase" id="thuc-don-mau" aria-labelledby="home-meals-title">
     <div class="container home-wrap">
         <div class="home-section-heading">
+            <p class="home-eyebrow">THỰC ĐƠN THAM KHẢO</p>
             <h2 id="home-meals-title">Thực đơn mẫu tiêu biểu</h2>
             <p>Khám phá cách chia bữa theo các mục tiêu calo.</p>
         </div>
@@ -213,50 +206,75 @@
         }
         else
         {
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 justify-content-center g-4">
+            var mealGridVariant = Model.PublicMealPlans.Count switch
+            {
+                1 => "is-single",
+                2 or 4 => "is-two-col",
+                _ => "is-three-col"
+            };
+            <div class="home-meal-grid @mealGridVariant">
                 @foreach (var plan in Model.PublicMealPlans)
                 {
-                    var (goal, filename) = plan.GoalType switch
+                    var (goal, goalIcon, jpgFile, webpFile) = plan.GoalType switch
                     {
-                        GoalType.Lose => ("Giảm cân", "plan-1.jpg"),
-                        GoalType.Gain => ("Tăng cân", "plan-2.jpg"),
-                        _ => ("Duy trì", "plan-3.jpg")
+                        GoalType.Lose => ("Giảm cân", "bi-heart-pulse", "plan-1.jpg", "plan-1.webp"),
+                        GoalType.Gain => ("Tăng cân", "bi-graph-up-arrow", "plan-2.jpg", "plan-2.webp"),
+                        _ => ("Duy trì", "bi-check2-circle", "plan-3.jpg", "plan-3.webp")
                     };
-                    var illustrative = HasHomeImage(filename);
-                    var image = illustrative ? Url.Content($"~/images/home/{filename}")
+                    var illustrative = HasHomeImage(jpgFile);
+                    var image = illustrative ? Url.Content($"~/images/home/{jpgFile}")
                         : plan.FirstFood is { } food ? FoodImageUrl.Resolve(food.Name, food.ImageUrl, HostEnvironment.WebRootFileProvider) : null;
-                    <div class="col">
-                        <article class="meal-showcase-card">
-                            <div class="home-meal-media">
-                                <i class="bi bi-egg-fried home-meal-fallback" aria-hidden="true"></i>
-                                @if (!string.IsNullOrWhiteSpace(image))
+                    var kcalText = $"{plan.TargetCalories.ToString("N0", vietnamese)} kcal";
+                    var displayTitle = plan.Name.EndsWith(kcalText, StringComparison.OrdinalIgnoreCase)
+                        ? plan.Name[..^kcalText.Length].TrimEnd(' ', '-', '—', '–')
+                        : plan.Name;
+                    <article class="meal-showcase-card">
+                        <div class="home-meal-media">
+                            <i class="bi bi-egg-fried home-meal-fallback" aria-hidden="true"></i>
+                            @if (!string.IsNullOrWhiteSpace(image))
+                            {
+                                @if (illustrative && HasHomeImage(webpFile))
                                 {
-                                    <img src="@image" alt="@(illustrative ? "" : plan.FirstFood?.Name)" loading="lazy" decoding="async" onerror="this.hidden = true" />
-                                }
-                                <span class="home-meal-goal">@goal</span>
-                                @if (illustrative)
-                                {
-                                    <span class="home-meal-photo-label">Ảnh minh họa</span>
-                                }
-                            </div>
-                            <div class="home-meal-body">
-                                <h3>@plan.Name</h3>
-                                @if (!string.IsNullOrWhiteSpace(plan.Description))
-                                {
-                                    <p class="home-meal-description">@plan.Description</p>
+                                    <picture>
+                                        <source srcset="@Url.Content($"~/images/home/{webpFile}")" type="image/webp" />
+                                        <img src="@image" alt="" width="720" height="402" loading="lazy" decoding="async" onerror="this.hidden = true" />
+                                    </picture>
                                 }
                                 else
                                 {
-                                    <p>@plan.FoodCount món trong thực đơn.</p>
+                                    <img src="@image" alt="@(illustrative ? "" : plan.FirstFood?.Name)" width="720" height="402" loading="lazy" decoding="async" onerror="this.hidden = true" />
                                 }
-                                <div class="home-meal-footer">
-                                    <strong>@plan.TargetCalories.ToString("N0", vietnamese) kcal/ngày</strong>
-                                    <a asp-area="" asp-controller="MealPlan" asp-action="Index" asp-route-planId="@plan.Id" class="home-text-link"
-                                       aria-label="Xem chi tiết @plan.Name">Xem chi tiết <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
-                                </div>
+                            }
+                            <span class="home-meal-goal"><i class="bi @goalIcon" aria-hidden="true"></i>@goal</span>
+                            @if (illustrative)
+                            {
+                                <span class="home-meal-photo-label">Ảnh minh họa</span>
+                            }
+                        </div>
+                        <div class="home-meal-body">
+                            <h3 class="home-meal-heading">
+                                <span>@displayTitle</span>
+                                <span class="home-meal-kcal">@kcalText</span>
+                            </h3>
+                            @if (!string.IsNullOrWhiteSpace(plan.Description))
+                            {
+                                <p class="home-meal-description">@plan.Description</p>
+                            }
+                            else
+                            {
+                                <p class="home-meal-description">Thực đơn cân bằng dinh dưỡng với @plan.FoodCount món ăn theo bữa trong ngày.</p>
+                            }
+                            <ul class="home-meal-meta" aria-label="Thông tin thực đơn">
+                                <li><i class="bi bi-basket2" aria-hidden="true"></i><span>@plan.FoodCount món trong ngày</span></li>
+                                <li><i class="bi bi-shield-check" aria-hidden="true"></i><span>Đối chiếu dị ứng theo hồ sơ</span></li>
+                            </ul>
+                            <div class="home-meal-footer">
+                                <strong>@plan.TargetCalories.ToString("N0", vietnamese) kcal/ngày</strong>
+                                <a asp-area="" asp-controller="MealPlan" asp-action="Index" asp-route-planId="@plan.Id" class="home-meal-link"
+                                   aria-label="Xem chi tiết @plan.Name">Xem chi tiết <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
                             </div>
-                        </article>
-                    </div>
+                        </div>
+                    </article>
                 }
             </div>
         }
