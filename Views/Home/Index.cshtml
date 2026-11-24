@@ -48,7 +48,7 @@
                     <picture class="home-hero-picture">
                         <source srcset="@Url.Content(slide.Webp)" type="image/webp" />
                         <img class="home-hero-photo" src="@Url.Content(slide.Image)" alt="" width="@slide.Width" height="@slide.Height"
-                             loading="@(i == 0 ? "eager" : "lazy")" fetchpriority="@(i == 0 ? "high" : "low")" decoding="async" onerror="this.hidden = true" />
+                             fetchpriority="@(i == 0 ? "high" : "low")" decoding="async" onerror="this.hidden = true" />
                     </picture>
                     <div class="home-hero-frame">
                         <div class="container home-wrap home-hero-inner">
@@ -380,8 +380,9 @@
             navigation.addEventListener('click', event => {
                 const link = event.target.closest('a[href^="#"]');
                 if (!link || !navigation.classList.contains('show')) return;
+                event.preventDefault();
                 navigation.addEventListener('hidden.bs.collapse', () => {
-                    document.getElementById(link.hash.slice(1))?.scrollIntoView();
+                    document.getElementById(link.hash.slice(1))?.scrollIntoView({ behavior: motion.matches ? 'auto' : 'smooth' });
                 }, { once: true });
                 bootstrap.Collapse.getInstance(navigation)?.hide();
             });

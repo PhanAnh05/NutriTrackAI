@@ -1320,8 +1320,8 @@ footer.footer-custom {
 
 .home-intro-data {
     display: grid;
-    grid-template-columns: minmax(11.5rem, 1.18fr) minmax(0, 2.82fr);
-    gap: .85rem;
+    grid-template-columns: minmax(10.25rem, 1.04fr) minmax(0, 2.96fr);
+    gap: .7rem;
     margin-top: 1.6rem;
     align-items: stretch;
 }
@@ -1330,7 +1330,7 @@ footer.footer-custom {
     display: grid;
     align-content: center;
     margin: 0;
-    padding: .35rem 1rem;
+    padding: .35rem .85rem;
     list-style: none;
     background: #ffffff;
     border: 1px solid var(--home-rule);
@@ -1341,10 +1341,10 @@ footer.footer-custom {
 .home-metric-list li {
     display: flex;
     align-items: center;
-    gap: .65rem;
+    gap: .55rem;
     padding: .58rem 0;
     color: var(--home-forest);
-    font-size: .89rem;
+    font-size: .875rem;
     font-weight: 650;
 }
 
@@ -1361,7 +1361,7 @@ footer.footer-custom {
 .home-counts {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: .85rem;
+    gap: .7rem;
     margin: 0;
 }
 
@@ -1371,7 +1371,7 @@ footer.footer-custom {
     justify-content: space-between;
     gap: .45rem;
     min-width: 0;
-    padding: .95rem .9rem;
+    padding: .95rem .8rem;
     border-radius: var(--home-radius-md);
     background: var(--home-mint);
     border: 1px solid var(--home-rule);
@@ -1434,7 +1434,8 @@ footer.footer-custom {
 }
 
 .home-stat .home-counts-text {
-    font-size: clamp(.95rem, 1.15vw, 1.05rem);
+    font-size: clamp(.92rem, 1.08vw, 1.02rem);
+    white-space: nowrap;
 }
 
 /* Section 3: Workflow — "Cách sử dụng NutriTrackAI" */
@@ -1679,7 +1680,7 @@ footer.footer-custom {
     color: var(--home-muted);
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     overflow: hidden;
 }
 
@@ -2163,6 +2164,7 @@ footer.home-footer {
     .home-button { min-width: 8.5rem; min-height: 44px; padding-inline: 1rem; font-size: .88rem; }
     .home-meal-grid.is-two-col,
     .home-meal-grid.is-three-col { grid-template-columns: 1fr; }
+    .home-meal-description { display: block; overflow: visible; -webkit-line-clamp: unset; }
     .home-workflow-steps { grid-template-columns: 1fr; gap: 0; margin-top: 1.6rem; }
     .home-workflow-step { flex-direction: row; align-items: stretch; gap: 1rem; }
     .home-workflow-track { flex-direction: column; align-items: center; margin-bottom: 0; }
