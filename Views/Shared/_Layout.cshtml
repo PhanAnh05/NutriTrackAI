@@ -34,9 +34,13 @@
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="@ViewData["BodyClass"]">
+    @if (isHomeLanding)
+    {
+        <a class="home-skip-link" href="#main-content">Chuyển đến nội dung chính</a>
+    }
     <!-- Main Header & Navigation -->
     <header class="@(isHomeLanding ? "home-header sticky-top" : null)">
-        <nav class="navbar @(isHomeLanding && signedIn ? "navbar-expand-xl" : "navbar-expand-lg") navbar-custom sticky-top py-2 @(signedIn ? "navbar-authenticated" : null) @(isAdmin ? "navbar-with-admin" : null)">
+        <nav class="navbar @(isHomeLanding && signedIn ? "navbar-expand-xl" : "navbar-expand-lg") navbar-custom @(isHomeLanding ? null : "sticky-top") py-2 @(signedIn ? "navbar-authenticated" : null) @(isAdmin ? "navbar-with-admin" : null)">
             <div class="container-fluid px-lg-4">
                 <!-- Brand Logo -->
                 <a class="navbar-brand brand-logo" asp-controller="Home" asp-action="Index">
@@ -176,7 +180,7 @@
     </header>
 
     <!-- Main Body Content -->
-    <main role="main" class="flex-grow-1">
+    <main role="main" id="main-content" class="flex-grow-1">
         @if (isHomeLanding)
         {
             @await RenderSectionAsync("FullWidthHero", required: false)
@@ -186,41 +190,31 @@
 
     <!-- Cảnh báo y tế và chân trang -->
     <footer class="footer-custom @(isHomeLanding ? "home-footer" : "mt-5")">
-        <div class="container">
-            <div class="medical-disclaimer-box mb-4" id="medical-disclaimer">
-                <div class="d-flex align-items-start gap-2">
-                    <i class="bi bi-exclamation-triangle-fill text-warning fs-5 flex-shrink-0 mt-1"></i>
-                    <div>
-                        <strong class="@(isHomeLanding ? null : "text-dark") d-block mb-1">Cảnh báo y tế quan trọng</strong>
-                        <span>Thông tin trên website và nội dung do trợ lý AI tạo ra chỉ nhằm hỗ trợ theo dõi dinh dưỡng, cân nặng và lối sống, mang tính tham khảo. Hệ thống không phải thiết bị y tế, không chẩn đoán, không kê đơn và không thay thế ý kiến của bác sĩ, chuyên gia dinh dưỡng hoặc cơ sở y tế. Nếu bạn có bệnh lý, đang dùng thuốc, mang thai, hoặc có triệu chứng bất thường, hãy tham khảo chuyên môn trước khi thay đổi chế độ ăn.</span>
+        @if (isHomeLanding)
+        {
+            <div class="home-disclaimer-band">
+                <div class="container home-wrap">
+                    <div class="medical-disclaimer-box" id="medical-disclaimer" role="note" aria-label="Cảnh báo y tế quan trọng">
+                        <div class="home-disclaimer-inner">
+                            <span class="home-disclaimer-icon" aria-hidden="true">
+                                <i class="bi bi-exclamation-triangle-fill"></i>
+                            </span>
+                            <div class="home-disclaimer-copy">
+                                <strong>Cảnh báo y tế quan trọng</strong>
+                                <p>Thông tin trên website và nội dung do trợ lý AI tạo ra chỉ nhằm hỗ trợ theo dõi dinh dưỡng, cân nặng và lối sống, mang tính tham khảo. Hệ thống không phải thiết bị y tế, không chẩn đoán, không kê đơn và không thay thế ý kiến của bác sĩ, chuyên gia dinh dưỡng hoặc cơ sở y tế. Nếu bạn có bệnh lý, đang dùng thuốc, mang thai, hoặc có triệu chứng bất thường, hãy tham khảo chuyên môn trước khi thay đổi chế độ ăn.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            @if (!isHomeLanding)
-            {
-                <div class="row align-items-center text-muted small gy-2">
-                    <div class="col-md-6 text-center text-md-start">
-                        &copy; 2026 <strong>NutriTrackAI</strong>. Nền tảng theo dõi dinh dưỡng và quản lý cân nặng thông minh.
-                    </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        <a asp-controller="Home" asp-action="Index" class="text-decoration-none text-muted me-3">Trang chủ</a>
-                        <a asp-controller="Home" asp-action="Articles" class="text-decoration-none text-muted me-3">Kiến thức & FAQ</a>
-                        <a asp-controller="Home" asp-action="Privacy" class="text-decoration-none text-muted">Điều khoản sử dụng</a>
-                    </div>
-                </div>
-            }
-        </div>
-        @if (isHomeLanding)
-        {
             <div class="home-footer-dark">
                 <div class="container home-footer-grid">
-                    <div>
+                    <div class="home-footer-about">
                         <a class="home-footer-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                            <span class="brand-icon"><i class="bi bi-heart-pulse-fill" aria-hidden="true"></i></span> NutriTrackAI
+                            <span class="brand-icon"><i class="bi bi-heart-pulse-fill" aria-hidden="true"></i></span>
+                            <span>NutriTrack<span class="home-footer-brand-ai">AI</span></span>
                         </a>
-                        <p>Theo dõi dinh dưỡng và cân nặng theo mục tiêu của bạn.</p>
-                        <small>© 2026 NutriTrackAI</small>
+                        <p>Nền tảng theo dõi dinh dưỡng, quản lý cân nặng và gợi ý thực đơn cá nhân hóa tích hợp AI dành cho lối sống lành mạnh.</p>
                     </div>
                     <nav aria-label="Liên kết nhanh">
                         <h2>Khám phá</h2>
@@ -234,6 +228,34 @@
                         <a href="#medical-disclaimer">Miễn trừ trách nhiệm y tế</a>
                         <a asp-area="" asp-controller="Home" asp-action="Privacy">Quyền riêng tư dữ liệu sức khỏe</a>
                     </nav>
+                </div>
+                <div class="container home-footer-bottom">
+                    <small>© 2026 NutriTrackAI</small>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="container">
+                <div class="medical-disclaimer-box mb-4" id="medical-disclaimer">
+                    <div class="d-flex align-items-start gap-2">
+                        <i class="bi bi-exclamation-triangle-fill text-warning fs-5 flex-shrink-0 mt-1"></i>
+                        <div>
+                            <strong class="text-dark d-block mb-1">Cảnh báo y tế quan trọng</strong>
+                            <span>Thông tin trên website và nội dung do trợ lý AI tạo ra chỉ nhằm hỗ trợ theo dõi dinh dưỡng, cân nặng và lối sống, mang tính tham khảo. Hệ thống không phải thiết bị y tế, không chẩn đoán, không kê đơn và không thay thế ý kiến của bác sĩ, chuyên gia dinh dưỡng hoặc cơ sở y tế. Nếu bạn có bệnh lý, đang dùng thuốc, mang thai, hoặc có triệu chứng bất thường, hãy tham khảo chuyên môn trước khi thay đổi chế độ ăn.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row align-items-center text-muted small gy-2">
+                    <div class="col-md-6 text-center text-md-start">
+                        &copy; 2026 <strong>NutriTrackAI</strong>. Nền tảng theo dõi dinh dưỡng và quản lý cân nặng thông minh.
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <a asp-controller="Home" asp-action="Index" class="text-decoration-none text-muted me-3">Trang chủ</a>
+                        <a asp-controller="Home" asp-action="Articles" class="text-decoration-none text-muted me-3">Kiến thức & FAQ</a>
+                        <a asp-controller="Home" asp-action="Privacy" class="text-decoration-none text-muted">Điều khoản sử dụng</a>
+                    </div>
                 </div>
             </div>
         }
