@@ -6,6 +6,9 @@
     ViewData["UseFullWidthLayout"] = true;
 
     var vietnamese = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+    var startActionHref = User.Identity?.IsAuthenticated == true
+        ? (User.IsInRole("Admin") ? Url.Content("~/Admin/Dashboard") : Url.Content("~/Dashboard"))
+        : Url.Content("~/Account/Register");
     var slides = new[]
     {
         (Subtitle: "KẾ HOẠCH DINH DƯỠNG CÁ NHÂN HÓA", Title: "KIỂM SOÁT", TitleEnding: "CÂN NẶNG BỀN VỮNG",
@@ -72,7 +75,7 @@
                                 @if (slide.ShowActions)
                                 {
                                     <div class="home-hero-actions">
-                                        <a class="home-button home-button-primary" href="@Url.Content("~/Account/Register")">Bắt Đầu Ngay</a>
+                                        <a class="home-button home-button-primary" href="@startActionHref">Bắt Đầu Ngay</a>
                                         <a class="home-button home-button-light" href="@Url.Content("~/Chat/Index")">Tư Vấn AI</a>
                                     </div>
                                 }

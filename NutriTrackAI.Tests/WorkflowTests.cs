@@ -269,10 +269,10 @@ public class WorkflowTests : IAsyncLifetime
     }
 
     [Theory]
-    [InlineData(null)]
-    [InlineData("qa-a@example.test")]
-    [InlineData("qa-admin@example.test")]
-    public async Task HomeHero_ShowsRequestedActionsOnFirstTwoSlides(string? email)
+    [InlineData(null, "/Account/Register")]
+    [InlineData("qa-a@example.test", "/Dashboard")]
+    [InlineData("qa-admin@example.test", "/Admin/Dashboard")]
+    public async Task HomeHero_ShowsRequestedActionsOnFirstTwoSlides(string? email, string expectedStartHref)
     {
         if (email != null)
             await Login(email);
@@ -286,13 +286,12 @@ public class WorkflowTests : IAsyncLifetime
         {
             var links = Regex.Matches(slides[i].Value, "<a\\b[^>]*\\bhref=\"([^\"]+)\"")
                 .Select(match => WebUtility.HtmlDecode(match.Groups[1].Value));
-            Assert.Equal(new[] { "/Account/Register", "/Chat/Index" }, links);
+            Assert.Equal(new[] { expectedStartHref, "/Chat/Index" }, links);
         }
         Assert.DoesNotContain("<a ", slides[2].Value);
         Assert.Contains("class=\"home-hero-accent\"", slides[2].Value);
 
-        if (email == null)
-            await Page("/Account/Register");
+        await Page(expectedStartHref);
     }
 
     [Theory]

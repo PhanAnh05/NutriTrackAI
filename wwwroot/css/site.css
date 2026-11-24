@@ -762,11 +762,15 @@ footer.footer-custom {
     font-size: .875rem;
     font-weight: 700;
     text-decoration: none;
+    opacity: 0;
+    pointer-events: none;
     transform: translateY(-200%);
-    transition: transform .18s ease;
+    transition: transform .18s ease, opacity .18s ease;
 }
 
 .home-skip-link:focus-visible {
+    opacity: 1;
+    pointer-events: auto;
     transform: translateY(0);
     outline: 2px solid var(--home-brand);
     outline-offset: 2px;
