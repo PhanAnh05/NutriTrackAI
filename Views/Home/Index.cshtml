@@ -9,11 +9,14 @@
     var slides = new[]
     {
         (Subtitle: "KẾ HOẠCH DINH DƯỠNG CÁ NHÂN HÓA", Title: "KIỂM SOÁT", TitleEnding: "CÂN NẶNG BỀN VỮNG",
-            Image: "~/images/hero-1.jpg", Width: 1920, Height: 1072, ShowActions: true),
+            Lead: "Tính toán BMI, BMR, TDEE chuẩn khoa học và theo dõi ngân sách calories mỗi ngày theo thể trạng của bạn.",
+            Image: "~/images/hero-1.jpg", Webp: "~/images/hero-1.webp", Width: 1920, Height: 1072, ShowActions: true, AlignLeft: false),
         (Subtitle: "THEO DÕI CALO & CẢNH BÁO DỊ ỨNG", Title: "THỰC ĐƠN", TitleEnding: "ĐA DẠNG CHUẨN VIỆT",
-            Image: "~/images/hero-2.jpg", Width: 1672, Height: 941, ShowActions: true),
+            Lead: "Khám phá danh mục món ăn Việt Nam phong phú, sàng lọc dị ứng theo hồ sơ và gợi ý khẩu phần cân bằng.",
+            Image: "~/images/hero-2.jpg", Webp: "~/images/hero-2.webp", Width: 1672, Height: 941, ShowActions: true, AlignLeft: false),
         (Subtitle: "TRỢ LÝ DINH DƯỠNG THÔNG MINH", Title: "ĐỒNG HÀNH CÙNG", TitleEnding: "SỨC KHỎE CỦA BẠN",
-            Image: "~/images/home/Cinematic Rice Bowl Feast on Charcoal Slate.png", Width: 1672, Height: 941, ShowActions: false)
+            Lead: "Dinh dưỡng thông minh, theo dõi sức khỏe dễ dàng và cá nhân hóa lộ trình phù hợp với mục tiêu của bạn.",
+            Image: "~/images/home/Cinematic Rice Bowl Feast on Charcoal Slate.png", Webp: "~/images/home/hero-3-slate.webp", Width: 1672, Height: 941, ShowActions: false, AlignLeft: true)
     };
     var hasAccountSession = User.Identity?.IsAuthenticated == true;
     var steps = new[]
@@ -42,31 +45,39 @@
             @for (var i = 0; i < slides.Length; i++)
             {
                 var slide = slides[i];
-                <div class="carousel-item @(i == 0 ? "active" : null)" role="group" aria-roledescription="trang chiếu" aria-label="@(i + 1) / @slides.Length">
-                    <img class="home-hero-photo" src="@Url.Content(slide.Image)" alt="" width="@slide.Width" height="@slide.Height"
-                         fetchpriority="@(i == 0 ? "high" : "low")" decoding="async" onerror="this.hidden = true" />
+                <div class="carousel-item @(i == 0 ? "active" : null) @(slide.AlignLeft ? "is-editorial-left" : null)" role="group" aria-roledescription="trang chiếu" aria-label="@(i + 1) / @slides.Length">
+                    <picture class="home-hero-picture">
+                        <source srcset="@Url.Content(slide.Webp)" type="image/webp" />
+                        <img class="home-hero-photo" src="@Url.Content(slide.Image)" alt="" width="@slide.Width" height="@slide.Height"
+                             loading="@(i == 0 ? "eager" : "lazy")" fetchpriority="@(i == 0 ? "high" : "low")" decoding="async" onerror="this.hidden = true" />
+                    </picture>
                     <div class="home-hero-frame">
-                        <div class="home-hero-copy">
-                            <p class="home-hero-subtitle">@slide.Subtitle</p>
-                            @if (i == 0)
-                            {
-                                <h1 class="home-hero-title">@slide.Title <span class="d-inline-block">@slide.TitleEnding</span></h1>
-                            }
-                            else
-                            {
-                                <h2 class="home-hero-title">@slide.Title <span class="d-inline-block">@slide.TitleEnding</span></h2>
-                            }
-                            @if (slide.ShowActions)
-                            {
-                                <div class="home-hero-actions">
-                                    <a class="home-button home-button-primary" href="@Url.Content("~/Account/Register")">Bắt Đầu Ngay</a>
-                                    <a class="home-button home-button-light" href="@Url.Content("~/Chat/Index")">Tư Vấn AI</a>
+                        <div class="container home-wrap home-hero-inner">
+                            <div class="home-hero-copy">
+                                <div class="home-hero-eyebrow">
+                                    @if (!slide.ShowActions)
+                                    {
+                                        <span class="home-hero-accent" aria-hidden="true"></span>
+                                    }
+                                    <p class="home-hero-subtitle">@slide.Subtitle</p>
                                 </div>
-                            }
-                            else
-                            {
-                                <span class="home-hero-accent" aria-hidden="true"></span>
-                            }
+                                @if (i == 0)
+                                {
+                                    <h1 class="home-hero-title">@slide.Title <span class="d-inline-block">@slide.TitleEnding</span></h1>
+                                }
+                                else
+                                {
+                                    <h2 class="home-hero-title">@slide.Title <span class="d-inline-block">@slide.TitleEnding</span></h2>
+                                }
+                                <p class="home-hero-lead">@slide.Lead</p>
+                                @if (slide.ShowActions)
+                                {
+                                    <div class="home-hero-actions">
+                                        <a class="home-button home-button-primary" href="@Url.Content("~/Account/Register")">Bắt Đầu Ngay</a>
+                                        <a class="home-button home-button-light" href="@Url.Content("~/Chat/Index")">Tư Vấn AI</a>
+                                    </div>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -91,41 +102,47 @@
             <div class="home-intro-media">
                 @if (HasHomeImage("about-healthy.jpg"))
                 {
-                    <img src="~/images/home/about-healthy.jpg" width="1024" height="765" loading="lazy" decoding="async"
-                         alt="Bữa ăn gồm cơm gạo lứt, ức gà, rau luộc và canh" onerror="this.hidden = true" />
+                    <picture>
+                        @if (HasHomeImage("about-healthy.webp"))
+                        {
+                            <source srcset="@Url.Content("~/images/home/about-healthy.webp")" type="image/webp" />
+                        }
+                        <img src="~/images/home/about-healthy.jpg" width="1024" height="765" loading="lazy" decoding="async"
+                             alt="Bữa ăn lành mạnh gồm cơm gạo lứt, ức gà áp chảo, rau luộc và canh thanh đạm" onerror="this.hidden = true" />
+                    </picture>
                 }
             </div>
         </figure>
         <div class="home-intro-copy">
-            <p class="home-wordmark">NutriTrackAI</p>
-            <h2 id="home-intro-title">Hiểu bữa ăn,<br /> theo dõi mục tiêu</h2>
+            <p class="home-eyebrow">NUTRITRACKAI</p>
+            <h2 id="home-intro-title">Hiểu bữa ăn,<br />theo dõi mục tiêu</h2>
             <p class="home-intro-lead">Hiểu rõ dinh dưỡng trong từng bữa ăn. Theo dõi calories, cân nặng và vận động dễ dàng cùng NutriTrackAI.</p>
             <p class="home-intro-note"><i class="bi bi-person-check" aria-hidden="true"></i><span>Cá nhân hóa thực đơn phù hợp với mục tiêu sức khỏe của bạn.</span></p>
             <div class="home-intro-data">
                 <ul class="home-metric-list" aria-label="Chỉ số được tính tự động">
-                    <li><i class="bi bi-speedometer2" aria-hidden="true"></i>Chỉ số BMI</li>
-                    <li><i class="bi bi-activity" aria-hidden="true"></i>BMR / TDEE</li>
-                    <li><i class="bi bi-fire" aria-hidden="true"></i>Cân bằng calo ngày</li>
+                    <li><i class="bi bi-speedometer2" aria-hidden="true"></i><span>Chỉ số BMI</span></li>
+                    <li><i class="bi bi-activity" aria-hidden="true"></i><span>BMR / TDEE</span></li>
+                    <li><i class="bi bi-fire" aria-hidden="true"></i><span>Cân bằng calo ngày</span></li>
                 </ul>
                 <dl class="home-counts">
                     <div class="home-stat">
                         <dt>Món ăn trong danh mục</dt>
                         <dd>
-                            <i class="bi bi-egg-fried home-stat-icon" aria-hidden="true"></i>
+                            <span class="home-stat-badge" aria-hidden="true"><i class="bi bi-egg-fried home-stat-icon"></i></span>
                             <a asp-area="" asp-controller="Food" asp-action="Index" aria-label="Xem @Model.TotalFoods.ToString("N0", vietnamese) món ăn trong danh mục">@Model.TotalFoods.ToString("N0", vietnamese)@(Model.TotalFoods > 0 ? "+" : "")</a>
                         </dd>
                     </div>
                     <div class="home-stat">
                         <dt>Bài tập có chỉ số MET</dt>
                         <dd>
-                            <i class="bi bi-bicycle home-stat-icon" aria-hidden="true"></i>
+                            <span class="home-stat-badge" aria-hidden="true"><i class="bi bi-bicycle home-stat-icon"></i></span>
                             <span>@Model.TotalExercises.ToString("N0", vietnamese)@(Model.TotalExercises > 0 ? "+" : "")</span>
                         </dd>
                     </div>
                     <div class="home-stat">
                         <dt>Lọc dị ứng an toàn</dt>
                         <dd class="home-counts-text">
-                            <i class="bi bi-shield-check home-stat-icon" aria-hidden="true"></i>
+                            <span class="home-stat-badge" aria-hidden="true"><i class="bi bi-shield-check home-stat-icon"></i></span>
                             <span>Theo hồ sơ</span>
                         </dd>
                     </div>

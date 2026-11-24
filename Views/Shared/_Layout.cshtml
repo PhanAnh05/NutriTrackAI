@@ -34,9 +34,13 @@
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="@ViewData["BodyClass"]">
+    @if (isHomeLanding)
+    {
+        <a class="home-skip-link" href="#main-content">Chuyển đến nội dung chính</a>
+    }
     <!-- Main Header & Navigation -->
     <header class="@(isHomeLanding ? "home-header sticky-top" : null)">
-        <nav class="navbar @(isHomeLanding && signedIn ? "navbar-expand-xl" : "navbar-expand-lg") navbar-custom sticky-top py-2 @(signedIn ? "navbar-authenticated" : null) @(isAdmin ? "navbar-with-admin" : null)">
+        <nav class="navbar @(isHomeLanding && signedIn ? "navbar-expand-xl" : "navbar-expand-lg") navbar-custom @(isHomeLanding ? null : "sticky-top") py-2 @(signedIn ? "navbar-authenticated" : null) @(isAdmin ? "navbar-with-admin" : null)">
             <div class="container-fluid px-lg-4">
                 <!-- Brand Logo -->
                 <a class="navbar-brand brand-logo" asp-controller="Home" asp-action="Index">
@@ -176,7 +180,7 @@
     </header>
 
     <!-- Main Body Content -->
-    <main role="main" class="flex-grow-1">
+    <main role="main" id="main-content" class="flex-grow-1">
         @if (isHomeLanding)
         {
             @await RenderSectionAsync("FullWidthHero", required: false)
